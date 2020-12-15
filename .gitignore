@@ -1,0 +1,26 @@
+# API Files
+*.vs/
+obj/
+*debug/
+*.targets
+*.props
+*assets.json
+*.cache
+*.db
+*.dll
+
+# Release Files & folders
+*Release/
+*.pubxml*
+*.user
+*.exe
+
+# Random other ignores that might end up in here
+*.txt
+
+# Mac files
+*.DS_Store
+*._DS_Store
+
+# Secret Keys
+appsettings.json
