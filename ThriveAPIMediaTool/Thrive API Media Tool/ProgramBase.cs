@@ -84,7 +84,7 @@ namespace Thrive_API_Media_Tool
 
             AllSermonsSummaryResponse allSermonsSummaryResponse = JsonConvert.DeserializeObject<AllSermonsSummaryResponse>(responseString);
 
-            foreach (var sermonSeries in allSermonsSummaryResponse.Summaries)
+            foreach (var sermonSeries in allSermonsSummaryResponse.Summaries.OrderBy(i => i.StartDate))
             {
                 Console.WriteLine($"\nID: {sermonSeries.Id}, Name: {sermonSeries.Title}");
             }
