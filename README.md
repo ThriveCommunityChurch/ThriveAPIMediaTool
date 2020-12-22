@@ -26,3 +26,11 @@ Each of the following are valid request parameters. Note that all arguments need
 
 ### Create a new series
 _Coming soon, not yet supported_
+
+## Sample AppSettings
+`ThriveAPIUrl` is the only required setting for this tool so that it knows where and how to communicate with the API. You can use this as an example for wherever you have your instance deployed. It should be public.
+```
+{
+    "ThriveAPIUrl": "http://hostname:port/"
+}
+```
