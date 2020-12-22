@@ -55,13 +55,19 @@ namespace Thrive_API_Media_Tool
                 // not yet supported
                 throw new NotImplementedException();
 
+                #region Add new
+
                 //var updateRequest = GenerateCreateRequest();
                 //if (updateRequest == null)
                 //{
                 //    Console.WriteLine("No series create object to send. One or more arguments might be invalid.");
                 //    return;
                 //}
+
+                #endregion
             }
+
+            #region Update
 
             if (string.IsNullOrEmpty(_options.SeriesId))
             {
@@ -76,31 +82,31 @@ namespace Thrive_API_Media_Tool
                     return;
                 }
             }
-            else
+
+            // Update this series with the requested ID, we'll just need to ask for each property one at a time
+            var updateRequest = GenerateRequestForSeriesWithID(seriesId);
+            if (updateRequest == null)
             {
-                // Update this series with the requested ID, we'll just need to ask for each property one at a time
-                var updateRequest = GenerateRequestForSeriesWithID(seriesId);
-                if (updateRequest == null)
-                {
-                    Console.WriteLine("No series update object to send. One or more arguments might be invalid.");
-                    return;
-                }
-
-                var updateResponse = UpdateSeries(updateRequest, seriesId).Result;
-
-                if (updateResponse.StatusCode == HttpStatusCode.OK)
-                {
-                    Console.WriteLine("Successfully completed operations. You can now close this window.");
-                    Console.ReadLine();
-                }
-                else
-                {
-                    Console.WriteLine($"Error sending request: Code - {updateResponse.StatusCode}, ReasonPhrase - {updateResponse.ReasonPhrase}");
-                    Console.ReadLine();
-                }
-
+                Console.WriteLine("No series update object to send. One or more arguments might be invalid.");
                 return;
             }
+
+            var updateResponse = UpdateSeries(updateRequest, seriesId).Result;
+
+            if (updateResponse.StatusCode == HttpStatusCode.OK)
+            {
+                Console.WriteLine("Successfully completed operations. You can now close this window.");
+                Console.ReadLine();
+            }
+            else
+            {
+                Console.WriteLine($"Error sending request: Code - {updateResponse.StatusCode}, ReasonPhrase - {updateResponse.ReasonPhrase}");
+                Console.ReadLine();
+            }
+
+            return;
+
+            #endregion
         }
     }
 }
