@@ -9,48 +9,8 @@ namespace Thrive_API_Media_Tool.DTOs
     public class AddMessageToSeriesRequest
     {
         /// <summary>
-        /// The unique ID of the series that we should add a new message to
+        /// A collection of messages that should be added to this Sermon Series
         /// </summary>
-        public string Id { get; set; }
-
-        /// <summary>
-        /// The audio URL for the new message
-        /// </summary>
-        public string AudioUrl { get; set; }
-
-        /// <summary>
-        /// The duration of the audio file in seconds
-        /// </summary>
-        public double? AudioDuration { get; set; }
-
-        /// <summary>
-        /// The file size of the message audio in MB
-        /// </summary>
-        public double ? AudioFileSize { get; set; }
-
-        /// <summary>
-        /// The URL of the video file for this message
-        /// </summary>
-        public string VideoUrl { get; set; }
-        
-        /// <summary>
-        /// The main passage reference for this message
-        /// </summary>
-        public string PassageRef { get; set; }
-
-        /// <summary>
-        /// The speaker of the sermon message
-        /// </summary>
-        public string Speaker { get; set; }
-
-        /// <summary>
-        /// The title of this sermon message
-        /// </summary>
-        public string Title { get; set; }
-
-        /// <summary>
-        /// The date of this sermon message
-        /// </summary>
-        public DateTime Date { get; set; }
+        public IEnumerable<SermonMessageRequest> MessagesToAdd { get; set; }
     }
 }

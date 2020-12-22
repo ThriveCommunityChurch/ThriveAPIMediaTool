@@ -5,8 +5,10 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Net.Http;
+using System.Net.Mime;
 using System.Text;
 using System.Threading.Tasks;
+using Thrive_API_Media_Tool.DTOs;
 using Thrive_API_Media_Tool.DTOs.Responses;
 
 namespace Thrive_API_Media_Tool
@@ -58,6 +60,64 @@ namespace Thrive_API_Media_Tool
 
             Console.WriteLine("Exit code {0}", result);
             return result;
+        }
+
+        internal static AddMessageToSeriesRequest GenerateRequestForSeriesWithID(string seriesId)
+        {
+            var validDateTime = DateTime.TryParse(_options.Date, out DateTime date);
+            if (!validDateTime)
+            {
+                throw new ArgumentException($"Invalid format for argument: {nameof(Options.Date)}");
+            }
+
+            double? _duration = null;
+            var validAudioDuration = double.TryParse(_options.AudioDuration, out double duration);
+            if (validAudioDuration)
+            {
+                _duration = duration;
+            } 
+            
+            double? _fileSize = null;
+            var validAudioFileSize = double.TryParse(_options.AudioFileSize, out double fileSize);
+            if (validAudioFileSize)
+            {
+                _fileSize = fileSize;
+            }
+
+            var request = new AddMessageToSeriesRequest
+            {
+                MessagesToAdd = new List<SermonMessageRequest>
+                {
+                    new SermonMessageRequest
+                    {
+                        AudioDuration = _duration,
+                        AudioFileSize = _fileSize,
+                        AudioUrl = _options.AudioUrl,
+                        Date = date.Date,
+                        PassageRef = _options.PassageRef,
+                        Speaker = _options.Speaker,
+                        Title = _options.Title,
+                        VideoUrl = _options.VideoUrl
+                    }
+                }
+            };
+
+            return request;
+        }
+
+        internal static Task<HttpResponseMessage> UpdateSeries(AddMessageToSeriesRequest request, string seriesId)
+        {
+            var escapedUrlString = $"{_appSettings.ThriveAPIUrl}api/sermons/series/{seriesId}/message";
+
+            // convert the request object to a json string so that the Client can send the request in the body
+            var myContent = JsonConvert.SerializeObject(request);
+
+            var stringContent = new StringContent(myContent, Encoding.UTF8, MediaTypeNames.Application.Json);
+
+            var client = new HttpClient();
+            var response = client.PostAsync(escapedUrlString, stringContent);
+
+            return response;
         }
 
         /// <summary>
