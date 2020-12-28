@@ -19,6 +19,15 @@ The idea behind this tool is to make it easier for the tech team to be able to u
 ## Sample Requests
 Each of the following are valid request parameters. Note that all arguments need to be strings including values that are numbers and URLs need to be included inside quotations so that slashes are not treated as escape characters. _When omitting the series ID from an update request you will be able to select a series ID from a list._
 
+## Compatablity
+__Source__
+
+✔ macOS ✔ Windows ✔ Linux
+
+__Release Packages__
+
+❌ macOS ✔ Windows ❌ Linux
+
 ### Add new series message
 ```
 --s "5fc59845325b6d1270e7affa" --a "https://thrive-fl.org/wp-content/uploads/2020/12/2020-12-27-Recording.mp3"  --v "https://youtu.be/397LDrfUCJ0" --u "2501.14666667" --f "28.6604251862" --p "Matthew 2: 13 - 23" --t "Ugly Childhood" --k "John Roth" --d "2020-12-27" --n false
