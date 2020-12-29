@@ -32,6 +32,13 @@ namespace Thrive_API_Media_Tool
         public string Title { get; set; }
         
         [Option('d', "Date", Required = true, HelpText = "The date of this sermon message.")]
-        public string Date { get; set; }
+        public string Date { get; set; } 
+        
+        [Option('h', "AudioFilePath", Required = false, HelpText = "The path to the audio file. Should be .mp3 file type. Cannot be used in conjunction with AudioFileSize (f) or AudioDuration (u).")]
+        public string AudioFilePath { get; set; }
+
+        [Option('g', "Debug", Required = false, HelpText = "Whether or not to run this tool in debug mode. Update & create operations will NOT complete if this setting is set. Default is false.", Default = false)]
+        public string Debug { get; set; }
+
     }
 }

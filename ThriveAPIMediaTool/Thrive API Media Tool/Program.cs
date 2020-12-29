@@ -1,5 +1,9 @@
-﻿using System;
+﻿using NAudio.Wave;
+using Newtonsoft.Json;
+using System;
+using System.IO;
 using System.Net;
+using Thrive_API_Media_Tool.DTOs;
 
 namespace Thrive_API_Media_Tool
 {
@@ -39,6 +43,32 @@ namespace Thrive_API_Media_Tool
 
             ReadAppSettings();
 
+            // testing access to the file path
+
+            if (!string.IsNullOrEmpty(_options.AudioFilePath))
+            {
+                if (!string.IsNullOrEmpty(_options.AudioFileSize) || !string.IsNullOrEmpty(_options.AudioDuration))
+                {
+                    throw new ArgumentException("Argument AudioFilePath (z) cannot be used in conjunction with AudioFileSize (f) or AudioDuration (u).");
+                }
+
+                try
+                {
+                    string path = _options.AudioFilePath;
+
+                    FileStream fileStream = File.OpenRead(path);
+                    AudioFileSize = (fileStream.Length / Math.Pow(1024.0, 2.0));
+
+                    // We need to get the duration of the reader in seconds
+                    Mp3FileReader reader = new Mp3FileReader(path);
+                    AudioDuration = reader.TotalTime.TotalSeconds;
+                }
+                catch
+                {
+                    throw;
+                }
+            }
+
             Console.WriteLine("Setup stages completed.\n\n");
 
             string seriesId = _options.SeriesId;
@@ -50,10 +80,20 @@ namespace Thrive_API_Media_Tool
                 isNew = isNewSeries;
             }
 
+            #region Add new
+
             if (isNew)
             {
+                if (DebugMode)
+                {
+                    Console.WriteLine("\n\nDebug mode is enabled, stopping execution.");
+                    return;
+                }
+
                 // not yet supported
                 throw new NotImplementedException();
+
+
 
                 //var updateRequest = GenerateCreateRequest();
                 //if (updateRequest == null)
@@ -61,7 +101,11 @@ namespace Thrive_API_Media_Tool
                 //    Console.WriteLine("No series create object to send. One or more arguments might be invalid.");
                 //    return;
                 //}
-            }
+            } 
+            
+            #endregion
+
+            #region Update
 
             if (string.IsNullOrEmpty(_options.SeriesId))
             {
@@ -76,31 +120,38 @@ namespace Thrive_API_Media_Tool
                     return;
                 }
             }
-            else
+
+            // Update this series with the requested ID, we'll just need to ask for each property one at a time
+            AddMessageToSeriesRequest updateRequest = GenerateRequestForSeriesWithID(seriesId);
+            if (updateRequest == null)
             {
-                // Update this series with the requested ID, we'll just need to ask for each property one at a time
-                var updateRequest = GenerateRequestForSeriesWithID(seriesId);
-                if (updateRequest == null)
-                {
-                    Console.WriteLine("No series update object to send. One or more arguments might be invalid.");
-                    return;
-                }
-
-                var updateResponse = UpdateSeries(updateRequest, seriesId).Result;
-
-                if (updateResponse.StatusCode == HttpStatusCode.OK)
-                {
-                    Console.WriteLine("Successfully completed operations. You can now close this window.");
-                    Console.ReadLine();
-                }
-                else
-                {
-                    Console.WriteLine($"Error sending request: Code - {updateResponse.StatusCode}, ReasonPhrase - {updateResponse.ReasonPhrase}");
-                    Console.ReadLine();
-                }
-
+                Console.WriteLine("No series update object to send. One or more arguments might be invalid.");
                 return;
             }
+
+            if (DebugMode)
+            {
+                Console.WriteLine($"Here is your request: {JsonConvert.SerializeObject(updateRequest)}.");
+                Console.WriteLine("\n\nDebug mode is enabled, stopping execution.");
+                return;
+            }
+
+            var updateResponse = UpdateSeries(updateRequest, seriesId).Result;
+
+            if (updateResponse.StatusCode == HttpStatusCode.OK)
+            {
+                Console.WriteLine("Successfully completed operations. You can now close this window.");
+                Console.ReadLine();
+            }
+            else
+            {
+                Console.WriteLine($"Error sending request: Code - {updateResponse.StatusCode}, ReasonPhrase - {updateResponse.ReasonPhrase}");
+                Console.ReadLine();
+            }
+
+            return;
+
+            #endregion
         }
     }
 }
