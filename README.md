@@ -30,7 +30,7 @@ __Release Packages__
 
 ### Add new series message
 ```
---s "5fc59845325b6d1270e7affa" -a "https://thrive-fl.org/wp-content/uploads/2020/12/2020-12-27-Recording.mp3"  -v "https://youtu.be/397LDrfUCJ0" -u "2501.14666667" -f "28.6604251862" -p "Matthew 2: 13 - 23" -t "Ugly Childhood" -k "John Roth" -d "2020-12-27" -n false
+-s "5fc59845325b6d1270e7affa" -a "https://thrive-fl.org/wp-content/uploads/2020/12/2020-12-27-Recording.mp3"  -v "https://youtu.be/397LDrfUCJ0" -u "2501.14666667" -f "28.6604251862" -p "Matthew 2: 13 - 23" -t "Ugly Childhood" -k "John Roth" -d "2020-12-27" -n false
 ```
 
 ### Create a new series
