@@ -12,6 +12,8 @@ The idea behind this tool is to make it easier for the tech team to be able to u
 - `AudioFileSize` (-f) - _The file size of the message audio in MB. (default = `null`)_
 - `VideoUrl` (-v) - _The URL of the video file for this message. (default = `null`)_
 - `PassageRef` (-p) - _The main passage reference for this message. (default = `null`)_
+- `AudioFilePath` (-h) - _The path to the audio file. Should be .mp3 file type. Cannot be used in conjunction with AudioFileSize or AudioDuration args. (default = `null`)_
+- `Debug` (-g) - _Whether or not to run this tool in debug mode. Update & create operations will NOT complete if this setting is set. (default = `false`)_
 - `Speaker` (-k) - __Required.__ _The speaker of the sermon message._
 - `Title` (-t) - __Required.__ _The title of this sermon message._
 - `Date` (-d) - __Required.__ _The date this sermon message occurred._
