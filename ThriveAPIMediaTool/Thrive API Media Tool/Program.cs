@@ -1,5 +1,9 @@
-﻿using System;
+﻿using NAudio.Wave;
+using Newtonsoft.Json;
+using System;
+using System.IO;
 using System.Net;
+using Thrive_API_Media_Tool.DTOs;
 
 namespace Thrive_API_Media_Tool
 {
@@ -39,6 +43,32 @@ namespace Thrive_API_Media_Tool
 
             ReadAppSettings();
 
+            // testing access to the file path
+
+            if (!string.IsNullOrEmpty(_options.AudioFilePath))
+            {
+                if (!string.IsNullOrEmpty(_options.AudioFileSize) || !string.IsNullOrEmpty(_options.AudioDuration))
+                {
+                    throw new ArgumentException("Argument AudioFilePath (z) cannot be used in conjunction with AudioFileSize (f) or AudioDuration (u).");
+                }
+
+                try
+                {
+                    string path = _options.AudioFilePath;
+
+                    FileStream fileStream = File.OpenRead(path);
+                    AudioFileSize = (fileStream.Length / Math.Pow(1024.0, 2.0));
+
+                    // We need to get the duration of the reader in seconds
+                    Mp3FileReader reader = new Mp3FileReader(path);
+                    AudioDuration = reader.TotalTime.TotalSeconds;
+                }
+                catch
+                {
+                    throw;
+                }
+            }
+
             Console.WriteLine("Setup stages completed.\n\n");
 
             string seriesId = _options.SeriesId;
@@ -52,6 +82,12 @@ namespace Thrive_API_Media_Tool
 
             if (isNew)
             {
+                if (DebugMode)
+                {
+                    Console.WriteLine("\n\nDebug mode is enabled, stopping execution.");
+                    return;
+                }
+
                 // not yet supported
                 throw new NotImplementedException();
 
@@ -84,10 +120,17 @@ namespace Thrive_API_Media_Tool
             }
 
             // Update this series with the requested ID, we'll just need to ask for each property one at a time
-            var updateRequest = GenerateRequestForSeriesWithID(seriesId);
+            AddMessageToSeriesRequest updateRequest = GenerateRequestForSeriesWithID(seriesId);
             if (updateRequest == null)
             {
                 Console.WriteLine("No series update object to send. One or more arguments might be invalid.");
+                return;
+            }
+
+            if (DebugMode)
+            {
+                Console.WriteLine($"Here is your request: {JsonConvert.SerializeObject(updateRequest)}.");
+                Console.WriteLine("\n\nDebug mode is enabled, stopping execution.");
                 return;
             }
 

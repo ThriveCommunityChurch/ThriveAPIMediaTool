@@ -18,6 +18,10 @@ namespace Thrive_API_Media_Tool
         private static AppSettings _appSettings;
         public static Options _options = new Options();
 
+        internal static double? AudioFileSize = null;
+        internal static double? AudioDuration = null;
+        internal static bool DebugMode = false;
+
         /// <summary>
         /// Read the CLI args in and parse as Options object
         /// </summary>
@@ -70,18 +74,22 @@ namespace Thrive_API_Media_Tool
                 throw new ArgumentException($"Invalid format for argument: {nameof(Options.Date)}");
             }
 
-            double? _duration = null;
-            var validAudioDuration = double.TryParse(_options.AudioDuration, out double duration);
-            if (validAudioDuration)
+            if (!AudioDuration.HasValue)
             {
-                _duration = duration;
-            } 
-            
-            double? _fileSize = null;
-            var validAudioFileSize = double.TryParse(_options.AudioFileSize, out double fileSize);
-            if (validAudioFileSize)
-            {
-                _fileSize = fileSize;
+                var validAudioDuration = double.TryParse(_options.AudioDuration, out double duration);
+                if (validAudioDuration)
+                {
+                    AudioDuration = duration;
+                }
+            }
+
+            if (!AudioFileSize.HasValue)
+            { 
+                var validAudioFileSize = double.TryParse(_options.AudioFileSize, out double fileSize);
+                if (validAudioFileSize)
+                {
+                    AudioFileSize = fileSize;
+                }
             }
 
             var request = new AddMessageToSeriesRequest
@@ -90,8 +98,8 @@ namespace Thrive_API_Media_Tool
                 {
                     new SermonMessageRequest
                     {
-                        AudioDuration = _duration,
-                        AudioFileSize = _fileSize,
+                        AudioDuration = AudioDuration,
+                        AudioFileSize = AudioFileSize,
                         AudioUrl = _options.AudioUrl,
                         Date = date.Date,
                         PassageRef = _options.PassageRef,
@@ -129,6 +137,11 @@ namespace Thrive_API_Media_Tool
             var fileAsString = file.ReadToEnd();
 
             _appSettings = JsonConvert.DeserializeObject<AppSettings>(fileAsString);
+
+            if (bool.TryParse(_options.Debug, out bool debug))
+            {
+                DebugMode = debug;
+            }
         }
 
         /// <summary>
