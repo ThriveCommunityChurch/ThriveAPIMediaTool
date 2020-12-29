@@ -18,9 +18,6 @@ The idea behind this tool is to make it easier for the tech team to be able to u
 - `Title` (-t) - __Required.__ _The title of this sermon message._
 - `Date` (-d) - __Required.__ _The date this sermon message occurred._
 
-## Sample Requests
-Each of the following are valid request parameters. Note that all arguments need to be strings including values that are numbers and URLs need to be included inside quotations so that slashes are not treated as escape characters. _When omitting the series ID from an update request you will be able to select a series ID from a list._
-
 ## Compatablity
 __Source__
 
@@ -29,6 +26,9 @@ __Source__
 __Release Packages__
 
 ❌ macOS ✔ Windows ❌ Linux
+
+## Sample Requests
+Each of the following are valid request parameters. Note that all arguments need to be strings including values that are numbers and URLs need to be included inside quotations so that slashes are not treated as escape characters. _When omitting the series ID from an update request you will be able to select a series ID from a list._
 
 ### Add new series message
 ```
