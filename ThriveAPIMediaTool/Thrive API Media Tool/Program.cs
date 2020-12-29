@@ -80,6 +80,8 @@ namespace Thrive_API_Media_Tool
                 isNew = isNewSeries;
             }
 
+            #region Add new
+
             if (isNew)
             {
                 if (DebugMode)
@@ -91,7 +93,7 @@ namespace Thrive_API_Media_Tool
                 // not yet supported
                 throw new NotImplementedException();
 
-                #region Add new
+
 
                 //var updateRequest = GenerateCreateRequest();
                 //if (updateRequest == null)
@@ -99,9 +101,9 @@ namespace Thrive_API_Media_Tool
                 //    Console.WriteLine("No series create object to send. One or more arguments might be invalid.");
                 //    return;
                 //}
-
-                #endregion
-            }
+            } 
+            
+            #endregion
 
             #region Update
 
