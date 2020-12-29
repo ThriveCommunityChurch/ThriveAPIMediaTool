@@ -45,3 +45,6 @@ _Coming soon, not yet supported_
     "ThriveAPIUrl": "http://hostname:port/"
 }
 ```
+
+## Future Plans
+The end goal for this tool is to make it a standalone application that can run on virtually any OS so that we can quickly run this either at home or on one of the servers at the church. That way we can quickly and easily calculate the data that we need and not have to spend time generating the JSON request to send via Postman to the API. This tool should take care of __all__ that heavy lifting for us. 
