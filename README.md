@@ -6,7 +6,7 @@ The idea behind this tool is to make it easier for the tech team to be able to u
 
 ## Arguments
 - `New` (-n) - _Whether or not this is a new series. (default = `false`)_
-- `SeriesId` --s) - _The unique identifier of the series in which to add this media item to. (default = `null`)_
+- `SeriesId` (-s) - _The unique identifier of the series in which to add this media item to. (default = `null`)_
 - `AudioUrl` (-a) - _The audio URL for the new message. (default = `null`)_
 - `AudioDuration` (-u) - _The duration of the audio file in seconds. (default = `null`)_
 - `AudioFileSize` (-f) - _The file size of the message audio in MB. (default = `null`)_
