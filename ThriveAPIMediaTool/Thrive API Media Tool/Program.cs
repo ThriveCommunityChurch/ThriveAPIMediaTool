@@ -137,7 +137,7 @@ namespace Thrive_API_Media_Tool
 
                 if (DebugMode)
                 {
-                    Console.WriteLine($"Here is your request: {JsonConvert.SerializeObject(createRequest)}.");
+                    Console.WriteLine($"Here is your request: \n{JsonConvert.SerializeObject(createRequest, Formatting.Indented)}");
                     Console.WriteLine("\n\nDebug mode is enabled, stopping execution.");
                     return;
                 }
@@ -188,7 +188,7 @@ namespace Thrive_API_Media_Tool
 
                 if (DebugMode)
                 {
-                    Console.WriteLine($"Here is your request: {JsonConvert.SerializeObject(updateRequest)}.");
+                    Console.WriteLine($"Here is your request: \n{JsonConvert.SerializeObject(updateRequest, Formatting.Indented)}");
                     Console.WriteLine("\n\nDebug mode is enabled, stopping execution.");
                     return;
                 }
