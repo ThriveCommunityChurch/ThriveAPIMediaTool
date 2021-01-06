@@ -195,6 +195,9 @@ namespace Thrive_API_Media_Tool
 
                 HttpResponseMessage updateResponse = UpdateSeries(updateRequest, seriesId).Result;
 
+                // TODO: allow users to specify that this was the last sermon in a series.
+                // Which needs to make another request with this series ID to update it as completed
+
                 if (updateResponse.StatusCode == HttpStatusCode.OK)
                 {
                     Console.WriteLine("Successfully completed operations. You can now close this window.");
