@@ -8,7 +8,7 @@ The idea behind this tool is to make it easier for the tech team to be able to u
 - `New` (-n) - _Whether or not this is a new series. Cannot be used in conjunction with SeriesId (s). (default = `false`)_
 - `SeriesId` (-s) - _The unique identifier of the series in which to add this media item to. (default = `null`)_
 - `SeriesName` (-m) - _The name of the new series. Only used when creating a new series. (default = `null`)_
-- `SingleMessageSeries` (-e) - _Whether or not this new message is a single message series. Only used when creating a new series. (default = `null`)_
+- `SingleMessageSeries` (-e) - _Whether or not this new message is a single message series. Only used when creating a new series. (default = `false`)_
 - `AudioUrl` (-a) - _The audio URL for the new message. (default = `null`)_
 - `AudioDuration` (-u) - _The duration of the audio file in seconds. (default = `null`)_
 - `AudioFileSize` (-f) - _The file size of the message audio in MB. (default = `null`)_
