@@ -3,6 +3,7 @@ using Newtonsoft.Json;
 using System;
 using System.IO;
 using System.Net;
+using System.Net.Http;
 using Thrive_API_Media_Tool.DTOs;
 
 namespace Thrive_API_Media_Tool
@@ -55,7 +56,6 @@ namespace Thrive_API_Media_Tool
             ReadAppSettings();
 
             // testing access to the file path
-
             if (!string.IsNullOrEmpty(_options.AudioFilePath))
             {
                 if (!string.IsNullOrEmpty(_options.AudioFileSize) || !string.IsNullOrEmpty(_options.AudioDuration))
@@ -137,16 +137,16 @@ namespace Thrive_API_Media_Tool
                     return;
                 }
 
-                var updateResponse = CreateSeries(createRequest).Result;
+                HttpResponseMessage createResponse = CreateSeries(createRequest).Result;
 
-                if (updateResponse.StatusCode == HttpStatusCode.OK)
+                if (createResponse.StatusCode == HttpStatusCode.OK)
                 {
                     Console.WriteLine("Successfully completed operations. You can now close this window.");
                     Console.ReadLine();
                 }
                 else
                 {
-                    Console.WriteLine($"Error sending request: Code - {updateResponse.StatusCode}, ReasonPhrase - {updateResponse.ReasonPhrase}");
+                    Console.WriteLine($"Error sending request: Code - {createResponse.StatusCode}, ReasonPhrase - {createResponse.ReasonPhrase}");
                     Console.ReadLine();
                 }
 
@@ -188,7 +188,7 @@ namespace Thrive_API_Media_Tool
                     return;
                 }
 
-                var updateResponse = UpdateSeries(updateRequest, seriesId).Result;
+                HttpResponseMessage updateResponse = UpdateSeries(updateRequest, seriesId).Result;
 
                 if (updateResponse.StatusCode == HttpStatusCode.OK)
                 {

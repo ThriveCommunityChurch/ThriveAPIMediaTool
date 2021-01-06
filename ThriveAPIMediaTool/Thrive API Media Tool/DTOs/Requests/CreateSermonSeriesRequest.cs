@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Thrive_API_Media_Tool.DTOs
 {
-    class CreateSermonSeriesRequest
+    public class CreateSermonSeriesRequest
     {
         public CreateSermonSeriesRequest()
         {
