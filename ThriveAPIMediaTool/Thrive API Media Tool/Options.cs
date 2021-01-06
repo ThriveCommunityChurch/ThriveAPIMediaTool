@@ -4,11 +4,17 @@ namespace Thrive_API_Media_Tool
 {
     public class Options
     {
-        [Option('n', "New", Required = false, HelpText = "Whether or not this is a new series.", Default = false)]
+        [Option('n', "New", Required = false, HelpText = "Whether or not this is a new series. Cannot be used in conjunction with SeriesId (s).", Default = "false")]
         public string IsNew { get; set; }
 
-        [Option('s', "SeriesId", Required = false, HelpText = "The unique identifier of the series in which to add this media item to.", Default = null)]
+        [Option('s', "SeriesId", Required = false, HelpText = "The unique identifier of the series in which to add this media item to.")]
         public string SeriesId { get; set; }
+        
+        [Option('m', "SeriesName", Required = false, HelpText = "The name of the new series. Only used when creating a new series.")]
+        public string SeriesName { get; set; }
+        
+        [Option('e', "SingleMessageSeries", Required = false, HelpText = "Whether or not this new message is a single message series.")]
+        public string SingleMessageSeries { get; set; }
 
         [Option('a', "AudioUrl", Required = false, HelpText = "The audio URL for the new message.")]
         public string AudioUrl { get; set; }
@@ -36,8 +42,14 @@ namespace Thrive_API_Media_Tool
         
         [Option('h', "AudioFilePath", Required = false, HelpText = "The path to the audio file. Should be .mp3 file type. Cannot be used in conjunction with AudioFileSize (f) or AudioDuration (u).")]
         public string AudioFilePath { get; set; }
+        
+        [Option('i', "ImageURL", Required = false, HelpText = "The URL for the main sermon series image. Required when creating a new series. Must be in valid URL syntax.")]
+        public string ImageURL { get; set; } 
+        
+        [Option('l', "ThumbnailURL", Required = false, HelpText = "The URL for the compressed sermon series image. Required when creating a new series. Must be in valid URL syntax.")]
+        public string ThumbnailURL { get; set; }
 
-        [Option('g', "Debug", Required = false, HelpText = "Whether or not to run this tool in debug mode. Update & create operations will NOT complete if this setting is set. Default is false.", Default = false)]
+        [Option('g', "Debug", Required = false, HelpText = "Whether or not to run this tool in debug mode. Update & create operations will NOT complete if this setting is set. Default is false.", Default = "false")]
         public string Debug { get; set; }
 
     }

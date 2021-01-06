@@ -41,6 +41,17 @@ namespace Thrive_API_Media_Tool
                     + $"{nameof(Options.Speaker)}]");
             }
 
+            // Validations
+            if (!string.IsNullOrEmpty(_options.VideoUrl) && !ValidURL(_options.VideoUrl))
+            {
+                throw new ArgumentNullException($"Argument {nameof(Options.VideoUrl)} is not a properly formatted URL.");
+            }
+            
+            if (!string.IsNullOrEmpty(_options.AudioUrl) && !ValidURL(_options.AudioUrl))
+            {
+                throw new ArgumentNullException($"Argument {nameof(Options.AudioUrl)} is not a properly formatted URL.");
+            }
+
             ReadAppSettings();
 
             // testing access to the file path
@@ -73,83 +84,125 @@ namespace Thrive_API_Media_Tool
 
             string seriesId = _options.SeriesId;
             bool isNew = false;
+            bool isSingleSeries = false;
 
-            bool validBool = bool.TryParse(_options.IsNew, out bool isNewSeries);
-            if (validBool)
+            bool newIsValid = bool.TryParse(_options.IsNew, out bool isNewSeries);
+            if (newIsValid)
             {
                 isNew = isNewSeries;
+            } 
+            
+            bool validSingle = bool.TryParse(_options.SingleMessageSeries, out bool singleMessageSeries);
+            if (validSingle)
+            {
+                isSingleSeries = singleMessageSeries;
             }
 
             #region Add new
 
             if (isNew)
             {
+                // validations
+                if (string.IsNullOrEmpty(_options.ImageURL))
+                {
+                    throw new ArgumentNullException($"Argument {nameof(Options.ImageURL)} is required when creating a new sermon series.");
+                }
+
+                if (string.IsNullOrEmpty(_options.ThumbnailURL))
+                {
+                    throw new ArgumentNullException($"Argument {nameof(Options.ThumbnailURL)} is required when creating a new sermon series.");
+                }
+
+                if (!ValidURL(_options.ImageURL))
+                {
+                    throw new ArgumentNullException($"Argument {nameof(Options.ImageURL)} is not a properly formatted URL.");
+                }
+                
+                if (!ValidURL(_options.ThumbnailURL))
+                {
+                    throw new ArgumentNullException($"Argument {nameof(Options.ThumbnailURL)} is not a properly formatted URL.");
+                }
+
+                CreateSermonSeriesRequest createRequest = GenerateCreateRequest(isSingleSeries);
+                if (createRequest == null)
+                {
+                    Console.WriteLine("No series create object to send. One or more arguments might be invalid.");
+                    return;
+                }
+
                 if (DebugMode)
                 {
+                    Console.WriteLine($"Here is your request: {JsonConvert.SerializeObject(createRequest)}.");
                     Console.WriteLine("\n\nDebug mode is enabled, stopping execution.");
                     return;
                 }
 
-                // not yet supported
-                throw new NotImplementedException();
+                var updateResponse = CreateSeries(createRequest).Result;
 
+                if (updateResponse.StatusCode == HttpStatusCode.OK)
+                {
+                    Console.WriteLine("Successfully completed operations. You can now close this window.");
+                    Console.ReadLine();
+                }
+                else
+                {
+                    Console.WriteLine($"Error sending request: Code - {updateResponse.StatusCode}, ReasonPhrase - {updateResponse.ReasonPhrase}");
+                    Console.ReadLine();
+                }
 
-
-                //var updateRequest = GenerateCreateRequest();
-                //if (updateRequest == null)
-                //{
-                //    Console.WriteLine("No series create object to send. One or more arguments might be invalid.");
-                //    return;
-                //}
+                return;
             } 
             
             #endregion
 
             #region Update
 
-            if (string.IsNullOrEmpty(_options.SeriesId))
+            if (!isNew)
             {
-                GetAllSermons();
-
-                Console.WriteLine("Which series would you like to modify? Please enter the ID.");
-
-                seriesId = Console.ReadLine();
-                if (string.IsNullOrEmpty(seriesId))
+                if (string.IsNullOrEmpty(_options.SeriesId))
                 {
-                    Console.WriteLine("Unkown series ID. Please start again..");
+                    GetAllSermons();
+
+                    Console.WriteLine("Which series would you like to modify? Please enter the ID.");
+
+                    seriesId = Console.ReadLine();
+                    if (string.IsNullOrEmpty(seriesId))
+                    {
+                        Console.WriteLine("Unkown series ID. Please start again..");
+                        return;
+                    }
+                }
+
+                // Update this series with the requested ID, we'll just need to ask for each property one at a time
+                AddMessageToSeriesRequest updateRequest = GenerateSeriesUpdateRequest();
+                if (updateRequest == null)
+                {
+                    Console.WriteLine("No series update object to send. One or more arguments might be invalid.");
                     return;
                 }
-            }
 
-            // Update this series with the requested ID, we'll just need to ask for each property one at a time
-            AddMessageToSeriesRequest updateRequest = GenerateRequestForSeriesWithID(seriesId);
-            if (updateRequest == null)
-            {
-                Console.WriteLine("No series update object to send. One or more arguments might be invalid.");
+                if (DebugMode)
+                {
+                    Console.WriteLine($"Here is your request: {JsonConvert.SerializeObject(updateRequest)}.");
+                    Console.WriteLine("\n\nDebug mode is enabled, stopping execution.");
+                    return;
+                }
+
+                var updateResponse = UpdateSeries(updateRequest, seriesId).Result;
+
+                if (updateResponse.StatusCode == HttpStatusCode.OK)
+                {
+                    Console.WriteLine("Successfully completed operations. You can now close this window.");
+                    Console.ReadLine();
+                }
+                else
+                {
+                    Console.WriteLine($"Error sending request: Code - {updateResponse.StatusCode}, ReasonPhrase - {updateResponse.ReasonPhrase}");
+                    Console.ReadLine();
+                }
+
                 return;
             }
-
-            if (DebugMode)
-            {
-                Console.WriteLine($"Here is your request: {JsonConvert.SerializeObject(updateRequest)}.");
-                Console.WriteLine("\n\nDebug mode is enabled, stopping execution.");
-                return;
-            }
-
-            var updateResponse = UpdateSeries(updateRequest, seriesId).Result;
-
-            if (updateResponse.StatusCode == HttpStatusCode.OK)
-            {
-                Console.WriteLine("Successfully completed operations. You can now close this window.");
-                Console.ReadLine();
-            }
-            else
-            {
-                Console.WriteLine($"Error sending request: Code - {updateResponse.StatusCode}, ReasonPhrase - {updateResponse.ReasonPhrase}");
-                Console.ReadLine();
-            }
-
-            return;
 
             #endregion
         }
