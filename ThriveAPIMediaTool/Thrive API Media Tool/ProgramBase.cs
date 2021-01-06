@@ -22,6 +22,7 @@ namespace Thrive_API_Media_Tool
         internal static double? AudioDuration = null;
         internal static bool DebugMode = false;
         internal static DateTime MessageDate;
+        internal static string APIUrl = string.Empty;
 
         /// <summary>
         /// Read the CLI args in and parse as Options object
@@ -208,6 +209,8 @@ namespace Thrive_API_Media_Tool
             {
                 DebugMode = debug;
             }
+
+            APIUrl = _appSettings.ThriveAPIUrl;
         }
 
         /// <summary>
