@@ -141,7 +141,7 @@ namespace Thrive_API_Media_Tool
 
                     Console.WriteLine($"Requests will be sent to {APIUrl}", Console.ForegroundColor);
 
-                    Console.ForegroundColor = ConsoleColor.White;
+                    Console.ResetColor();
                     Console.WriteLine($"Here is your request: \n{JsonConvert.SerializeObject(createRequest, Formatting.Indented)}");
                     Console.WriteLine("\n\nDebug mode is enabled, stopping execution.");
                     return;
@@ -197,8 +197,7 @@ namespace Thrive_API_Media_Tool
 
                     Console.WriteLine($"Requests will be sent to {APIUrl}", Console.ForegroundColor);
 
-                    Console.ForegroundColor = ConsoleColor.White;
-
+                    Console.ResetColor();
                     Console.WriteLine($"Here is your request: \n{JsonConvert.SerializeObject(updateRequest, Formatting.Indented)}");
                     Console.WriteLine("\n\nDebug mode is enabled, stopping execution.");
                     return;
