@@ -45,12 +45,12 @@ namespace Thrive_API_Media_Tool
             // Validations
             if (!string.IsNullOrEmpty(_options.VideoUrl) && !ValidURL(_options.VideoUrl))
             {
-                throw new ArgumentNullException($"Argument {nameof(Options.VideoUrl)} is not a properly formatted URL.");
+                throw new ArgumentException($"Argument {nameof(Options.VideoUrl)} is not a properly formatted URL.");
             }
             
             if (!string.IsNullOrEmpty(_options.AudioUrl) && !ValidURL(_options.AudioUrl))
             {
-                throw new ArgumentNullException($"Argument {nameof(Options.AudioUrl)} is not a properly formatted URL.");
+                throw new ArgumentException($"Argument {nameof(Options.AudioUrl)} is not a properly formatted URL.");
             }
 
             ReadAppSettings();
@@ -102,6 +102,11 @@ namespace Thrive_API_Media_Tool
 
             if (isNew)
             {
+                if (!string.IsNullOrEmpty(seriesId))
+                {
+                    throw new ArgumentException($"Argument {nameof(Options.SeriesId)} cannot be used when creating a new sermon series.");
+                }
+
                 // validations
                 if (string.IsNullOrEmpty(_options.ImageURL))
                 {
@@ -115,12 +120,12 @@ namespace Thrive_API_Media_Tool
 
                 if (!ValidURL(_options.ImageURL))
                 {
-                    throw new ArgumentNullException($"Argument {nameof(Options.ImageURL)} is not a properly formatted URL.");
+                    throw new ArgumentException($"Argument {nameof(Options.ImageURL)} is not a properly formatted URL.");
                 }
                 
                 if (!ValidURL(_options.ThumbnailURL))
                 {
-                    throw new ArgumentNullException($"Argument {nameof(Options.ThumbnailURL)} is not a properly formatted URL.");
+                    throw new ArgumentException($"Argument {nameof(Options.ThumbnailURL)} is not a properly formatted URL.");
                 }
 
                 CreateSermonSeriesRequest createRequest = GenerateCreateRequest(isSingleSeries);

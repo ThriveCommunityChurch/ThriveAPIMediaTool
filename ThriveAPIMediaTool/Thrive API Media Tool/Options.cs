@@ -13,7 +13,7 @@ namespace Thrive_API_Media_Tool
         [Option('m', "SeriesName", Required = false, HelpText = "The name of the new series. Only used when creating a new series.")]
         public string SeriesName { get; set; }
         
-        [Option('e', "SingleMessageSeries", Required = false, HelpText = "Whether or not this new message is a single message series.")]
+        [Option('e', "SingleMessageSeries", Required = false, HelpText = "Whether or not this new message is a single message series. Only used when creating a new series.")]
         public string SingleMessageSeries { get; set; }
 
         [Option('a', "AudioUrl", Required = false, HelpText = "The audio URL for the new message.")]

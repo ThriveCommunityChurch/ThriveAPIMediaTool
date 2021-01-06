@@ -69,6 +69,11 @@ namespace Thrive_API_Media_Tool
 
         internal static bool ValidURL(string urlString)
         {
+            if (string.IsNullOrEmpty(urlString))
+            {
+                return false;
+            }
+
             bool validLink = Uri.TryCreate(urlString, UriKind.Absolute, out Uri uriResult)
                     && (uriResult.Scheme == Uri.UriSchemeHttp || uriResult.Scheme == Uri.UriSchemeHttps);
 
