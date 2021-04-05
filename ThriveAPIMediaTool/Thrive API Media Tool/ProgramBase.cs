@@ -21,6 +21,8 @@ namespace Thrive_API_Media_Tool
         internal static double? AudioFileSize = null;
         internal static double? AudioDuration = null;
         internal static bool DebugMode = false;
+        internal static DateTime MessageDate;
+        internal static string APIUrl = string.Empty;
 
         /// <summary>
         /// Read the CLI args in and parse as Options object
@@ -66,13 +68,58 @@ namespace Thrive_API_Media_Tool
             return result;
         }
 
-        internal static AddMessageToSeriesRequest GenerateRequestForSeriesWithID(string seriesId)
+        internal static bool ValidURL(string urlString)
+        {
+            if (string.IsNullOrEmpty(urlString))
+            {
+                return false;
+            }
+
+            bool validLink = Uri.TryCreate(urlString, UriKind.Absolute, out Uri uriResult)
+                    && (uriResult.Scheme == Uri.UriSchemeHttp || uriResult.Scheme == Uri.UriSchemeHttps);
+
+            return validLink;
+        }
+
+        internal static CreateSermonSeriesRequest GenerateCreateRequest(bool isSingleSeries)
+        {
+            ReadOptionsFromArgs();
+
+            return new CreateSermonSeriesRequest
+            {
+                ArtUrl = _options.ImageURL,
+                EndDate = isSingleSeries ? MessageDate : null,
+                Messages = new List<SermonMessageRequest>
+                {
+                    new SermonMessageRequest
+                    {
+                        AudioDuration = AudioDuration,
+                        AudioFileSize = AudioFileSize,
+                        AudioUrl = _options.AudioUrl,
+                        Date = MessageDate,
+                        PassageRef = _options.PassageRef,
+                        Speaker = _options.Speaker,
+                        Title = _options.Title,
+                        VideoUrl = _options.VideoUrl
+                    }
+                },
+                Name = _options.SeriesName,
+                Slug = _options.SeriesName.Replace(" ", "-").ToLowerInvariant().Trim(),
+                StartDate = MessageDate,
+                Thumbnail = _options.ThumbnailURL,
+                Year = MessageDate.Year.ToString()
+            };
+        }
+
+        private static void ReadOptionsFromArgs()
         {
             var validDateTime = DateTime.TryParse(_options.Date, out DateTime date);
             if (!validDateTime)
             {
                 throw new ArgumentException($"Invalid format for argument: {nameof(Options.Date)}");
             }
+
+            MessageDate = date.Date;
 
             if (!AudioDuration.HasValue)
             {
@@ -84,13 +131,18 @@ namespace Thrive_API_Media_Tool
             }
 
             if (!AudioFileSize.HasValue)
-            { 
+            {
                 var validAudioFileSize = double.TryParse(_options.AudioFileSize, out double fileSize);
                 if (validAudioFileSize)
                 {
                     AudioFileSize = fileSize;
                 }
             }
+        }
+
+        internal static AddMessageToSeriesRequest GenerateSeriesUpdateRequest()
+        {
+            ReadOptionsFromArgs();
 
             var request = new AddMessageToSeriesRequest
             {
@@ -101,7 +153,7 @@ namespace Thrive_API_Media_Tool
                         AudioDuration = AudioDuration,
                         AudioFileSize = AudioFileSize,
                         AudioUrl = _options.AudioUrl,
-                        Date = date.Date,
+                        Date = MessageDate,
                         PassageRef = _options.PassageRef,
                         Speaker = _options.Speaker,
                         Title = _options.Title,
@@ -111,6 +163,21 @@ namespace Thrive_API_Media_Tool
             };
 
             return request;
+        }
+
+        internal static Task<HttpResponseMessage> CreateSeries(CreateSermonSeriesRequest request)
+        {
+            var escapedUrlString = $"{_appSettings.ThriveAPIUrl}api/Sermons/series";
+
+            // convert the request object to a json string so that the Client can send the request in the body
+            var myContent = JsonConvert.SerializeObject(request);
+
+            var stringContent = new StringContent(myContent, Encoding.UTF8, MediaTypeNames.Application.Json);
+
+            var client = new HttpClient();
+            var response = client.PostAsync(escapedUrlString, stringContent);
+
+            return response;
         }
 
         internal static Task<HttpResponseMessage> UpdateSeries(AddMessageToSeriesRequest request, string seriesId)
@@ -142,6 +209,8 @@ namespace Thrive_API_Media_Tool
             {
                 DebugMode = debug;
             }
+
+            APIUrl = _appSettings.ThriveAPIUrl;
         }
 
         /// <summary>
