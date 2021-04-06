@@ -140,7 +140,7 @@ namespace Thrive_API_Media_Tool
             }
         }
 
-        internal static AddMessageToSeriesRequest GenerateSeriesUpdateRequest()
+        internal static AddMessageToSeriesRequest GenerateSeriesAddMessageRequest()
         {
             ReadOptionsFromArgs();
 
@@ -180,7 +180,49 @@ namespace Thrive_API_Media_Tool
             return response;
         }
 
-        internal static Task<HttpResponseMessage> UpdateSeries(AddMessageToSeriesRequest request, string seriesId)
+        private static SeriesResponse GetSeriesWithId(string seriesId)
+        {
+            var escapedUrlString = $"{_appSettings.ThriveAPIUrl}api/sermons/series/{seriesId}";
+
+            var client = new HttpClient();
+            HttpResponseMessage series = client.GetAsync(escapedUrlString).Result;
+
+            var contentStream = series.Content.ReadAsStringAsync().Result;
+
+            var response = JsonConvert.DeserializeObject<SeriesResponse>(contentStream);
+
+            return response;
+        }
+
+        internal static Task<HttpResponseMessage> EndSeries(DateTime endDate, string seriesId)
+        {
+            var currentSeriesResponse = GetSeriesWithId(seriesId);
+
+            var request = new UpdateSeriesRequest
+            {
+                ArtUrl = currentSeriesResponse.ArtUrl,
+                EndDate = endDate,
+                Name = currentSeriesResponse.Name,
+                Slug = currentSeriesResponse.Slug,
+                StartDate = currentSeriesResponse.StartDate,
+                Thumbnail = currentSeriesResponse.Thumbnail,
+                Year = currentSeriesResponse.Year
+            };
+
+            var escapedUrlString = $"{_appSettings.ThriveAPIUrl}api/sermons/series/{seriesId}";
+
+            // convert the request object to a json string so that the Client can send the request in the body
+            var myContent = JsonConvert.SerializeObject(request);
+
+            var stringContent = new StringContent(myContent, Encoding.UTF8, MediaTypeNames.Application.Json);
+
+            var client = new HttpClient();
+            var response = client.PutAsync(escapedUrlString, stringContent);
+
+            return response;
+        }
+
+        internal static Task<HttpResponseMessage> AddMessageToSeries(AddMessageToSeriesRequest request, string seriesId)
         {
             var escapedUrlString = $"{_appSettings.ThriveAPIUrl}api/sermons/series/{seriesId}/message";
 

@@ -60,7 +60,8 @@ namespace Thrive_API_Media_Tool
             {
                 if (!string.IsNullOrEmpty(_options.AudioFileSize) || !string.IsNullOrEmpty(_options.AudioDuration))
                 {
-                    throw new ArgumentException("Argument AudioFilePath (z) cannot be used in conjunction with AudioFileSize (f) or AudioDuration (u).");
+                    throw new ArgumentException("Argument AudioFilePath (z) cannot be used in conjunction with " +
+                        "AudioFileSize (f) or AudioDuration (u).");
                 }
 
                 try
@@ -183,8 +184,31 @@ namespace Thrive_API_Media_Tool
                     }
                 }
 
+                 bool endingSeries = false;
+                 DateTime? endingDate = null;
+
+                if (!string.IsNullOrEmpty(_options.CloseSeries))
+                {
+                    bool.TryParse(_options.CloseSeries, out bool closeSeries);
+
+                    if (closeSeries) 
+                    { 
+                        if (string.IsNullOrEmpty(_options.EndDate))
+                        {
+                            Console.WriteLine("In order to close a series, you must supply an ending date. " +
+                                "Please specify a value for 'EndDate' or '-y' and try again.");
+                            return;
+                        }
+
+                        DateTime.TryParse(_options.EndDate, out DateTime endDate);
+
+                        endingSeries = closeSeries;
+                        endingDate = endDate.Date;
+                    }                
+                }
+
                 // Update this series with the requested ID, we'll just need to ask for each property one at a time
-                AddMessageToSeriesRequest updateRequest = GenerateSeriesUpdateRequest();
+                AddMessageToSeriesRequest updateRequest = GenerateSeriesAddMessageRequest();
                 if (updateRequest == null)
                 {
                     Console.WriteLine("No series update object to send. One or more arguments might be invalid.");
@@ -203,19 +227,30 @@ namespace Thrive_API_Media_Tool
                     return;
                 }
 
-                HttpResponseMessage updateResponse = UpdateSeries(updateRequest, seriesId).Result;
+                HttpResponseMessage addMessageResponse = AddMessageToSeries(updateRequest, seriesId).Result;
 
-                // TODO: allow users to specify that this was the last sermon in a series.
-                // Which needs to make another request with this series ID to update it as completed
+                // The user wants to end the series in this request, so let's make another request just for that
+                if (endingSeries)
+                {
+                    HttpResponseMessage updateResponse = EndSeries(endingDate.Value, seriesId).Result;
 
-                if (updateResponse.StatusCode == HttpStatusCode.OK)
+                    if (updateResponse.StatusCode != HttpStatusCode.OK)
+                    {
+                        Console.WriteLine($"Error sending request: Code - {updateResponse.StatusCode}, " +
+                            $"ReasonPhrase - {updateResponse.ReasonPhrase}");
+                        Console.ReadLine();
+                    }
+                }
+
+                if (addMessageResponse.StatusCode == HttpStatusCode.OK)
                 {
                     Console.WriteLine("Successfully completed operations. You can now close this window.");
                     Console.ReadLine();
                 }
                 else
                 {
-                    Console.WriteLine($"Error sending request: Code - {updateResponse.StatusCode}, ReasonPhrase - {updateResponse.ReasonPhrase}");
+                    Console.WriteLine($"Error sending request: Code - {addMessageResponse.StatusCode}, " +
+                        $"ReasonPhrase - {addMessageResponse.ReasonPhrase}");
                     Console.ReadLine();
                 }
 
