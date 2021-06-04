@@ -5,22 +5,30 @@ A CLI tool used to upload new media items to the Thrive Church Official API.
 The idea behind this tool is to make it easier for the tech team to be able to upload new media items / series' to the [Thrive Church Official API](https://github.com/ThriveCommunityChurch/ThriveChurchOfficialAPI/). For the context of this application, that API is a "[black box](https://en.wikipedia.org/wiki/Black_box)". So we'll need to interface with that API but we don't need to be able to do anything other than call those routes with the correct information.
 
 ## Arguments
-- `New` (-n) - _Whether or not this is a new series. Cannot be used in conjunction with SeriesId (s). (default = `false`)_
-- `SeriesId` (-s) - _The unique identifier of the series in which to add this media item to. (default = `null`)_
-- `SeriesName` (-m) - _The name of the new series. Only used when creating a new series. (default = `null`)_
-- `SingleMessageSeries` (-e) - _Whether or not this new message is a single message series. Only used when creating a new series. (default = `false`)_
+Ordered by flag values ascending.
+
+### Required
+- `Date` (-d) - _The date this sermon message occurred._
+- `Speaker` (-k) - _The speaker of the sermon message._
+- `Title` (-t) - _The title of this sermon message._
+
+### Optional
 - `AudioUrl` (-a) - _The audio URL for the new message. (default = `null`)_
-- `AudioDuration` (-u) - _The duration of the audio file in seconds. (default = `null`)_
+- `CloseSeries` (-c) - _Whether or not to close the requested series, ending it. Only used when updating an existing series. (default = `false`)_
+- `SingleMessageSeries` (-e) - _Whether or not this new message is a single message series. Only used when creating a new series. (default = `false`)_
 - `AudioFileSize` (-f) - _The file size of the message audio in MB. (default = `null`)_
-- `VideoUrl` (-v) - _The URL of the video file for this message. (default = `null`)_
-- `PassageRef` (-p) - _The main passage reference for this message. (default = `null`)_
+- `Debug` (-g) - _Whether or not to run this tool in debug mode. Update & create operations will NOT complete if this setting is set. (default = `false`)_
 - `AudioFilePath` (-h) - _The path to the audio file. Should be .mp3 file type. Cannot be used in conjunction with AudioFileSize or AudioDuration args. (default = `null`)_
 - `ImageURL` (-i) - _The URL for the main sermon series image. Required when creating a new series. Must be in valid URL syntax. (default = `null`)_
 - `ThumbnailURL` (-l) - _The URL for the compressed sermon series image. Required when creating a new series. Must be in valid URL syntax. (default = `null`)_
-- `Debug` (-g) - _Whether or not to run this tool in debug mode. Update & create operations will NOT complete if this setting is set. (default = `false`)_
-- `Speaker` (-k) - __Required.__ _The speaker of the sermon message._
-- `Title` (-t) - __Required.__ _The title of this sermon message._
-- `Date` (-d) - __Required.__ _The date this sermon message occurred._
+- `SeriesName` (-m) - _The name of the new series. Only used when creating a new series. (default = `null`)_
+- `New` (-n) - _Whether or not this is a new series. Cannot be used in conjunction with SeriesId (s). (default = `false`)_
+- `PassageRef` (-p) - _The main passage reference for this message. (default = `null`)_
+- `SeriesId` (-s) - _The unique identifier of the series in which to add this media item to. (default = `null`)_
+- `AudioDuration` (-u) - _The duration of the audio file in seconds. (default = `null`)_
+- `VideoUrl` (-v) - _The URL of the video file for this message. (default = `null`)_
+- `EndDate` (-y) - _The ending date of the series being updated. Used with the CloseSeries (c) argument. This argument is ignored if CloseSeries is false. (default = `null`)_
+
 
 ## Compatablity
 __Source__

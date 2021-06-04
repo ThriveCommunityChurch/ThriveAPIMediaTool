@@ -52,5 +52,11 @@ namespace Thrive_API_Media_Tool
         [Option('g', "Debug", Required = false, HelpText = "Whether or not to run this tool in debug mode. Update & create operations will NOT complete if this setting is set. Default is false.", Default = "false")]
         public string Debug { get; set; }
 
+        [Option('c', "CloseSeries", Required = false, HelpText = "Whether or not to close the requested series, ending it. Only used when updating an existing series. Default is false.", Default = "false")]
+        public string CloseSeries { get; set; }
+
+        [Option('y', "EndDate", Required = false, HelpText = "The ending date of the series being updated. Used with the CloseSeries (c) argument. This argument is ignored if CloseSeries is false.")]
+        public string EndDate { get; set; }
+
     }
 }
