@@ -12,12 +12,8 @@ namespace Thrive_API_Media_Tool
     {
         static void Main(string[] args)
         {
-            Console.WriteLine("Beginning setup...");
-
             if (args != null && args.Length > 0)
             {
-                Console.WriteLine("Reading CLI args...");
-
                 ParseArguments(args);
 
                 if (string.IsNullOrEmpty(_options.Date))
@@ -80,8 +76,6 @@ namespace Thrive_API_Media_Tool
                     throw;
                 }
             }
-
-            Console.WriteLine("Setup stages completed.\n\n");
 
             string seriesId = _options.SeriesId;
             bool isNew = false;

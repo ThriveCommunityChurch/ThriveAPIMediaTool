@@ -16,7 +16,7 @@ namespace Thrive_API_Media_Tool
     internal class ProgramBase
     {
         private static AppSettings _appSettings;
-        public static Options _options = new Options();
+        internal static Options _options = new();
 
         internal static double? AudioFileSize = null;
         internal static double? AudioDuration = null;
