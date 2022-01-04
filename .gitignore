@@ -25,3 +25,5 @@ obj/
 # Secret Keys
 appsettings.json
 UI/ThriveChurchMediaToolUI/.vscode/
+
+UI/ThriveChurchMediaToolUI/src/app/shared/configurations.ts
