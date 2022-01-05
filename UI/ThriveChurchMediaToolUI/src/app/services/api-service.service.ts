@@ -15,18 +15,6 @@ export class ApiService {
     
   }
 
-  /**
-   * @return the `"X-API-Key"` & `authorization` tokens needed for HTTP requests
-   */
-  private getHeaders(): HttpHeaders
-  {
-    return new HttpHeaders({
-      'Access-Control-Allow-Origin': '*',
-      'Content-Type':'application/json',
-      'Accept':'application/json',
-    })
-  }
-
   constructor(private http: HttpClient, configs: Configurations) { 
 
     this.apiUrl = configs.ApiURL;
