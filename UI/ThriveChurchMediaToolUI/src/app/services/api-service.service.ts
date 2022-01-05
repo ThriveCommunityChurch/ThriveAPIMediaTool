@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpResponse } from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpResponse } from '@angular/common/http';
 import { Observable, throwError } from 'rxjs';
 import { catchError, retry } from 'rxjs/operators';
 import { SermonSummaryResponse } from '../DTO/SermonSummaryResponse';
@@ -11,6 +11,21 @@ import { SermonSeries } from '../DTO/SermonSeries';
 export class ApiService {
 
   apiUrl: string = '';
+  headers = {
+    
+  }
+
+  /**
+   * @return the `"X-API-Key"` & `authorization` tokens needed for HTTP requests
+   */
+  private getHeaders(): HttpHeaders
+  {
+    return new HttpHeaders({
+      'Access-Control-Allow-Origin': '*',
+      'Content-Type':'application/json',
+      'Accept':'application/json',
+    })
+  }
 
   constructor(private http: HttpClient, configs: Configurations) { 
 

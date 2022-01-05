@@ -6,5 +6,5 @@ export interface SermonMessageRequest {
     PassageRef: string | null;
     Speaker: string;
     Title: string;
-    Date: Date;
+    Date: string;
 }
