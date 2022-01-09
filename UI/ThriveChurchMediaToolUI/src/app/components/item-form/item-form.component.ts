@@ -83,12 +83,10 @@ export class ItemFormComponent implements OnInit {
           const arrayBuffer = fileReader.result as ArrayBuffer
 
           // Convert array buffer into audio buffer
-          audioContext.decodeAudioData(arrayBuffer, (audioBuffer: AudioBuffer) => {
-
-            // Do something with audioBuffer
+          audioContext.decodeAudioData(arrayBuffer).then((audioBuffer: AudioBuffer) => {
             this.itemAudioDuration = audioBuffer.duration;
-            console.log(this.itemAudioDuration);
-          })
+            console.log(audioBuffer.duration);
+          });
       }
 
       //Load blob

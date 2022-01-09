@@ -86,6 +86,10 @@
 		class="form-control" 
 		id="audioFile"
 		(change)="uploadFile($event)">
+	<div>
+		<p class="file-info-duration">Duration(Secs): <span>{{!itemAudioDuration ? "Pending..": itemAudioDuration}}.</span></p>
+		<p class="file-info-size">Size(MB): <span>{{itemAudioMB ?? "Pending.."}}.</span></p>
+	</div>
   
 	<hr />
 	<div class="row p-2 button-container">
