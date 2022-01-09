@@ -45,10 +45,11 @@
 					class="form-control"
 					name="itemAudioUrl"
 					[(ngModel)]="itemAudioUrl"
+					(input)="change($event)"
 					id="itemAudioUrlInput"
 					#itemAudioUrlInput
 					placeholder="Url to audio link">
-				<label for="itemAudioUrlInput">Audio URL</label>
+				<label for="itemAudioUrlInput">Audio URL (Paste only)</label>
 			</div>
 		</div>
 	</div>
@@ -83,7 +84,8 @@
 	<input 
 		type="file" 
 		class="form-control" 
-		id="audioFile">
+		id="audioFile"
+		(change)="uploadFile($event)">
   
 	<hr />
 	<div class="row p-2 button-container">

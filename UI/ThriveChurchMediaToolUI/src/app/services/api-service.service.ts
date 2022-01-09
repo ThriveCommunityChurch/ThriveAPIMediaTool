@@ -11,9 +11,6 @@ import { SermonSeries } from '../DTO/SermonSeries';
 export class ApiService {
 
   apiUrl: string = '';
-  headers = {
-    
-  }
 
   constructor(private http: HttpClient, configs: Configurations) { 
 

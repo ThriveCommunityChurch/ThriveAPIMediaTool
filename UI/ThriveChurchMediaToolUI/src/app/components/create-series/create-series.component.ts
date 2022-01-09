@@ -23,7 +23,7 @@ export class CreateSeriesComponent implements OnInit {
   // Create series form fields
   seriesName: string;
   startDate: string;
-  endDate: string;
+  endDate: string | null = null;
   seriesThumbnailUrl: string;
   seriesArtUrl: string;
   mediaItemsToAdd: SermonMessageRequest[] = [];
@@ -44,19 +44,12 @@ export class CreateSeriesComponent implements OnInit {
 
   submitSeries(): void {
 
-    console.log(this.seriesName);
-    console.log(this.startDate);
-    console.log(this.endDate);
-    console.log(this.seriesThumbnailUrl);
-    console.log(this.seriesArtUrl);
-    console.log(this.mediaItemsToAdd);
-
     let seriesRequest: CreateSermonSeriesRequest = {
       Name: this.seriesName,
       ArtUrl: this.seriesArtUrl,
       EndDate: this.endDate,
       Messages: this.mediaItemsToAdd,
-      Slug: this.seriesName.replace(" ", "-"),
+      Slug: this.seriesName.split(' ').join('-').toLowerCase(),
       StartDate: this.startDate,
       Thumbnail: this.seriesThumbnailUrl,
       Year: `${this.startDate.split('-')[0]}`
@@ -64,18 +57,18 @@ export class CreateSeriesComponent implements OnInit {
 
     console.log(seriesRequest);
  
-    // this.apiService.createSeries(seriesRequest)
-    // // clone the data object, using its known Config shape
-    // .subscribe(resp => {
-    //   // display its headers
+    this.apiService.createSeries(seriesRequest)
+    // clone the data object, using its known Config shape
+    .subscribe(resp => {
+      // display its headers
 
-    //   if (resp.status > 200) {
-    //     console.log(resp.body);
-    //   }
-    //   else if (resp.body) {
-    //     alert(`Created series with ID: ${resp.body.Id}.`);
-    //   }
-    // });
+      if (resp.status > 200) {
+        console.log(resp.body);
+      }
+      else if (resp.body) {
+        alert(`Created series with ID: ${resp.body.Id}.`);
+      }
+    });
   }
 
   /**
