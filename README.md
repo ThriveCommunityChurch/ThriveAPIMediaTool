@@ -4,7 +4,13 @@ A CLI tool used to upload new media items to the Thrive Church Official API.
 ## Purpose
 The idea behind this tool is to make it easier for the tech team to be able to upload new media items / series' to the [Thrive Church Official API](https://github.com/ThriveCommunityChurch/ThriveChurchOfficialAPI/). For the context of this application, that API is a "[black box](https://en.wikipedia.org/wiki/Black_box)". So we'll need to interface with that API but we don't need to be able to do anything other than call those routes with the correct information.
 
-## Arguments
+### Usage
+There are 2 different options by which you can use this tool. You can either use it via the CLI or use the UI tool. This guide will outline the options for each method.
+
+<details>
+  <summary>CLI</summary>
+  
+  ## Arguments
 Ordered by flag values ascending.
 
 ### Required
@@ -62,3 +68,29 @@ Each of the following are valid request parameters. Note that all arguments need
 
 ## Future Plans
 The end goal for this tool is to make it a standalone application that can run on virtually any OS so that we can quickly run this either at home or on one of the servers at the church. That way we can quickly and easily calculate the data that we need and not have to spend time generating the JSON request to send via Postman to the API. This tool should take care of __all__ that heavy lifting for us. 
+</details>
+
+<details>
+  <summary>UI</summary>
+  
+  ## Requirements
+  This tool requires that you have node and the angluar CLI installed so that you can build and deploy this tool where you wish. However there is another required configuration file that you will need before you can begin running this application.
+  
+  You must create the following file located at this location `ThriveChurchMediaToolUI\src\app\shared\configurations.ts`.
+  
+  ```
+  import { Injectable } from "@angular/core";
+
+  @Injectable({
+      providedIn: 'root'
+  })
+  export class Configurations {
+    ApiURL: string;
+
+    constructor() {
+      // You can change this value to either run against either prod or localhost
+      this.ApiURL = "http://localhost:port";
+    }
+  }
+  ```
+</details>
