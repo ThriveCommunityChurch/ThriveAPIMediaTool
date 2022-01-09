@@ -2,7 +2,6 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Component, OnInit, Output, EventEmitter, Input, OnChanges, SimpleChanges } from '@angular/core';
 import { Observable, take, tap } from 'rxjs';
 import { SermonMessageRequest } from 'src/app/DTO/SermonMessageRequest';
-import { Guid } from 'src/app/shared/Guid';
 
 @Component({
   selector: 'app-item-form',
@@ -60,8 +59,7 @@ export class ItemFormComponent implements OnInit {
       Title: this.itemTitle,
       AudioFileSize: this.itemAudioMB,
       Date: this.itemDate,
-      VideoUrl: this.itemVideoURL,
-      MessageId: Guid.newGuid()
+      VideoUrl: this.itemVideoURL
     };
 
     console.log(mediaItem);
