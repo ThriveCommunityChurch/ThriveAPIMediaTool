@@ -1,0 +1,107 @@
+<div class="container" id="addItemSubform">
+	<div class="row g-2">
+		<div class="col-md">
+			<div class="form-floating mb-3">
+				<input 
+					type="text"
+					class="form-control"
+					name="itemTitle"
+					[(ngModel)]="itemTitle"
+					id="itemTitleInput"
+					placeholder="Title of item">
+			<label for="itemTitleInput">Message Title</label>
+			</div>
+		</div>
+		<div class="col-md">
+			<div class="form-floating mb-3">
+				<input 		  
+					type="text"
+					class="form-control"
+					name="itemSpeaker"
+					[(ngModel)]="itemSpeaker"
+					id="itemSpeakerInput"
+					placeholder="John Roth">
+				<label for="itemSpeakerInput">Speaker Name</label>
+			</div>
+		</div>
+	</div>
+	<div class="row g-2">
+		<div class="col-md">
+			<div class="form-floating mb-3">
+				<input 
+					type="date"
+					class="form-control"
+					name="itemDate"
+					[(ngModel)]="itemDate"
+					id="itemDateInput"
+					#itemDateInput>
+			<label for="itemDateInput">Date</label>
+			</div>
+		</div>
+		<div class="col-md">
+			<div class="form-floating mb-3">
+				<input 		  
+					type="text"
+					class="form-control"
+					name="itemAudioUrl"
+					[(ngModel)]="itemAudioUrl"
+					(input)="change($event)"
+					id="itemAudioUrlInput"
+					#itemAudioUrlInput
+					placeholder="Url to audio link">
+				<label for="itemAudioUrlInput">Audio URL (Paste only)</label>
+			</div>
+		</div>
+	</div>
+	<div class="row g-2">
+		<div class="col-md">
+			<div class="form-floating mb-3">
+				<input 
+					type="text"
+					class="form-control"
+					name="itemVideoURL"
+					[(ngModel)]="itemVideoURL"
+					id="itemVideoURLInput"
+					#itemVideoURLInput
+					placeholder="Video URL">
+			<label for="itemVideoURLInput">Video URL</label>
+			</div>
+		</div>
+		<div class="col-md">
+			<div class="form-floating mb-3">
+				<input 		  
+				type="text"
+				class="form-control"
+				name="itemPassageRef"
+				[(ngModel)]="itemPassageRef"
+				id="itemPassageRefInput"
+				placeholder="Luke 9: 57 - 62">
+				<label for="itemPassageRefInput">Passage Reference</label>
+			</div>
+		</div>
+	</div>
+
+	<input 
+		type="file" 
+		class="form-control" 
+		id="audioFile"
+		(change)="uploadFile($event)">
+	<div>
+		<p class="file-info-duration">Duration(Secs): <span>{{!itemAudioDuration ? "Pending..": itemAudioDuration}}.</span></p>
+		<p class="file-info-size">Size(MB): <span>{{itemAudioMB ?? "Pending.."}}.</span></p>
+	</div>
+  
+	<hr />
+	<div class="row p-2 button-container">
+	  <button
+		class="btn btn-info col-12"
+		(click)="createMediaItem()">
+		{{ submitButtonMessage }}
+	  </button>
+	  <button
+		class="btn btn-secondary col-12 mt-3"
+		(click)="hideAddItemSubForm()">
+		{{ cancelButtonMessage}}
+	  </button>
+	</div>
+</div>
