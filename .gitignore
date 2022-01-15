@@ -26,4 +26,5 @@ obj/
 appsettings.json
 UI/ThriveChurchMediaToolUI/.vscode/
 
-UI/ThriveChurchMediaToolUI/src/app/shared/configurations.ts
+# Prod configs
+UI/ThriveChurchMediaToolUI/src/environments/environment.prod.ts
