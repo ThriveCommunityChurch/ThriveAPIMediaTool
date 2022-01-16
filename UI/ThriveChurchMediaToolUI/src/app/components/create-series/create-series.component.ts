@@ -44,10 +44,13 @@ export class CreateSeriesComponent implements OnInit {
 
   submitSeries(): void {
 
+    // if something is set as the highest date, we will use that as the date that we want... otherwise we will just use what someone set in the UI
+    var endingDate = this.mediaItemsToAdd.length > 0 ? this.findEndDate() : this.endDate;
+    
     let seriesRequest: CreateSermonSeriesRequest = {
       Name: this.seriesName,
       ArtUrl: this.seriesArtUrl,
-      EndDate: this.endDate,
+      EndDate: endingDate,
       Messages: this.mediaItemsToAdd,
       Slug: this.seriesName.split(' ').join('-').toLowerCase(),
       StartDate: this.startDate,
@@ -69,6 +72,19 @@ export class CreateSeriesComponent implements OnInit {
         alert(`Created series with ID: ${resp.body.Id}.`);
       }
     });
+  }
+  
+  private findEndDate(): string | null {
+    var end: string | null = null;
+
+    let itemMarkedAsEnd = this.mediaItemsToAdd.find(i => i.LastInSeries);
+
+    if (itemMarkedAsEnd) 
+    {
+      end = itemMarkedAsEnd.Date;
+    }
+
+    return end;
   }
 
   /**
