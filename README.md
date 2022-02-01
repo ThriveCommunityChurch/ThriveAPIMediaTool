@@ -74,23 +74,14 @@ The end goal for this tool is to make it a standalone application that can run o
   <summary>UI</summary>
   
   ## Requirements
-  This tool requires that you have node and the angluar CLI installed so that you can build and deploy this tool where you wish. However there is another required configuration file that you will need before you can begin running this application.
+  This tool requires that you have node and the angluar CLI installed so that you can build and deploy this tool where you wish. However there is another required configuration file that you will need before you can use this app in a production deployment.
   
-  You must create the following file located at this location `ThriveChurchMediaToolUI\src\app\shared\configurations.ts`.
+  You must create the following file located at this location `ThriveChurchMediaToolUI\src\environments\environment.prod.ts`.
   
   ```
-  import { Injectable } from "@angular/core";
-
-  @Injectable({
-      providedIn: 'root'
-  })
-  export class Configurations {
-    ApiURL: string;
-
-    constructor() {
-      // You can change this value to either run against either prod or localhost
-      this.ApiURL = "http://localhost:port";
-    }
-  }
+export const environment = {
+    production: true,
+    apiURL: "http://hostname:port"
+};
   ```
 </details>
