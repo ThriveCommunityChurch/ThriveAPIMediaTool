@@ -1,0 +1,60 @@
+.container {
+    margin-left: 0 !important;
+}
+
+@import 'src/styles.scss';
+
+.navbar {
+    z-index: 2;
+
+    .dropdown-menu {
+        .dropdown-item {
+            color: $dark;
+            
+            &:hover {
+                color: $dark;
+                cursor: pointer;
+            }
+
+            &:focus {
+                color: $dark;
+                cursor: pointer;
+                background-color: #D8DBE2;
+            }
+
+            &:active {
+                background-color: #D8DBE2;
+            }
+        }
+
+        a:active {
+            color: #343A40 !important;
+        }
+    }
+}
+
+.adjustMarginNavBar {
+    margin-bottom: 71px;
+    display: block;
+}
+
+a:active {
+    color: #A9BCD0 !important;
+}
+
+.btn-primary:active:focus {
+    background-color: #498992; 
+    border-color: #498992;
+}
+
+#interactive-text-main-light {
+    color: #5F9FA8 !important;
+}
+
+svg {
+    color: white;
+}
+
+.navbar-text { 
+    padding-right: 20px;
+}

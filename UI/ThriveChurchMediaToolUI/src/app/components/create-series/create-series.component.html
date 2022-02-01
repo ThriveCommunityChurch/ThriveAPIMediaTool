@@ -1,0 +1,144 @@
+<div class="container">
+	<p class="display-4">Create a new series</p>
+	<form>
+		<div class="form-floating mb-3">
+			<input type="text"
+				   class="form-control"
+				   id="floatingTitle"
+				   placeholder="Title"
+				   [(ngModel)]="seriesName"
+				   name="seriesName"
+				   id="seriesNameInput">
+			<label for="floatingTitle">Title</label>
+		</div>
+		<div class="row g-2">
+			<div class="col-md">
+				<div class="form-floating mb-3">
+					<input type="date"
+						   class="form-control"
+						   id="floatingStartDate"
+						   placeholder="Start Date"
+						   name="startDate"
+						   [(ngModel)]="startDate"
+						   id="startDateInput">
+					<label for="floatingStartDate">Start Date</label>
+				</div>
+			</div>
+			<div class="col-md">
+				<div class="form-floating mb-3">
+					<input type="date"
+						   class="form-control"
+						   id="floatingEndDate"
+						   placeholder="End Date"
+						   name="endDate"
+						   [(ngModel)]="endDate"
+						   id="endDateInput">
+					<label for="floatingEndDate">End Date</label>
+				</div>
+			</div>
+		</div>
+		<div class="form-floating mb-3">
+			<input type="text"
+				   class="form-control"
+				   id="floatingThumbnailUrl"
+				   placeholder="Thumbnail Url"
+				   name="ThumbnailUrl"
+				   [(ngModel)]="seriesThumbnailUrl"
+				   id="seriesThumbnailUrl">
+			<label for="floatingThumbnailUrl">Thumbnail URL</label>
+		</div>
+		<div class="form-floating mb-3">
+			<input type="text"
+				   class="form-control"
+				   id="floatingArtUrl"
+				   placeholder="Art Url"
+				   name="ArtUrl"
+				   [(ngModel)]="seriesArtUrl"
+				   id="seriesArtUrl">
+			<label for="floatingArtUrl">Art URL</label>
+		</div>
+		<div class="mb-3">
+			<div class="form-group">
+				<label>Media Items</label>
+				<table
+				  *ngIf="mediaItemsToAdd.length; else noItems"
+				  class="table table-bordered item-table">
+				  <thead>
+					<tr>
+					  <th class="col-2 text-center" scope="col">Item No.</th>
+					  <th scope="col-4">Media Title</th>
+					  <th scope="col-4">Media Speaker</th>
+					  <th scope="col-2 text-center">Remove</th>
+					</tr>
+				  </thead>
+				  <tbody>
+					<tr *ngFor="let item of mediaItemsToAdd; index as i">
+					  <th class="col-2 align-middle text-center" scope="row">
+						{{ i + 1 }}
+					  </th>
+					  <td class="col-4 align-middle item-node">
+						<div class="row">
+						  <div class="col-12 text-truncate">
+							{{ item.Title }}
+						  </div>
+						</div>
+					  </td>
+					  <td class="col-4 align-middle item-node">
+						<div class="row">
+						  <div class="col-12 text-truncate">
+							{{ item.Speaker }}
+						  </div>
+						</div>
+					  </td>
+					  <td class="col-2 align-middle text-center">
+						<button
+						  type="button"
+						  class="btn"
+						  (click)="removeItem(i)">
+						  <i class="fas fa-trash-alt"></i>
+						</button>
+					  </td>
+					</tr>
+				  </tbody>
+				</table>
+	
+				<ng-template #noItems>
+				  <div
+					class="mb-4 d-flex justify-content-center">
+					<i class="fas fa-exclamation-triangle"></i>
+					&nbsp;No series items added.
+				  </div>
+				</ng-template>
+	
+				<button
+				  type="button"
+				  class="btn btn-info form-control"
+				  (click)="showAddItemSubForm()"
+				  *ngIf="!showAddItem">
+				  <i class="fas fa-plus"></i>
+				  &nbsp;Add series media item
+				</button>
+	
+			</div>
+		</div>
+		<div class="border rounded p-3 m-3 mb-4" 
+			 *ngIf="showAddItem">
+			<h4>Add Series Media Item</h4>
+			<hr />
+			
+			<app-item-form
+			[submitButtonMessage]="submitButtonMessage"
+			[cancelButtonMessage]="cancelButtonMessage"
+			(submitItemEvent)="addItemEventHandler($event)"
+			(cancelAddItemEvent)="cancelAddItemEventHandler()">
+			</app-item-form>
+	  	</div>
+		<br />
+		<button 
+		type="submit"
+		id="submitButton"
+		#submitButton
+		class="btn btn-primary"
+		(click)="submitSeries()">Submit</button>
+	</form>
+</div>
