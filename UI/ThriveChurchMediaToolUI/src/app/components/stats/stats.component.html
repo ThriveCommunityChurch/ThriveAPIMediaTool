@@ -10,31 +10,31 @@
 			<tbody>
 				<tr>
 					<td class="stat"># of Series</td>
-					<td>{{stats.TotalSeriesNum}}</td>
+					<td>{{TotalSeriesNum }}</td>
 				</tr>
 				<tr>
 					<td class="stat"># of Messages</td>
-					<td>{{stats.TotalMessageNum}}</td>
+					<td>{{TotalMessageNum }}</td>
 				</tr>
 				<tr>
 					<td class="stat">Messages Per Series (Avg)</td>
-					<td>{{stats.AvgMessagesPerSeries | duration }}</td>
+					<td>{{AvgMessagesPerSeries | duration }}</td>
 				</tr>
 				<tr>
 					<td class="stat">Total Audio Duration (Days)</td>
-					<td>{{stats.TotalAudioLength | duration: 'd' }}</td>
+					<td>{{TotalAudioLength | duration: 'd' }}</td>
 				</tr>
 				<tr>
 					<td class="stat">Avg Audio Duration (Mins)</td>
-					<td>{{stats.AvgAudioLength | duration: 'm' }}</td>
+					<td>{{AvgAudioLength | duration: 'm' }}</td>
 				</tr>
 				<tr>
 					<td class="stat">Total File Size (GB)</td>
-					<td>{{stats.TotalFileSize | filesize: 'GB' }}</td>
+					<td>{{TotalFileSize | filesize: 'GB' }}</td>
 				</tr>
 				<tr>
 					<td class="stat">Avg File Size (MB)</td>
-					<td>{{stats.AvgFileSize | filesize }}</td>
+					<td>{{AvgFileSize | filesize }}</td>
 				</tr>
 			</tbody>
 	  </table>
