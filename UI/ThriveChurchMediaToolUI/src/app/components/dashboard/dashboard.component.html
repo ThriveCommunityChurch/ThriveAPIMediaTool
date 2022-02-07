@@ -1,7 +1,15 @@
+<div
+    *ngIf="!production"
+    class="mode-banner">
+    <span>
+        <i class="fas fa-laptop-code"></i>
+        {{mode}} mode
+    </span>
+</div>
 <div class="container">
     <div class="row align-items-center">
         <p class="display-5">Thrive API Media Management Tool<a href="https://github.com/ThriveCommunityChurch/ThriveChurchOfficialAPI" target="_blank"><i id="link" class="fas fa-external-link-alt"></i></a></p>
-      </div>
+    </div>
     <p>Please choose whether to create a new series, or to modify an existing one.</p>
     <app-series-list></app-series-list>
 </div>

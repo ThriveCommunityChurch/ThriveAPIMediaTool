@@ -7,4 +7,5 @@ export interface SermonMessageRequest {
     Speaker: string;
     Title: string;
     Date: string;
+    LastInSeries?: boolean;
 }

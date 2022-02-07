@@ -1,0 +1,60 @@
+<div class="container">
+	<div class="row align-items-center">
+		<p class="display-5">Sermon Stats</p>
+	</div>
+	<br />
+	<h5>General</h5>
+	<table class="table table-striped">
+			<thead>
+			</thead>
+			<tbody>
+				<tr>
+					<td class="stat"># of Series</td>
+					<td>{{stats.TotalSeriesNum}}</td>
+				</tr>
+				<tr>
+					<td class="stat"># of Messages</td>
+					<td>{{stats.TotalMessageNum}}</td>
+				</tr>
+				<tr>
+					<td class="stat">Messages Per Series (Avg)</td>
+					<td>{{stats.AvgMessagesPerSeries | duration }}</td>
+				</tr>
+				<tr>
+					<td class="stat">Total Audio Duration (Days)</td>
+					<td>{{stats.TotalAudioLength | duration: 'd' }}</td>
+				</tr>
+				<tr>
+					<td class="stat">Avg Audio Duration (Mins)</td>
+					<td>{{stats.AvgAudioLength | duration: 'm' }}</td>
+				</tr>
+				<tr>
+					<td class="stat">Total File Size (GB)</td>
+					<td>{{stats.TotalFileSize | filesize: 'GB' }}</td>
+				</tr>
+				<tr>
+					<td class="stat">Avg File Size (MB)</td>
+					<td>{{stats.AvgFileSize | filesize }}</td>
+				</tr>
+			</tbody>
+	  </table>
+	<br />
+	<h5>Speakers</h5>
+	<table class="table table-striped">
+		<thead>
+			<tr>
+				<th scope="col">Speaker</th>
+				<th scope="col">Message Count</th>
+				<th scope="col">Duration Avg (mins)</th>
+			</tr>
+			</thead>
+		<tbody>
+			<tr *ngFor="let speaker of speakers">
+				<td>{{speaker.Name}}</td>
+				<td>{{speaker.MessageCount}}</td>
+				<td>{{speaker.AvgLength | duration: 'm' }}</td>
+			</tr>
+		</tbody>
+	</table>
+</div>
+<br />

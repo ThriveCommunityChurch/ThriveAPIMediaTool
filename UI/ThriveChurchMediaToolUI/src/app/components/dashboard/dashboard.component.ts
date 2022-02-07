@@ -1,8 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { CreateSermonSeriesRequest } from 'src/app/DTO/CreateSermonSeriesRequest';
-import { SermonSeriesSummary } from 'src/app/DTO/SermonSeriesSummary';
-import { ApiService } from 'src/app/services/api-service.service';
 import { SeriesListComponent } from '../series-list/series-list.component';
+import { environment } from '../../../environments/environment';
 
 @Component({
   selector: 'app-dashboard',
@@ -15,10 +14,14 @@ export class DashboardComponent implements OnInit {
   copyrightText: string = "";
   isCreatingSeries: boolean = false;
   newSeries$: CreateSermonSeriesRequest | null = null;
+  mode: string = "";
+  production: boolean = false;
 
   constructor(seriesList: SeriesListComponent) 
   { 
     this.seriesList = seriesList;
+    this.production = environment.production;
+    this.mode = !this.production ? "Developer" : "Prod";
   }
 
   ngOnInit(): void {

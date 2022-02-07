@@ -14,7 +14,7 @@ export class EditSeriesComponent implements OnInit {
 
   seriesId: string | null = null;
   seriesName: string = "N/A";
-  sermonSeries: SermonSeries | null = null;
+  sermonSeries: SermonSeries;
 
   // Item form
   submitButtonMessage = "Add item";
@@ -51,7 +51,25 @@ export class EditSeriesComponent implements OnInit {
  * @param item - `SeriesMedia`: to create
  */
   addItemEventHandler(item: SermonMessageRequest): void {
-    if (item && this.seriesId) {
+    if (item && this.seriesId && this.sermonSeries) {
+
+      if (item.LastInSeries === true) {
+
+        this.sermonSeries.EndDate = item.Date;
+
+        this.apiService.editSeries(this.seriesId, this.sermonSeries)      
+        // clone the data object, using its known Config shape
+        .subscribe(resp => {
+          // display its headers
+  
+          if (resp.status > 200) {
+            console.log(resp.body);
+          }
+          else if (resp.body) {
+            alert("Success!");
+          }
+        });
+      }
 
       let tempItems: SermonMessageRequest[] = [item];
       let request: AddMessagesToSeriesRequest = {

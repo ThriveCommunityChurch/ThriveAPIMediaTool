@@ -4,8 +4,8 @@ export interface SermonSeries {
 	Id: string;
 	Name: string;
     Year: string;
-    StartDate: Date | null;
-    EndDate: Date | null;
+    StartDate: string | null;
+    EndDate: string | null;
     Slug: string;
     Thumbnail: string;
     ArtUrl: string;

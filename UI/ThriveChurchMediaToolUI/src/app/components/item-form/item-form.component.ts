@@ -15,6 +15,8 @@ export class ItemFormComponent implements OnInit {
   @Input() submitButtonMessage: string = "Add item";
   @Input() cancelButtonMessage: string = "Cancel adding item";
 
+  private _checked: boolean = false;
+
   itemAudioUrl: string | null = null;
   itemAudioDuration: number | null = null;
   itemAudioMB: number | null = null;
@@ -30,22 +32,6 @@ export class ItemFormComponent implements OnInit {
   }
   
   /**
-   * Method to set initial values of the Item Form if the form was open for editing.
-   * @param itemValues - `MediaItemDTO`: Media Item information
-   */
-  setInitialValues(itemValues: SermonMessageRequest): void {
-    if (itemValues) {
-      this.itemAudioUrl = itemValues.AudioUrl;
-      this.itemAudioDuration = itemValues.AudioDuration;
-      this.itemVideoURL = itemValues.VideoUrl;
-      this.itemPassageRef =itemValues.PassageRef;
-      this.itemSpeaker = itemValues.Speaker;
-      this.itemTitle = itemValues.Title;
-      this.itemDate = itemValues.Date;
-    }
-  }
-
-  /**
    * Method to submit new Media Item for creation.
    */
   createMediaItem(): void {
@@ -59,7 +45,8 @@ export class ItemFormComponent implements OnInit {
       Title: this.itemTitle,
       AudioFileSize: this.itemAudioMB,
       Date: this.itemDate,
-      VideoUrl: this.itemVideoURL
+      VideoUrl: this.itemVideoURL,
+      LastInSeries: this._checked
     };
 
     console.log(mediaItem);
@@ -107,6 +94,7 @@ export class ItemFormComponent implements OnInit {
     this.itemTitle = "";
     this.itemDate = "";
     this.itemVideoURL = null;
+    this._checked = false;
   }
 
   change(event: any){
@@ -129,6 +117,11 @@ export class ItemFormComponent implements OnInit {
       this.itemAudioMB = file.size / Math.pow(1024, 2);
       console.log(this.itemAudioMB);
     }
+  }
+
+  changeStatus(event: Event) {
+    const element = event.currentTarget as HTMLInputElement;
+    this._checked = element.checked;
   }
 
   /**

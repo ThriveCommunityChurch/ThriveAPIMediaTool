@@ -2,19 +2,20 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpResponse } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { SermonSummaryResponse } from '../DTO/SermonSummaryResponse';
-import { Configurations } from '../shared/configurations';
+
 import { CreateSermonSeriesRequest } from '../DTO/CreateSermonSeriesRequest';
 import { SermonSeries } from '../DTO/SermonSeries';
 import { AddMessagesToSeriesRequest } from '../DTO/AddMessagesToSeriesRequest';
+import { environment } from 'src/environments/environment';
+import { SermonStatsResponse } from '../DTO/SermonStatsResponse';
 
 @Injectable()
 export class ApiService {
 
-  apiUrl: string = '';
+  apiUrl: string = environment.apiURL;
 
-  constructor(private http: HttpClient, configs: Configurations) { 
+  constructor(private http: HttpClient) { 
 
-    this.apiUrl = configs.ApiURL;
   }
 
   getSummaries(): Observable<HttpResponse<SermonSummaryResponse>> {
@@ -49,6 +50,25 @@ export class ApiService {
     return this.http.post<SermonSeries>(
       this.apiUrl.concat(`/api/sermons/series/${seriesId}/message`),
       newMessage,
+      {
+        observe: 'response'
+      }
+    )
+  }
+
+  editSeries(seriesId: string, newMessage: SermonSeries): Observable<HttpResponse<SermonSeries>> {
+    return this.http.put<SermonSeries>(
+      this.apiUrl.concat(`/api/sermons/series/${seriesId}`),
+      newMessage,
+      {
+        observe: 'response'
+      }
+    )
+  }
+
+  getStats(): Observable<HttpResponse<SermonStatsResponse>> {
+    return this.http.get<SermonStatsResponse>(
+      this.apiUrl.concat(`/api/sermons/stats`),
       {
         observe: 'response'
       }
