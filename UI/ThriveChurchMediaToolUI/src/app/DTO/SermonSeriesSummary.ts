@@ -1,6 +1,6 @@
 export interface SermonSeriesSummary {
     Id: string;
     Title: string;
-    StartDate: Date;
+    StartDate: string;
     ArtUrl: string;
 }
