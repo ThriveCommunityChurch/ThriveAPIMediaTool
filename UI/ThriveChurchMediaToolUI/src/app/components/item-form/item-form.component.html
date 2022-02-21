@@ -90,6 +90,17 @@
 		<p class="file-info-duration">Duration(Secs): <span>{{!itemAudioDuration ? "Pending..": itemAudioDuration}}.</span></p>
 		<p class="file-info-size">Size(MB): <span>{{itemAudioMB ?? "Pending.."}}.</span></p>
 	</div>
+
+	<div class="form-check">
+		<input class="form-check-input"
+			   type="checkbox"
+			   value=""
+			   id="closeSeries"
+			   (change)="changeStatus($event)">
+		<label class="form-check-label" for="closeSeries">
+		  Close series with message
+		</label>
+	</div>
   
 	<hr />
 	<div class="row p-2 button-container">

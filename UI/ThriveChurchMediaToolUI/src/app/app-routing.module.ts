@@ -4,9 +4,11 @@ import { CreateSeriesComponent } from './components/create-series/create-series.
 import { DashboardComponent } from './components/dashboard/dashboard.component';
 import { EditSeriesComponent } from './components/edit-series/edit-series.component';
 import { PageNotFoundComponent } from './components/page-not-found/page-not-found.component';
+import { StatsComponent } from './components/stats/stats.component';
 
 const routes: Routes = [
   { path: 'create', component: CreateSeriesComponent },
+  { path: 'stats', component: StatsComponent },
   { path: 'edit/:id', component: EditSeriesComponent },
   { path: '', component: DashboardComponent },
   { path: '**', component: PageNotFoundComponent }

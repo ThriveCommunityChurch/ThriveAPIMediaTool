@@ -13,6 +13,10 @@ import { PageNotFoundComponent } from './components/page-not-found/page-not-foun
 import { EditSeriesComponent } from './components/edit-series/edit-series.component';
 import { SeriesItemComponent } from './components/series-item/series-item.component';
 import { ItemFormComponent } from './components/item-form/item-form.component';
+import { StatsComponent } from './components/stats/stats.component';
+import { DurationPipe } from './pipes/DurationPipe';
+import { PluralityPipe } from './pipes/PluralityPipe';
+import { FileSizePipe } from './pipes/FileSizePipe';
 
 
 @NgModule({
@@ -25,6 +29,10 @@ import { ItemFormComponent } from './components/item-form/item-form.component';
     EditSeriesComponent,
     SeriesItemComponent,
     ItemFormComponent,
+    StatsComponent,
+    DurationPipe,
+    PluralityPipe,
+    FileSizePipe
   ],
   imports: [
     BrowserModule,
