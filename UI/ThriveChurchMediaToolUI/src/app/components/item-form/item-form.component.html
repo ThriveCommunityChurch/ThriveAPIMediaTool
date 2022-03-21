@@ -87,8 +87,8 @@
 		id="audioFile"
 		(change)="uploadFile($event)">
 	<div>
-		<p class="file-info-duration">Duration(Secs): <span>{{!itemAudioDuration ? "Pending..": itemAudioDuration}}.</span></p>
-		<p class="file-info-size">Size(MB): <span>{{itemAudioMB ?? "Pending.."}}.</span></p>
+		<p class="file-info-duration">Duration(Secs): <span *ngIf="loadingDuration"><i class="fas fa-spinner rotating"></i></span><span *ngIf="!loadingDuration">{{!itemAudioDuration ? durationLoadingText: itemAudioDuration}}.</span></p>
+		<p class="file-info-size">Size(MB): <span>{{itemAudioMB ?? "Waiting on file.."}}.</span></p>
 	</div>
 
 	<div class="form-check">

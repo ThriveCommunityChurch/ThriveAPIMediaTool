@@ -18,6 +18,8 @@ export class ItemFormComponent implements OnInit {
   private _checked: boolean = false;
 
   itemAudioUrl: string | null = null;
+  durationLoadingText: string | null = "Waiting on file..";
+  loadingDuration: boolean = false;
   itemAudioDuration: number | null = null;
   itemAudioMB: number | null = null;
   itemPassageRef: string | null = null;
@@ -72,7 +74,9 @@ export class ItemFormComponent implements OnInit {
           // Convert array buffer into audio buffer
           audioContext.decodeAudioData(arrayBuffer).then((audioBuffer: AudioBuffer) => {
             this.itemAudioDuration = audioBuffer.duration;
+            this.loadingDuration = false;
             console.log(audioBuffer.duration);
+            console.log(this.loadingDuration);
           });
       }
 
@@ -100,6 +104,7 @@ export class ItemFormComponent implements OnInit {
   change(event: any){
 
     if (event.target.value && event.target.value.includes("thrive-fl.org/wp-content/uploads/")) {
+      this.loadingDuration = true;
       this.getFileDuration(event.target.value);
     }
     else {
