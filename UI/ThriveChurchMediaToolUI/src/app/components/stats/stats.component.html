@@ -3,43 +3,83 @@
 		<p class="display-5">Sermon Stats</p>
 	</div>
 	<br />
-	<h5>General</h5>
-	<table class="table table-striped">
-			<thead>
-			</thead>
-			<tbody>
-				<tr>
-					<td class="stat"># of Series</td>
-					<td>{{ TotalSeriesNum }}</td>
-				</tr>
-				<tr>
-					<td class="stat"># of Messages</td>
-					<td>{{ TotalMessageNum }}</td>
-				</tr>
-				<tr>
-					<td class="stat">Messages Per Series (Avg)</td>
-					<td>{{ AvgMessagesPerSeries | duration }}</td>
-				</tr>
-				<tr>
-					<td class="stat">Total Audio Duration (Days)</td>
-					<td>{{ TotalAudioLength | duration: 'd' }}</td>
-				</tr>
-				<tr>
-					<td class="stat">Avg Audio Duration (Mins)</td>
-					<td>{{ AvgAudioLength | duration: 'm' }}</td>
-				</tr>
-				<tr>
-					<td class="stat">Total File Size (GB)</td>
-					<td>{{ TotalFileSize | filesize: 'GB' }}</td>
-				</tr>
-				<tr>
-					<td class="stat">Avg File Size (MB)</td>
-					<td>{{ AvgFileSize | filesize }}</td>
-				</tr>
-			</tbody>
-	  </table>
+	<div id="datum-container" class="container">
+		<div class="row">
+			<div class="col">
+				<div class="datum">
+					<div class="datum-header">
+						# Of Sermon Series
+					</div>
+					<div class="data">
+						{{ TotalSeriesNum }}
+					</div>
+				</div>
+			</div>
+			<div class="col">
+				<div class="datum">
+					<div class="datum-header">
+						# Of Messages
+					</div>
+					<div class="data">
+						{{ TotalMessageNum }}
+					</div>
+				</div>
+			</div>
+			<div class="col">
+				<div class="datum">
+					<div class="datum-header">
+						Messages Per Series
+					</div>
+					<div class="data">
+						{{ AvgMessagesPerSeries | duration }}
+					</div>
+				</div>
+			</div>
+			<div class="col">
+				<div class="datum">
+					<div class="datum-header">
+						Audio Duration
+					</div>
+					<div class="data">
+						{{ TotalAudioLength | duration: 'd' }} <span class="unit">Days</span>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col">
+				<div class="datum">
+					<div class="datum-header">
+						Avg. Audio Duration
+					</div>
+					<div class="data">
+						{{ AvgAudioLength | duration: 'm' }} <span class="unit">Mins</span>
+					</div>
+				</div>
+			</div>
+			<div class="col">
+				<div class="datum">
+					<div class="datum-header">
+						Total File Size
+					</div>
+					<div class="data">
+						{{ TotalFileSize | filesize: 'GB' }} <span class="unit">GB</span>
+					</div>
+				</div>
+			</div>
+			<div class="col">
+				<div class="datum">
+					<div class="datum-header">
+						Avg. File Size
+					</div>
+					<div class="data">
+						{{ AvgFileSize | filesize: 'MB' }} <span class="unit">MB</span>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
 	<br />
-	<h5>Speakers</h5>
 	<table class="table table-striped">
 		<thead>
 			<tr>
@@ -47,7 +87,7 @@
 				<th scope="col">Message Count</th>
 				<th scope="col">Duration Avg (mins)</th>
 			</tr>
-			</thead>
+		</thead>
 		<tbody>
 			<tr *ngFor="let speaker of speakers">
 				<td>{{ speaker.Name }}</td>
