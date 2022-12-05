@@ -1,0 +1,26 @@
+
+
+a {
+	text-decoration: none;
+	color: deepskyblue;
+	font-size: smaller;
+	letter-spacing: 2px;
+	font-weight: bold;
+
+	.card-footer
+	{
+		text-align: center;
+	}
+}
+
+img {
+	aspect-ratio: 16 / 9;
+}
+
+.card {
+	width: 22rem;
+}
+
+h5 {
+	color: #333;
+}

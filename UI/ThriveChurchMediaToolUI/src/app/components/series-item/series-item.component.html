@@ -1,7 +1,29 @@
-<a 	href="{{hyperlink}}"
-	class="list-group-item list-group-item-action" aria-current="true">
-	<div class="d-flex w-100 justify-content-between">
-		<h6 class="mb-1">{{ summary?.Title }}</h6>
-		<small>{{ localizedDate }}</small>
+<div class="d-inline-flex p-2 align-items-stretch">
+	<div class="card h-100">
+	<img class="card-img-top" src="{{summary?.ArtUrl}}" alt="Card image cap">
+	<div class="card-body">
+		<h5 class="card-title">{{summary?.Title}}</h5>
+		<h6 class="card-subtitle mb-2 text-muted">
+			<span *ngIf="summary?.EndDate">
+				<span>{{ this.summary?.StartDate | date: 'MMMM d, YYYY' }} - {{ this.summary?.EndDate | date: 'MMMM d, YYYY' }}</span>
+			</span>
+			<span *ngIf="!summary?.EndDate">
+				<span>{{ this.summary?.EndDate | date: 'MMMM d, YYYY' }}</span>
+			</span>
+		</h6>
+		<h6 class="card-text">
+			<span *ngIf="(summary?.MessageCount ?? 0) > 0 && (summary?.MessageCount ?? 0) !== 1">
+				<span>{{ summary?.MessageCount }} messages</span>
+			</span>
+			<span *ngIf="(summary?.MessageCount ?? 0) === 1">
+				<span>1 message</span>
+			</span>
+		</h6>
+		<p class="card-text"><small class="text-muted">Updated {{localizedLastUpdated}}</small></p>
 	</div>
-</a>
+	<a href="{{hyperlink}}">
+		<div class="card-footer">
+			<small>EDIT</small>
+		</div>
+	</a>
+</div>

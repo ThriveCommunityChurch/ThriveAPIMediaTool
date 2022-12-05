@@ -78,6 +78,107 @@
 				</div>
 			</div>
 		</div>
+		<div class="row">
+			<div class="col"
+			*ngIf="LongestMessage != null">
+				<div class="datum">
+					<div class="datum-header">
+						Longest Message
+					</div>
+					<br />
+					<div class="row">
+						<div class="col">
+							<div class="data-details-header">
+								Duration
+							</div>
+							<div class="data-details">
+								{{ LongestMessage?.AudioDuration ?? 0 | duration: 'm' }} <span class="unit">Mins</span>
+							</div>
+						</div>
+						<div class="col">
+							<div class="col">
+								<div class="data-details-header">
+									Message Date
+								</div>
+								<div class="data-details">
+									{{ LongestMessage?.Date | date: 'MMMM d, YYYY' }}	
+								</div>
+							</div>
+						</div>
+						<div class="col">
+							<div class="data-details-header">
+								Speaker
+							</div>
+							<div class="data-details">
+								{{ LongestMessage?.Speaker }}	
+							</div>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col">
+							<div class="data-details-header">
+								Series Name
+							</div>
+							<div class="data-details">
+								{{ LongestMessage?.SeriesName }}
+							</div>
+						</div>
+						<div class="col">
+							<div class="data-details-header">
+								Title
+							</div>
+							<div class="data-details">
+								{{ LongestMessage?.Title }}	
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="col"
+			*ngIf="LongestSeries != null">
+				<div class="datum">
+					<div class="datum-header">
+						Longest Series
+					</div>
+					<br />
+					<div class="row">
+						<div class="col">
+							<div class="data-details-header">
+								Messages
+							</div>
+							<div class="data-details">
+								{{ LongestSeries?.SeriesLength ?? 0 }}
+							</div>
+						</div>
+						<div class="col">
+							<div class="col">
+								<div class="data-details-header">
+									Start Date
+								</div>
+								<div class="data-details">
+									{{ LongestSeries?.StartDate | date: 'MMMM d, YYYY' }}	
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col">
+							<div class="data-details-header">
+								Title
+							</div>
+							<div class="data-details">
+								{{ LongestSeries?.Title }}	
+							</div>
+						</div>
+						<div class="col">
+							<div class="data-details-art">
+								<img src="{{LongestSeries?.ArtUrl}}" alt="{{LongestSeries?.Title}}">
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
 	</div>
 	<br />
 	<table class="table table-striped">
@@ -97,4 +198,3 @@
 		</tbody>
 	</table>
 </div>
-<br />
