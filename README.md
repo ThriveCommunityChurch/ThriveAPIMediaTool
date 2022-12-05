@@ -1,3 +1,7 @@
+<p align="center">
+  <img src="https://user-images.githubusercontent.com/22202975/205743304-073fb721-7ca3-4b52-a132-f397452f2e99.png" data-canonical-src="https://user-https://user-images.githubusercontent.com/22202975/205743304-073fb721-7ca3-4b52-a132-f397452f2e99.png" target="_blank">
+ </p>
+
 # Thrive API Media Tool
 A CLI tool used to upload new media items to the Thrive Church Official API.
 
