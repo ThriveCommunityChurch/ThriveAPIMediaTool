@@ -18,3 +18,8 @@ export const environment = {
     apiURL: "http://hostname:port"
 };
   ```
+  
+## Screenshots
+![image](https://user-images.githubusercontent.com/22202975/205739159-096eb0bb-5f23-4819-8ea0-0cc860f530d8.png)
+![image](https://user-images.githubusercontent.com/22202975/205739389-20952d2c-6b95-497d-9b1c-9912ed828786.png)
+
