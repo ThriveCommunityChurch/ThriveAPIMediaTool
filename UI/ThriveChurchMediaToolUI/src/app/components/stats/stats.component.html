@@ -101,7 +101,7 @@
 									Message Date
 								</div>
 								<div class="data-details">
-									{{ LongestMessage?.Date | date: 'MMMM d, YYYY' }}	
+									{{ LongestMessage?.Date | date: 'MMMM d, YYYY':'UTC' }}	
 								</div>
 							</div>
 						</div>
@@ -156,7 +156,7 @@
 									Start Date
 								</div>
 								<div class="data-details">
-									{{ LongestSeries?.StartDate | date: 'MMMM d, YYYY' }}	
+									{{ LongestSeries?.StartDate | date: 'MMMM d, YYYY':'UTC' }}	
 								</div>
 							</div>
 						</div>

@@ -1,14 +1,18 @@
 <div class="d-inline-flex p-2 align-items-stretch">
 	<div class="card h-100">
 	<img class="card-img-top" src="{{summary?.ArtUrl}}" alt="Card image cap">
+	<div class="card-img-overlay"
+		*ngIf="summary?.StartDate && !summary?.EndDate">
+		<p class="card-text"><small>Current Series</small></p>
+	  </div>
 	<div class="card-body">
 		<h5 class="card-title">{{summary?.Title}}</h5>
 		<h6 class="card-subtitle mb-2 text-muted">
 			<span *ngIf="summary?.EndDate">
-				<span>{{ this.summary?.StartDate | date: 'MMMM d, YYYY' }} - {{ this.summary?.EndDate | date: 'MMMM d, YYYY' }}</span>
+				<span>{{ this.summary?.StartDate | date: 'MMMM d, YYYY':'UTC' }} - {{ this.summary?.EndDate | date: 'MMMM d, YYYY':'UTC' }}</span>
 			</span>
 			<span *ngIf="!summary?.EndDate">
-				<span>{{ this.summary?.EndDate | date: 'MMMM d, YYYY' }}</span>
+				<span>Started {{ this.summary?.StartDate | date: 'MMMM d, YYYY':'UTC' }}</span>
 			</span>
 		</h6>
 		<h6 class="card-text">
