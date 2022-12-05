@@ -1,13 +1,19 @@
-.card-img-overlay .card-text {
-	padding-top: 49%;
-    text-align: left;
+.card-img-overlay {
+	padding: 7px;
 
-	small {
-		background-color: rgba(200, 200, 200, 0.60);
-		padding: 0 5px;
-		color: black;
+	.card-text {
+		text-align: left;
+	
+		small {
+			background-color: rgba(210, 210, 210, 0.67);
+			padding: 0 5px;
+			color: black;
+			border-radius: 4px;
+			font-weight: bold;
+		}
 	}
 }
+	
 
 a {
 	text-decoration: none;
