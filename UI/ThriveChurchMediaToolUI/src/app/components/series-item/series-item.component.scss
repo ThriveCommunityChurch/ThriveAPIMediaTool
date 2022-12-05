@@ -1,14 +1,15 @@
 
-.card-footer
-{
-	text-align: center;
 
-	a {
-		text-decoration: none;
-		color: deepskyblue;
-		font-size: smaller;
-		letter-spacing: 2px;
-		font-weight: bold;
+a {
+	text-decoration: none;
+	color: deepskyblue;
+	font-size: smaller;
+	letter-spacing: 2px;
+	font-weight: bold;
+
+	.card-footer
+	{
+		text-align: center;
 	}
 }
 
