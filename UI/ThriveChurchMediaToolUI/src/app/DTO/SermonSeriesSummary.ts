@@ -3,4 +3,6 @@ export interface SermonSeriesSummary {
     Title: string;
     StartDate: string;
     ArtUrl: string;
+    EndDate: string | null;
+    MessageCount: number | null;
 }
