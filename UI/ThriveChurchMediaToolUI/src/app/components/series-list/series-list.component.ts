@@ -36,6 +36,7 @@ export class SeriesListComponent implements OnInit {
           this.summaries.push(summary);
         });
       }
+
     });
   }
 

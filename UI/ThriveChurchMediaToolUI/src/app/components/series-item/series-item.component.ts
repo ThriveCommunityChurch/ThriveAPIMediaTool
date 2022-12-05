@@ -2,6 +2,7 @@ import { Component, Input, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import * as moment from 'moment-timezone';
 import { SermonSeriesSummary } from 'src/app/DTO/SermonSeriesSummary';
+import { SeriesListComponent } from '../series-list/series-list.component';
 
 @Component({
   selector: 'app-series-item',
@@ -14,9 +15,10 @@ export class SeriesItemComponent implements OnInit {
   hyperlink: string = "";
   localizedStartDate: string;
   localizedEndDate: string;
+  localizedLastUpdated: string;
 
   constructor(
-    private _router: Router,
+    private _router: Router
     ) 
   { 
   }
@@ -27,6 +29,7 @@ export class SeriesItemComponent implements OnInit {
       this.hyperlink = `/edit/${this.summary.Id}`;
 
       this.localizedStartDate = moment(Date.parse(this.summary.StartDate)).tz('UTC').format("LL");
+      this.localizedLastUpdated = moment(Date.parse(this.summary.LastUpdated)).tz('UTC').fromNow();
 
       if (this.summary.EndDate) {
         this.localizedEndDate = moment(Date.parse(this.summary.EndDate)).tz('UTC').format("LL");
