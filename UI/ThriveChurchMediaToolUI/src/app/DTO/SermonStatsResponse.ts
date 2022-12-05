@@ -11,6 +11,6 @@ export interface SermonStatsResponse {
 	TotalFileSize: number;
 	AvgFileSize: number;
 	SpeakerStats: SpeakerStats[];
-	LongestMessage: SermonMessageSummary;
-	LongestSeries: LongestSermonSeriesSummary;
+	LongestMessage: SermonMessageSummary | null;
+	LongestSeries: LongestSermonSeriesSummary | null;
 }
