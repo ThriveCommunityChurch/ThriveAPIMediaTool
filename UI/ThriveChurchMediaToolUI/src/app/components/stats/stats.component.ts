@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { LongestSermonSeriesSummary } from 'src/app/DTO/LongestSermonSeriesSummary';
+import { SermonMessageSummary } from 'src/app/DTO/SermonMessageSummary';
 import { SermonStatsResponse } from 'src/app/DTO/SermonStatsResponse';
 import { SpeakerStats } from 'src/app/DTO/SpeakerStats';
 import { ApiService } from 'src/app/services/api-service.service';
@@ -21,6 +23,9 @@ export class StatsComponent implements OnInit {
   AvgAudioLength: number = 0;
   TotalFileSize: number = 0;
   AvgFileSize: number = 0;
+
+  LongestMessage: SermonMessageSummary | null;
+  LongestSeries: LongestSermonSeriesSummary | null;
 
   constructor(apiService: ApiService) { 
     this.apiService = apiService;
@@ -46,8 +51,9 @@ export class StatsComponent implements OnInit {
           this.AvgAudioLength = this.stats.AvgAudioLength;
           this.TotalFileSize = this.stats.TotalFileSize;
           this.AvgFileSize = this.stats.AvgFileSize;
-
+          this.LongestMessage = this.stats.LongestMessage;
           this.speakers = this.stats.SpeakerStats;
+          this.LongestSeries = this.stats.LongestSeries;
         }
       });
   }

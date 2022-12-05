@@ -13,8 +13,6 @@ export class SeriesItemComponent implements OnInit {
 
   @Input() summary: SermonSeriesSummary | null = null;
   hyperlink: string = "";
-  localizedStartDate: string;
-  localizedEndDate: string;
   localizedLastUpdated: string;
 
   constructor(
@@ -28,12 +26,7 @@ export class SeriesItemComponent implements OnInit {
     if (this.summary) {
       this.hyperlink = `/edit/${this.summary.Id}`;
 
-      this.localizedStartDate = moment(Date.parse(this.summary.StartDate)).tz('UTC').format("LL");
       this.localizedLastUpdated = moment(Date.parse(this.summary.LastUpdated)).tz('UTC').fromNow();
-
-      if (this.summary.EndDate) {
-        this.localizedEndDate = moment(Date.parse(this.summary.EndDate)).tz('UTC').format("LL");
-      }
     }
   }
 

@@ -4,6 +4,7 @@
 
 .container {
 	text-align: center;
+	padding-bottom: 10px;
 }
 
 .datum-header {
@@ -21,6 +22,17 @@
 		font-weight: normal;
 		margin-left: -10px;
 	}
+}
+
+.data-details-header {
+	font-size: smaller;
+	color: #AAA;
+}
+
+.data-details-art {
+	img {
+		height: 50px;
+	} 
 }
 
 .datum {

@@ -1,3 +1,5 @@
+import { LongestSermonSeriesSummary } from "./LongestSermonSeriesSummary";
+import { SermonMessageSummary } from "./SermonMessageSummary";
 import { SpeakerStats } from "./SpeakerStats";
 
 export interface SermonStatsResponse {
@@ -9,4 +11,6 @@ export interface SermonStatsResponse {
 	TotalFileSize: number;
 	AvgFileSize: number;
 	SpeakerStats: SpeakerStats[];
+	LongestMessage: SermonMessageSummary;
+	LongestSeries: LongestSermonSeriesSummary;
 }
