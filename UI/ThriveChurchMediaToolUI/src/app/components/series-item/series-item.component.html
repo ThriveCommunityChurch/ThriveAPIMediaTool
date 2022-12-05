@@ -5,10 +5,10 @@
 		<h5 class="card-title">{{summary?.Title}}</h5>
 		<h6 class="card-subtitle mb-2 text-muted">
 			<span *ngIf="summary?.EndDate">
-				<span>{{ this.summary?.StartDate | date: 'MMMM d, YYYY' }} - {{ this.summary?.EndDate | date: 'MMMM d, YYYY' }}</span>
+				<span>{{ this.summary?.StartDate | date: 'MMMM d, YYYY':'UTC' }} - {{ this.summary?.EndDate | date: 'MMMM d, YYYY':'UTC' }}</span>
 			</span>
 			<span *ngIf="!summary?.EndDate">
-				<span>{{ this.summary?.EndDate | date: 'MMMM d, YYYY' }}</span>
+				<span>{{ this.summary?.EndDate | date: 'MMMM d, YYYY':'UTC' }}</span>
 			</span>
 		</h6>
 		<h6 class="card-text">
