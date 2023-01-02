@@ -41,7 +41,7 @@
 						Audio Duration
 					</div>
 					<div class="data">
-						{{ TotalAudioLength | duration: 'd' }} <span class="unit">Days</span>
+						{{ TotalAudioLength | duration: 'd h' }}
 					</div>
 				</div>
 			</div>
@@ -53,7 +53,7 @@
 						Avg. Audio Duration
 					</div>
 					<div class="data">
-						{{ AvgAudioLength | duration: 'm' }} <span class="unit">Mins</span>
+						{{ AvgAudioLength | duration: 'm s' }}
 					</div>
 				</div>
 			</div>
@@ -92,7 +92,7 @@
 								Duration
 							</div>
 							<div class="data-details">
-								{{ LongestMessage?.AudioDuration ?? 0 | duration: 'm' }} <span class="unit">Mins</span>
+								{{ LongestMessage?.AudioDuration ?? 0 | duration: 'm s' }}
 							</div>
 						</div>
 						<div class="col">
