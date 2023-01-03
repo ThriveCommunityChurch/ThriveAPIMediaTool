@@ -185,7 +185,8 @@
 		<thead>
 			<tr>
 				<th scope="col">Speaker</th>
-				<th scope="col">Message Count</th>
+				<th scope="col">Messages</th>
+				<th scope="col">% Of Total</th>
 				<th scope="col">Duration Avg (mins)</th>
 			</tr>
 		</thead>
@@ -193,6 +194,7 @@
 			<tr *ngFor="let speaker of speakers">
 				<td>{{ speaker.Name }}</td>
 				<td>{{ speaker.MessageCount }}</td>
+				<td>{{ (speaker.MessageCount / TotalMessageNum) * 100 | number: '1.1-2' }}%</td>
 				<td>{{ speaker.AvgLength | duration: 'm' }}</td>
 			</tr>
 		</tbody>
