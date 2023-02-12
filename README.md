@@ -1,3 +1,7 @@
+<p align="center">
+  <img src="https://user-images.githubusercontent.com/22202975/205743304-073fb721-7ca3-4b52-a132-f397452f2e99.png" data-canonical-src="https://user-https://user-images.githubusercontent.com/22202975/205743304-073fb721-7ca3-4b52-a132-f397452f2e99.png" target="_blank">
+ </p>
+
 # Thrive API Media Tool
 A CLI tool used to upload new media items to the Thrive Church Official API.
 
@@ -18,3 +22,8 @@ export const environment = {
     apiURL: "http://hostname:port"
 };
   ```
+  
+## Screenshots
+![image](https://user-images.githubusercontent.com/22202975/205739159-096eb0bb-5f23-4819-8ea0-0cc860f530d8.png)
+![image](https://user-images.githubusercontent.com/22202975/205739389-20952d2c-6b95-497d-9b1c-9912ed828786.png)
+
