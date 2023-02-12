@@ -41,7 +41,7 @@
 						Audio Duration
 					</div>
 					<div class="data">
-						{{ TotalAudioLength | duration: 'd' }} <span class="unit">Days</span>
+						{{ TotalAudioLength | duration: 'd h' }}
 					</div>
 				</div>
 			</div>
@@ -53,7 +53,7 @@
 						Avg. Audio Duration
 					</div>
 					<div class="data">
-						{{ AvgAudioLength | duration: 'm' }} <span class="unit">Mins</span>
+						{{ AvgAudioLength | duration: 'm s' }}
 					</div>
 				</div>
 			</div>
@@ -92,7 +92,7 @@
 								Duration
 							</div>
 							<div class="data-details">
-								{{ LongestMessage?.AudioDuration ?? 0 | duration: 'm' }} <span class="unit">Mins</span>
+								{{ LongestMessage?.AudioDuration ?? 0 | duration: 'm s' }}
 							</div>
 						</div>
 						<div class="col">
@@ -185,7 +185,8 @@
 		<thead>
 			<tr>
 				<th scope="col">Speaker</th>
-				<th scope="col">Message Count</th>
+				<th scope="col">Messages</th>
+				<th scope="col">% Of Total</th>
 				<th scope="col">Duration Avg (mins)</th>
 			</tr>
 		</thead>
@@ -193,6 +194,7 @@
 			<tr *ngFor="let speaker of speakers">
 				<td>{{ speaker.Name }}</td>
 				<td>{{ speaker.MessageCount }}</td>
+				<td>{{ (speaker.MessageCount / TotalMessageNum) * 100 | number: '1.1-2' }}%</td>
 				<td>{{ speaker.AvgLength | duration: 'm' }}</td>
 			</tr>
 		</tbody>

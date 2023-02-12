@@ -1,8 +1,0 @@
-{
-  "profiles": {
-    "Thrive API Media Tool": {
-      "commandName": "Project",
-      "commandLineArgs": "-g \"true\" -s \"6029c1461e770c18286deba5\" -c \"true\" -y \"2021-03-21\" -k \"_\" -t \"_\" -d \"2021-03-21\""
-    }
-  }
-}
