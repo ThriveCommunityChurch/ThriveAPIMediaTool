@@ -1,0 +1,48 @@
+name: Angular CI
+
+on: 
+  pull_request:
+    branches:
+    - dev
+    - master
+    
+jobs:
+  ci:
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        node-version: [16.x]
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v1
+        with:
+          node-version: ${{ matrix.node-version }}
+          
+#      - name: Get npm cache directory
+#        id: npm-cache-dir
+#        shell: pwsh
+#        run: echo "dir=$(npm config get cache)" >> ${env:GITHUB_OUTPUT}
+#        
+#      - name: Cache node modules
+#        uses: actions/cache@v3
+#        id: npm-cache
+#        with:
+#          path: ${{ steps.npm-cache-dir.outputs.dir }}
+#          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+#          restore-keys: |
+#            ${{ runner.os }}-node-
+            
+      - name: Install Dependencies
+        run: |
+          npm --prefix 'UI/ThriveChurchMediaToolUI' ci
+#      - name: Lint
+#        run: |
+#          npm --prefix 'UI/ThriveChurchMediaToolUI' run lint
+          
+      - name: Build
+        run: |
+          npm --prefix 'UI/ThriveChurchMediaToolUI' run build
