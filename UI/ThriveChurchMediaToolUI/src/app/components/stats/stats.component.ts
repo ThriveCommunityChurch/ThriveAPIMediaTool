@@ -1,9 +1,16 @@
+import { Chart, registerables } from 'chart.js';
+import * as moment from 'moment';
+
 import { Component, OnInit } from '@angular/core';
+
 import { LongestSermonSeriesSummary } from 'src/app/DTO/LongestSermonSeriesSummary';
 import { SermonMessageSummary } from 'src/app/DTO/SermonMessageSummary';
 import { SermonStatsResponse } from 'src/app/DTO/SermonStatsResponse';
+import { ChartDataItem } from 'src/app/DTO/ChartDataItem';
 import { SpeakerStats } from 'src/app/DTO/SpeakerStats';
 import { ApiService } from 'src/app/services/api-service.service';
+
+
 
 @Component({
   selector: 'app-stats',
@@ -15,6 +22,12 @@ export class StatsComponent implements OnInit {
   apiService: ApiService;
   stats: SermonStatsResponse;
   speakers: SpeakerStats[] = [];
+  chartDataItems: ChartDataItem[] = [];
+  chartAggregateType: string = "Monthly"
+
+  chart: Chart | null = null;
+  startDateString: string = "";
+  endDateString: string = "";
 
   TotalSeriesNum: number = 0;
   TotalMessageNum: number = 0;
@@ -27,11 +40,28 @@ export class StatsComponent implements OnInit {
   LongestMessage: SermonMessageSummary | null;
   LongestSeries: LongestSermonSeriesSummary | null;
 
-  constructor(apiService: ApiService) { 
+  constructor(apiService: ApiService) {
     this.apiService = apiService;
+
+    Chart.register(...registerables);
   }
 
   ngOnInit(): void {
+
+    var startDate = document.querySelector('#startDate') as HTMLInputElement;
+    var endDate = document.querySelector('#endDate') as HTMLInputElement;
+
+    if (startDate) {
+      var ninetyDaysAgoUtc = new Date(Date.now() - 90 * 24 * 60 * 60 * 1000);
+      this.startDateString = moment(ninetyDaysAgoUtc).format("YYYY-MM-DD");
+      startDate.addEventListener('change', this.handleChangeStartDate.bind(this));
+    }
+
+    if (endDate) {
+      var now = new Date();
+      this.endDateString = moment(now).format("YYYY-MM-DD");
+      endDate.addEventListener('change', this.handleChangeEndDate.bind(this));
+    }
 
     this.apiService.getStats()
       // clone the data object, using its known Config shape
@@ -56,6 +86,126 @@ export class StatsComponent implements OnInit {
           this.LongestSeries = this.stats.LongestSeries;
         }
       });
+
+    this.loadChartData();
   }
 
+
+  handleChangeStartDate(event: Event) {
+    var target = event.target as HTMLInputElement;
+    this.startDateString = target.value;
+    console.log(this.startDateString);
+  }
+
+  handleChangeEndDate(event: Event) {
+    var target = event.target as HTMLInputElement;
+    this.endDateString = target.value;
+    console.log(this.endDateString);
+  }
+
+  setAggreate(aggregate: string) {
+    this.chartAggregateType = aggregate;
+
+    this.loadChartData();
+  }
+
+  createChart(): Chart | null {
+
+    const canvas = document.getElementById('myChart') as HTMLCanvasElement;
+    const ctx = canvas.getContext('2d');
+
+    if (ctx) {
+      return new Chart(ctx, {
+        type: 'line',
+        data: {
+          labels: this.chartDataItems.map((item) => item.Label),
+          datasets: [{
+            label: `${this.chartAggregateType} Audio Duration (seconds)`,
+            data: this.chartDataItems.map((item) => item.Value),
+            borderWidth: 2,
+            tension: 0.2
+          }]
+        },
+        options: {
+          responsive: true,
+          scales: {
+            y: {
+              beginAtZero: false
+            },
+            x: {
+              ticks: {
+                maxTicksLimit: 50
+              }
+            }
+          }
+        }
+      });
+    }
+
+    return null;
+  }
+
+  loadChartData() {
+
+    this.chartDataItems = [];
+
+    console.log(this.startDateString, this.endDateString, 'AudioDuration', this.chartAggregateType);
+
+    this.apiService.getStatsChart(this.startDateString, this.endDateString, 'AudioDuration', this.chartAggregateType)
+      // clone the data object, using its known Config shape
+      .subscribe(resp => {
+        // display its headers
+
+        if (resp.status > 200) {
+          console.log(resp.body);
+        }
+        else if (resp.body) {
+          //this.stats = resp.body;
+          if (resp.body.Data) {
+            resp.body.Data.forEach(data => {
+
+              var dateString: string = "";
+
+              switch (this.chartAggregateType) {
+
+                case "Daily":
+                  dateString = moment(Date.parse(data.Date)).format("MMM Do YYYY");
+                  break;
+
+                case "Weekly":
+                  dateString = moment(Date.parse(data.Date)).format("MMM Do");
+                  break;
+
+                case "Monthly":
+                  dateString = moment(Date.parse(data.Date)).format("MMM 'YY");
+                  break;
+
+                case "Yearly":
+                  dateString = moment(Date.parse(data.Date)).format("YYYY");
+                  break;
+
+                default:
+                  dateString = moment(Date.parse(data.Date)).format("MMM Do");
+
+              }
+              let item: ChartDataItem = {
+                Label: dateString,
+                Value: data.Value
+              };
+
+              this.chartDataItems.push(item);
+            });
+          }
+
+
+          if (this.chart) {
+            this.chart.destroy();
+            this.chart = this.createChart();
+          }
+          else {
+            this.chart = this.createChart();
+          }
+        }
+      });
+  }
 }
