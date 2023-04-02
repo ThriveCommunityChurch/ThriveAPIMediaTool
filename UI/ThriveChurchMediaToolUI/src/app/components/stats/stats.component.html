@@ -1,6 +1,42 @@
 <div class="container">
 	<div class="row align-items-center">
 		<p class="display-5">Sermon Stats</p>
+		<hr>
+	</div>
+	<br />
+	<div class="chart">
+		<div id="chart-header" class="d-flex">
+			<div class="d-flex">
+				<h6>Start Date</h6>
+				<input id="startDate" class="form-control" type="date" />
+			</div>
+			<div class="d-flex">
+				<h6>End Date</h6>
+				<input id="endDate" class="form-control" type="date" />
+			</div>
+			<div class="dropdown">
+				<button class="btn btn-primary dropdown-toggle ml-auto btn-sm" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+				  Choose Display
+				</button>
+				<ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+				  <li><a class="dropdown-item" (click)="setAggreate('Daily')">Daily</a></li>
+				  <li><a class="dropdown-item" (click)="setAggreate('Weekly')">Weekly</a></li>
+				  <li><a class="dropdown-item" (click)="setAggreate('Monthly')">Monthly</a></li>
+				  <li><a class="dropdown-item" (click)="setAggreate('Yearly')">Yearly</a></li>
+				</ul>
+			</div>
+			<div class="dropdown">
+				<button class="btn btn-primary dropdown-toggle ml-auto btn-sm" type="button" id="dropdownMenuButton2" data-bs-toggle="dropdown" aria-expanded="false">
+				  Chart Type
+				</button>
+				<ul class="dropdown-menu" aria-labelledby="dropdownMenuButton2">
+				  <li><a class="dropdown-item" (click)="setChartType('AudioDuration')">Audio Duration</a></li>
+				  <li><a class="dropdown-item" (click)="setChartType('TotAudioDuration')">Total Audio Duration</a></li>
+				  <li><a class="dropdown-item" (click)="setChartType('TotAudioFileSize')">Total Audio Size</a></li>
+				</ul>
+			</div>
+		</div>
+		<canvas id="myChart"></canvas>
 	</div>
 	<br />
 	<div id="datum-container" class="container">

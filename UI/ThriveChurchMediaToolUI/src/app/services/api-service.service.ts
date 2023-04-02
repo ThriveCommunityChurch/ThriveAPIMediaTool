@@ -1,12 +1,15 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpResponse } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { SermonSummaryResponse } from '../DTO/SermonSummaryResponse';
 
+import { environment } from 'src/environments/environment';
+import { UrlFormatter } from '../shared/UrlFormatter';
+
+import { SermonSummaryResponse } from '../DTO/SermonSummaryResponse';
+import { SermonStatsChartResponse } from '../DTO/SermonStatsChartResponse';
 import { CreateSermonSeriesRequest } from '../DTO/CreateSermonSeriesRequest';
 import { SermonSeries } from '../DTO/SermonSeries';
 import { AddMessagesToSeriesRequest } from '../DTO/AddMessagesToSeriesRequest';
-import { environment } from 'src/environments/environment';
 import { SermonStatsResponse } from '../DTO/SermonStatsResponse';
 
 @Injectable()
@@ -69,6 +72,25 @@ export class ApiService {
   getStats(): Observable<HttpResponse<SermonStatsResponse>> {
     return this.http.get<SermonStatsResponse>(
       this.apiUrl.concat(`/api/sermons/stats`),
+      {
+        observe: 'response'
+      }
+    )
+  }
+
+  getStatsChart(startDate: string | null, endDate: string | null, reportType: string, displayType: string): Observable<HttpResponse<SermonStatsChartResponse>> {
+    
+    const queryParams = {
+      startDate: startDate,
+      endDate: endDate,
+      chartType: reportType,
+      displayType: displayType
+    };
+    
+    const queryString = UrlFormatter.formatQueryParams(queryParams);
+    
+    return this.http.get<SermonStatsChartResponse>(
+      this.apiUrl.concat(`/api/sermons/stats/chart${queryString}`),
       {
         observe: 'response'
       }
