@@ -27,5 +27,4 @@ appsettings.json
 UI/ThriveChurchMediaToolUI/.vscode/
 
 # Prod configs
-UI/ThriveChurchMediaToolUI/src/environments/environment.prod.ts
-UI/ThriveChurchMediaToolUI/src/environments/environment.ts
+**/environments/
