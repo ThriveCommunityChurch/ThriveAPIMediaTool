@@ -24,6 +24,10 @@ export class StatsComponent implements OnInit {
   speakers: SpeakerStats[] = [];
   chartDataItems: ChartDataItem[] = [];
   chartAggregateType: string = "Monthly"
+  chartType: string = "AudioDuration"
+  chartTypeName: string = "Audio Duration"
+  chartUnit: string = "seconds"
+  chartDisplayName: string = ""
 
   chart: Chart | null = null;
   startDateString: string = "";
@@ -36,6 +40,7 @@ export class StatsComponent implements OnInit {
   AvgAudioLength: number = 0;
   TotalFileSize: number = 0;
   AvgFileSize: number = 0;
+  defaultDateRange: number = 120;
 
   LongestMessage: SermonMessageSummary | null;
   LongestSeries: LongestSermonSeriesSummary | null;
@@ -52,15 +57,17 @@ export class StatsComponent implements OnInit {
     var endDate = document.querySelector('#endDate') as HTMLInputElement;
 
     if (startDate) {
-      var ninetyDaysAgoUtc = new Date(Date.now() - 90 * 24 * 60 * 60 * 1000);
-      this.startDateString = moment(ninetyDaysAgoUtc).format("YYYY-MM-DD");
+      var defaultStartDate = new Date(Date.now() - this.defaultDateRange * 24 * 60 * 60 * 1000);
+      this.startDateString = moment(defaultStartDate).format("YYYY-MM-DD");
       startDate.addEventListener('change', this.handleChangeStartDate.bind(this));
+      startDate.value = this.startDateString;
     }
 
     if (endDate) {
       var now = new Date();
       this.endDateString = moment(now).format("YYYY-MM-DD");
       endDate.addEventListener('change', this.handleChangeEndDate.bind(this));
+      endDate.value = this.endDateString;
     }
 
     this.apiService.getStats()
@@ -94,17 +101,42 @@ export class StatsComponent implements OnInit {
   handleChangeStartDate(event: Event) {
     var target = event.target as HTMLInputElement;
     this.startDateString = target.value;
-    console.log(this.startDateString);
+    this.loadChartData();
   }
 
   handleChangeEndDate(event: Event) {
     var target = event.target as HTMLInputElement;
     this.endDateString = target.value;
-    console.log(this.endDateString);
+    this.loadChartData();
   }
 
   setAggreate(aggregate: string) {
     this.chartAggregateType = aggregate;
+    this.loadChartData();
+  }
+
+  setChartName() {
+    this.chartDisplayName = `${this.chartAggregateType} ${this.chartTypeName} (${this.chartUnit})`;
+  }
+
+  setChartType(chartType: string) {
+    this.chartType = chartType;
+
+    switch (chartType)  
+    {
+      case "TotAudioFileSize":
+        this.chartTypeName = "Total Audio File Size"
+        this.chartUnit = "Mb"
+          break;
+      case "AudioDuration":
+          this.chartTypeName = "Audio Duration"
+          this.chartUnit = "seconds"
+        break;
+      case "TotAudioDuration":
+          this.chartTypeName = "Total Audio Duration"
+          this.chartUnit = "seconds"
+        break;
+    }
 
     this.loadChartData();
   }
@@ -120,7 +152,7 @@ export class StatsComponent implements OnInit {
         data: {
           labels: this.chartDataItems.map((item) => item.Label),
           datasets: [{
-            label: `${this.chartAggregateType} Audio Duration (seconds)`,
+            label: `${this.chartDisplayName}`,
             data: this.chartDataItems.map((item) => item.Value),
             borderWidth: 2,
             tension: 0.2
@@ -148,10 +180,9 @@ export class StatsComponent implements OnInit {
   loadChartData() {
 
     this.chartDataItems = [];
+    this.setChartName();
 
-    console.log(this.startDateString, this.endDateString, 'AudioDuration', this.chartAggregateType);
-
-    this.apiService.getStatsChart(this.startDateString, this.endDateString, 'AudioDuration', this.chartAggregateType)
+    this.apiService.getStatsChart(this.startDateString, this.endDateString, this.chartType, this.chartAggregateType)
       // clone the data object, using its known Config shape
       .subscribe(resp => {
         // display its headers

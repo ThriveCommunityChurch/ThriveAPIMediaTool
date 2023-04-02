@@ -25,6 +25,16 @@
 				  <li><a class="dropdown-item" (click)="setAggreate('Yearly')">Yearly</a></li>
 				</ul>
 			</div>
+			<div class="dropdown">
+				<button class="btn btn-primary dropdown-toggle ml-auto btn-sm" type="button" id="dropdownMenuButton2" data-bs-toggle="dropdown" aria-expanded="false">
+				  Chart Type
+				</button>
+				<ul class="dropdown-menu" aria-labelledby="dropdownMenuButton2">
+				  <li><a class="dropdown-item" (click)="setChartType('AudioDuration')">Audio Duration</a></li>
+				  <li><a class="dropdown-item" (click)="setChartType('TotAudioDuration')">Total Audio Duration</a></li>
+				  <li><a class="dropdown-item" (click)="setChartType('TotAudioFileSize')">Total Audio Size</a></li>
+				</ul>
+			</div>
 		</div>
 		<canvas id="myChart"></canvas>
 	</div>
