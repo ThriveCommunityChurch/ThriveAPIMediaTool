@@ -200,23 +200,23 @@ export class StatsComponent implements OnInit {
               switch (this.chartAggregateType) {
 
                 case "Daily":
-                  dateString = moment(Date.parse(data.Date)).format("MMM Do YYYY");
+                  dateString = moment(Date.parse(data.Date)).utcOffset(0).format("MMM Do YYYY");
                   break;
 
                 case "Weekly":
-                  dateString = moment(Date.parse(data.Date)).format("MMM Do");
+                  dateString = moment(Date.parse(data.Date)).utcOffset(0).format("MMM Do");
                   break;
 
                 case "Monthly":
-                  dateString = moment(Date.parse(data.Date)).format("MMM 'YY");
+                  dateString = moment(Date.parse(data.Date)).utcOffset(0).format("MMM 'YY");
                   break;
 
                 case "Yearly":
-                  dateString = moment(Date.parse(data.Date)).format("YYYY");
+                  dateString = moment(Date.parse(data.Date)).utcOffset(0).format("YYYY");
                   break;
 
                 default:
-                  dateString = moment(Date.parse(data.Date)).format("MMM Do");
+                  dateString = moment(Date.parse(data.Date)).utcOffset(0).format("MMM Do");
 
               }
               let item: ChartDataItem = {
