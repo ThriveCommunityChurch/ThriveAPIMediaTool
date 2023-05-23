@@ -2,6 +2,8 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Component, OnInit, Output, EventEmitter, Input, OnChanges, SimpleChanges } from '@angular/core';
 import { Observable, take, tap } from 'rxjs';
 import { SermonMessageRequest } from 'src/app/DTO/SermonMessageRequest';
+import { DurationPipe } from 'src/app/pipes/DurationPipe';
+import { FileSizePipe } from 'src/app/pipes/FileSizePipe';
 
 @Component({
   selector: 'app-item-form',
@@ -18,7 +20,7 @@ export class ItemFormComponent implements OnInit {
   private _checked: boolean = false;
 
   itemAudioUrl: string | null = null;
-  durationLoadingText: string | null = "Waiting on file..";
+  durationLoadingText: string | null = "Waiting on file...";
   loadingDuration: boolean = false;
   itemAudioDuration: number | null = null;
   itemAudioMB: number | null = null;

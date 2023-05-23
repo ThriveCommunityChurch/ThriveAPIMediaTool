@@ -223,7 +223,7 @@
 				<th scope="col">Speaker</th>
 				<th scope="col">Messages</th>
 				<th scope="col">% Of Total</th>
-				<th scope="col">Duration Avg (mins)</th>
+				<th scope="col">Avg. Duration</th>
 			</tr>
 		</thead>
 		<tbody>
@@ -231,7 +231,7 @@
 				<td>{{ speaker.Name }}</td>
 				<td>{{ speaker.MessageCount }}</td>
 				<td>{{ (speaker.MessageCount / TotalMessageNum) * 100 | number: '1.1-2' }}%</td>
-				<td>{{ speaker.AvgLength | duration: 'm' }}</td>
+				<td>{{ speaker.AvgLength | duration: 'm s' }} </td>
 			</tr>
 		</tbody>
 	</table>
