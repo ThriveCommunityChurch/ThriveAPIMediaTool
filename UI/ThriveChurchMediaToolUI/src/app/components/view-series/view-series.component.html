@@ -1,0 +1,23 @@
+<div class="container">
+	<div class="d-flex align-items-stretch">
+		<img class="series-img" 
+		src="{{sermonSeries?.ArtUrl}}"
+		alt="Series image">
+		<div class="summary-info">
+			<div class="series-details">
+				<h2>{{sermonSeries?.Name}}</h2>
+				<p *ngIf="sermonSeries?.StartDate && !sermonSeries?.EndDate"
+					class="time-span">Current Series</p>
+				<p *ngIf="sermonSeries?.StartDate && sermonSeries?.EndDate"
+				class="time-span">{{ sermonSeries?.StartDate | date: 'MMMM d, YYYY':'UTC' }} - {{ sermonSeries?.EndDate | date: 'MMMM d, YYYY':'UTC' }}</p>
+				<div class="row">
+					<div class="col">
+						<div class="detail">
+							<p><strong># Messages:</strong> {{sermonSeries?.Messages?.length ?? 0}}</p>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>	 
+</div>

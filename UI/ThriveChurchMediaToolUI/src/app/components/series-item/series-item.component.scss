@@ -22,18 +22,19 @@
 }
 	
 
-a {
-	text-decoration: none;
-	color: deepskyblue;
-	font-size: smaller;
-	letter-spacing: 2px;
-	font-weight: bold;
+.card-footer
+{
+	text-align: center;
 
-	.card-footer
-	{
-		text-align: center;
+	a {
+		text-decoration: none;
+		color: deepskyblue;
+		font-size: smaller;
+		letter-spacing: 2px;
+		font-weight: bold;
 	}
 }
+
 
 img {
 	aspect-ratio: 16 / 9;

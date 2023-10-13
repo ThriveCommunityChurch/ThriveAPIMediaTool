@@ -1,0 +1,23 @@
+.container {
+	margin-top: 20px;
+}
+
+
+img {
+	display: flex;
+  	flex-flow: row nowrap;
+  	align-items: center;
+	width: 33.34%;
+	border-radius: 10px;
+	object-fit: cover;
+}
+
+.summary-info {
+	width: 100%;
+	padding: 10px;
+	margin-left: 10px;
+
+	.detail {
+		padding-top: 10px;
+	}
+}
