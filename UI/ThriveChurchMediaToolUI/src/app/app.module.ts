@@ -11,12 +11,14 @@ import { SeriesListComponent } from './components/series-list/series-list.compon
 import { CreateSeriesComponent } from './components/create-series/create-series.component';
 import { PageNotFoundComponent } from './components/page-not-found/page-not-found.component';
 import { EditSeriesComponent } from './components/edit-series/edit-series.component';
+import { ViewSeriesComponent } from './components/view-series/view-series.component';
 import { SeriesItemComponent } from './components/series-item/series-item.component';
 import { ItemFormComponent } from './components/item-form/item-form.component';
 import { StatsComponent } from './components/stats/stats.component';
 import { DurationPipe } from './pipes/DurationPipe';
 import { PluralityPipe } from './pipes/PluralityPipe';
 import { FileSizePipe } from './pipes/FileSizePipe';
+import { MessageSummaryComponent } from './components/message-summary/message-summary.component';
 
 
 @NgModule({
@@ -27,12 +29,14 @@ import { FileSizePipe } from './pipes/FileSizePipe';
     CreateSeriesComponent,
     PageNotFoundComponent,
     EditSeriesComponent,
+    ViewSeriesComponent,
     SeriesItemComponent,
     ItemFormComponent,
     StatsComponent,
     DurationPipe,
     PluralityPipe,
-    FileSizePipe
+    FileSizePipe,
+    MessageSummaryComponent
   ],
   imports: [
     BrowserModule,

@@ -12,7 +12,6 @@ import { SeriesListComponent } from '../series-list/series-list.component';
 export class SeriesItemComponent implements OnInit {
 
   @Input() summary: SermonSeriesSummary | null = null;
-  hyperlink: string = "";
   localizedLastUpdated: string;
 
   constructor(
@@ -24,8 +23,6 @@ export class SeriesItemComponent implements OnInit {
   ngOnInit(): void {
 
     if (this.summary) {
-      this.hyperlink = `/edit/${this.summary.Id}`;
-
       this.localizedLastUpdated = moment(Date.parse(this.summary.LastUpdated)).tz('UTC').fromNow();
     }
   }

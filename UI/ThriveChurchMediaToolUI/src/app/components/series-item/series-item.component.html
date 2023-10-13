@@ -29,9 +29,13 @@
 		</h6>
 		<p class="card-text"><small class="text-muted">Updated {{localizedLastUpdated}}</small></p>
 	</div>
-	<a href="{{hyperlink}}">
-		<div class="card-footer">
+	<div class="card-footer">
+		<a href="edit/{{summary?.Id}}">
 			<small>EDIT</small>
-		</div>
-	</a>
+		</a>
+		&nbsp;
+		<a href="view/{{summary?.Id}}">
+			<small>VIEW</small>
+		</a>
+	</div>	
 </div>
