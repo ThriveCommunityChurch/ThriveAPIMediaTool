@@ -10,8 +10,6 @@ import { ChartDataItem } from 'src/app/DTO/ChartDataItem';
 import { SpeakerStats } from 'src/app/DTO/SpeakerStats';
 import { ApiService } from 'src/app/services/api-service.service';
 
-
-
 @Component({
   selector: 'app-stats',
   templateUrl: './stats.component.html',
@@ -42,8 +40,8 @@ export class StatsComponent implements OnInit {
   AvgFileSize: number = 0;
   defaultDateRange: number = 120;
 
-  LongestMessage: SermonMessageSummary | null;
-  LongestSeries: LongestSermonSeriesSummary | null;
+  LongestMessage: SermonMessageSummary | undefined | null;
+  LongestSeries: LongestSermonSeriesSummary | undefined | null;
 
   constructor(apiService: ApiService) {
     this.apiService = apiService;

@@ -12,7 +12,7 @@ export class ViewSeriesComponent implements OnInit {
 
   seriesId: string | null = null;
   seriesName: string = "N/A";
-  sermonSeries: SermonSeries;
+  sermonSeries: SermonSeries | undefined;
 
   constructor(
     private route: ActivatedRoute,
