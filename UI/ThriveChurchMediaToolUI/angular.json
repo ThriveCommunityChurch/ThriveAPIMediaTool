@@ -34,7 +34,8 @@
             ],
             "scripts": [],
             "allowedCommonJsDependencies": [
-                "moment-timezone"
+                "moment-timezone",
+                "moment"
             ]
           },
           "configurations": {

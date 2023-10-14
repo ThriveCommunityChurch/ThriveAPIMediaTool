@@ -10,8 +10,6 @@ import { ChartDataItem } from 'src/app/DTO/ChartDataItem';
 import { SpeakerStats } from 'src/app/DTO/SpeakerStats';
 import { ApiService } from 'src/app/services/api-service.service';
 
-
-
 @Component({
   selector: 'app-stats',
   templateUrl: './stats.component.html',

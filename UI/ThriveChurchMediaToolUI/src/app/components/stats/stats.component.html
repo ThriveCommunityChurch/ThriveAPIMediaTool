@@ -128,7 +128,7 @@
 								Duration
 							</div>
 							<div class="data-details">
-								{{ LongestMessage?.AudioDuration ?? 0 | duration: 'm s' }}
+								{{ LongestMessage.AudioDuration ?? 0 | duration: 'm s' }}
 							</div>
 						</div>
 						<div class="col">
@@ -137,7 +137,7 @@
 									Message Date
 								</div>
 								<div class="data-details">
-									{{ LongestMessage?.Date | date: 'MMMM d, YYYY':'UTC' }}	
+									{{ LongestMessage.Date | date: 'MMMM d, YYYY':'UTC' }}	
 								</div>
 							</div>
 						</div>
@@ -146,7 +146,7 @@
 								Speaker
 							</div>
 							<div class="data-details">
-								{{ LongestMessage?.Speaker }}	
+								{{ LongestMessage.Speaker }}	
 							</div>
 						</div>
 					</div>
@@ -156,7 +156,7 @@
 								Series Name
 							</div>
 							<div class="data-details">
-								{{ LongestMessage?.SeriesName }}
+								{{ LongestMessage.SeriesName }}
 							</div>
 						</div>
 						<div class="col">
@@ -164,7 +164,7 @@
 								Title
 							</div>
 							<div class="data-details">
-								{{ LongestMessage?.Title }}	
+								{{ LongestMessage.Title }}	
 							</div>
 						</div>
 					</div>
@@ -183,7 +183,7 @@
 								Messages
 							</div>
 							<div class="data-details">
-								{{ LongestSeries?.SeriesLength }}
+								{{ LongestSeries.SeriesLength }}
 							</div>
 						</div>
 						<div class="col">
@@ -192,7 +192,7 @@
 									Start Date
 								</div>
 								<div class="data-details">
-									{{ LongestSeries?.StartDate | date: 'MMMM d, YYYY':'UTC' }}	
+									{{ LongestSeries.StartDate | date: 'MMMM d, YYYY':'UTC' }}	
 								</div>
 							</div>
 						</div>
@@ -203,12 +203,12 @@
 								Title
 							</div>
 							<div class="data-details">
-								{{ LongestSeries?.Title }}	
+								{{ LongestSeries.Title }}	
 							</div>
 						</div>
 						<div class="col">
 							<div class="data-details-art">
-								<img src="{{LongestSeries?.ArtUrl}}" alt="{{LongestSeries?.Title}}">
+								<img src="{{LongestSeries.ArtUrl}}" alt="{{LongestSeries.Title}}">
 							</div>
 						</div>
 					</div>
