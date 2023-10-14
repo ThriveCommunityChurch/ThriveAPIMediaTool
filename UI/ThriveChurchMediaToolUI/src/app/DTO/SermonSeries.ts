@@ -4,10 +4,10 @@ export interface SermonSeries {
 	Id: string;
 	Name: string;
     Year: string;
-    StartDate: string | null;
-    EndDate: string | null;
+    StartDate: string | undefined | null;
+    EndDate: string | undefined | null;
     Slug: string;
     Thumbnail: string;
-    ArtUrl: string;
+    ArtUrl: string | undefined;
     Messages: SermonMessage[];
 }

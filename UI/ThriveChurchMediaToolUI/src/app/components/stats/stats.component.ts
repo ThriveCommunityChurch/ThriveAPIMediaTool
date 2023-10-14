@@ -42,8 +42,8 @@ export class StatsComponent implements OnInit {
   AvgFileSize: number = 0;
   defaultDateRange: number = 120;
 
-  LongestMessage: SermonMessageSummary | null;
-  LongestSeries: LongestSermonSeriesSummary | null;
+  LongestMessage: SermonMessageSummary | undefined | null;
+  LongestSeries: LongestSermonSeriesSummary | undefined | null;
 
   constructor(apiService: ApiService) {
     this.apiService = apiService;

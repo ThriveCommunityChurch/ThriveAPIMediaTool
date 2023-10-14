@@ -1,5 +1,5 @@
 export interface SermonMessageSummary {
-	AudioDuration: number;
+	AudioDuration: number | undefined | null;
 	Date: string;
 	Speaker: string;
 	Title: string;

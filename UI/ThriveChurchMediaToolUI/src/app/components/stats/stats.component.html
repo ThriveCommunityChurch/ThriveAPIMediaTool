@@ -116,7 +116,7 @@
 		</div>
 		<div class="row">
 			<div class="col"
-			*ngIf="LongestMessage != null">
+			*ngIf="LongestMessage">
 				<div class="datum">
 					<div class="datum-header">
 						Longest Message
@@ -171,7 +171,7 @@
 				</div>
 			</div>
 			<div class="col"
-			*ngIf="LongestSeries != null">
+			*ngIf="LongestSeries">
 				<div class="datum">
 					<div class="datum-header">
 						Longest Series
@@ -183,7 +183,7 @@
 								Messages
 							</div>
 							<div class="data-details">
-								{{ LongestSeries?.SeriesLength ?? 0 }}
+								{{ LongestSeries?.SeriesLength }}
 							</div>
 						</div>
 						<div class="col">

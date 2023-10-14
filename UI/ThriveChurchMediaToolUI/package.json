@@ -23,7 +23,7 @@
     "moment": "^2.29.4",
     "moment-timezone": "^0.5.35",
     "rxjs": "~7.4.0",
-    "zone.js": "~0.11.4"
+    "zone.js": "^0.11.8"
   },
   "devDependencies": {
     "@angular-devkit/build-angular": "^15.2.10",
