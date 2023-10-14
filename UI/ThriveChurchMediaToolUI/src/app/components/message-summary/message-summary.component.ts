@@ -8,11 +8,15 @@ import { SermonMessage } from 'src/app/DTO/SermonMessage';
 })
 export class MessageSummaryComponent implements OnInit {
 
-  @Input() message: SermonMessage | null = null;
+  @Input() message: SermonMessage;
+  encodedPassage: string = "";
 
   constructor() { }
 
   ngOnInit(): void {
+    if (this.message.PassageRef) {
+      this.encodedPassage = this.message.PassageRef.replace(/ /g, '+').replace(/:/g, '%3A');
+    }
   }
 
 }

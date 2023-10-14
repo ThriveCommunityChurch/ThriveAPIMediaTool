@@ -14,6 +14,9 @@ export class ViewSeriesComponent implements OnInit {
   seriesName: string = "N/A";
   sermonSeries: SermonSeries | undefined;
 
+  totalDuration: number = 0;
+  totalFileSize: number = 0;
+
   constructor(
     private route: ActivatedRoute,
     private _router: Router,
@@ -34,6 +37,20 @@ export class ViewSeriesComponent implements OnInit {
         }
         else if (resp.body) {
           this.sermonSeries = resp.body;
+
+          this.totalDuration = this.sermonSeries.Messages.reduce((sum, current) => {
+            if (!current.AudioDuration) {
+              return sum 
+            }
+            return sum + current.AudioDuration;
+          }, 0);
+
+          this.totalFileSize = this.sermonSeries.Messages.reduce((sum, current) => {
+            if (!current.AudioFileSize) {
+              return sum 
+            }
+            return sum + current.AudioFileSize;
+          }, 0);
         }
       });
     }

@@ -1,0 +1,51 @@
+.message-summary {
+	border-bottom: 1px solid #dfdfdf;
+	padding: 10px 0 15px 0;
+
+	.title {
+		font-weight: 500;
+		font-size: larger;
+
+		span {
+			padding-left: 8px;
+			vertical-align: text-top;
+
+			.fa-youtube {
+				color: #F00;
+
+				:hover {
+					color: #F00;
+				}
+			}
+		}
+	}
+
+	.additional-info {
+		.row {
+			padding-top: 10px;
+		}
+
+		.data-title {
+			font-weight: 400;
+		}
+	
+		.data {
+			font-weight: 500;
+			font-size: small;
+			
+			a {
+				padding-left: 3px;
+				vertical-align: unset;
+
+				.fa-external-link-alt {
+					color: deepskyblue;
+					width: 0.8em;
+
+					:hover {
+						color: deepskyblue;
+					}
+				}
+			}
+		}
+	}
+}

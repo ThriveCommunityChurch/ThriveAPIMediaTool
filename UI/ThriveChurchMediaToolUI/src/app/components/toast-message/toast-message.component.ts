@@ -1,7 +1,5 @@
 import { Component, ElementRef, QueryList, ViewChildren } from '@angular/core';
 import { ToastMessage } from 'src/app/Domain/ToastMessage';
-
-import * as moment from 'moment';
 import { ToastService } from 'src/app/services/toast-service.service';
 import * as bootstrap from 'bootstrap';
 import { Subscription } from 'rxjs';

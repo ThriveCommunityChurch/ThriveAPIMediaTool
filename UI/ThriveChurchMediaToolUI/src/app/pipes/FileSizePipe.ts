@@ -5,6 +5,10 @@ export class FileSizePipe implements PipeTransform {
 	
 	transform(size: number, format: string = 'MB'): string {
 
+		if (size === 0) {
+			return "N/A";
+		}
+
 		// comes in as MB
 		var value: number = size;
 
@@ -48,6 +52,8 @@ export class FileSizePipe implements PipeTransform {
 		var answer = `${value}`;
 		answer = `${answer.substring(0, answer.indexOf('.') + 3)}`;
 
-		return answer.replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ",");
+		answer = answer.replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ",")
+
+		return `${answer} ${format}`;
 	}
 }

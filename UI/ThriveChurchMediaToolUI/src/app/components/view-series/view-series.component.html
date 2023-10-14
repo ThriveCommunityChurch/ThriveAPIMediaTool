@@ -15,7 +15,12 @@
 				<div class="row">
 					<div class="col">
 						<div class="detail">
-							<p><strong># Messages:</strong> {{sermonSeries.Messages.length}}</p>
+							<p><strong>Total Duration:</strong> {{ totalDuration | duration: 'h[h] m[m] s[s]' }}</p>
+						</div>
+					</div>
+					<div class="col">
+						<div class="detail">
+							<p><strong>Total File Size:</strong> {{ totalFileSize | filesize: 'MB' }}</p>
 						</div>
 					</div>
 				</div>
@@ -23,14 +28,12 @@
 		</div>
 	</div>	 
 
-	<div class="card">
-		<ul class="list-group list-group-flush">
-			<app-message-summary
-				*ngFor="let message of sermonSeries.Messages"
-				[message]="message">
-			</app-message-summary>
-		</ul>
-	  </div>
+	<div class="message-list">
+		<app-message-summary
+			*ngFor="let message of sermonSeries.Messages.reverse()"
+			[message]="message">
+		</app-message-summary>
+	</div>
 	
 </div>
 <app-page-not-found *ngIf="!sermonSeries"></app-page-not-found>
