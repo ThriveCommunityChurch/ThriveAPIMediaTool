@@ -1,0 +1,18 @@
+@import '~bootstrap/dist/css/bootstrap.min.css';
+
+.toaster-oven {
+	overflow: hidden;
+	height: 1vh;
+}
+
+.Info {
+	.toast-header {
+		background-color: #abf3ae;
+	}
+}
+
+.Error {
+	.toast-header {
+		background-color: #f5aca6;
+	}
+}

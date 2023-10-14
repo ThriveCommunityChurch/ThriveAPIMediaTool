@@ -1,6 +1,5 @@
 <div class="container">
 	<p class="display-4">Adding message to '{{seriesName}}'</p>
-
 	<app-item-form
 		[submitButtonMessage]="submitButtonMessage"
 		[cancelButtonMessage]="cancelButtonMessage"
@@ -8,3 +7,4 @@
 		(cancelAddItemEvent)="cancelAddItemEventHandler()">
 	</app-item-form>
 </div>
+<app-toast-message></app-toast-message>
