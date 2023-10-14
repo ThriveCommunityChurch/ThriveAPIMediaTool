@@ -3,6 +3,7 @@ import { Subscription } from "rxjs";
 import { CreateSermonSeriesRequest } from 'src/app/DTO/CreateSermonSeriesRequest';
 import { SermonMessageRequest } from 'src/app/DTO/SermonMessageRequest';
 import { ApiService } from 'src/app/services/api-service.service';
+import { ToastService } from "src/app/services/toast-service.service";
 
 declare let $: any;
 
@@ -30,14 +31,16 @@ export class CreateSeriesComponent implements OnInit {
 
   // services
   apiService: ApiService;
-
+  toastService: ToastService;
 
   // Item form
   submitButtonMessage = "Add item";
   cancelButtonMessage = "Cancel adding item";
 
-  constructor(apiService: ApiService) {
+  constructor(apiService: ApiService,
+    toastService: ToastService) {
     this.apiService = apiService;         
+    this.toastService = toastService;         
   }
 
   ngOnInit(): void { }
@@ -57,8 +60,6 @@ export class CreateSeriesComponent implements OnInit {
       Thumbnail: this.seriesThumbnailUrl,
       Year: `${this.startDate.split('-')[0]}`
     };
-
-    console.log(seriesRequest);
  
     this.apiService.createSeries(seriesRequest)
     // clone the data object, using its known Config shape
@@ -66,12 +67,19 @@ export class CreateSeriesComponent implements OnInit {
       // display its headers
 
       if (resp.status > 200) {
-        console.log(resp.body);
+        if (resp.status === 204) {
+          this.toastService.showStandardToast("Another series is already active.", resp.status);
+        }
+        else {
+          this.toastService.showStandardToast("An error occurred creating this series. Try again.", resp.status);
+        }
       }
       else if (resp.body) {
-        alert(`Created series with ID: ${resp.body.Id}.`);
+        this.toastService.showStandardToast(`Created series with ID: ${resp.body.Id}.`, 200);
       }
-    });
+    }), (error: any) => {
+      this.toastService.showStandardToast("An error occurred creating this series. Try again.", 400);
+    };
   }
   
   private findEndDate(): string | null {

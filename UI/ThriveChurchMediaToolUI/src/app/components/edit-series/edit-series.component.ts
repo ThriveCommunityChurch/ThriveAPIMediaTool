@@ -67,11 +67,13 @@ export class EditSeriesComponent implements OnInit {
           // display its headers
   
           if (resp.status > 200) {
-            this.showStandardToast("An error occurred updating this series. Try again.", resp.status);
+            this.toastService.showStandardToast("An error occurred updating this series. Try again.", resp.status);
           }
           else if (resp.body) {
-            this.showStandardToast("Series was successfully completed.", 200);
+            this.toastService.showStandardToast("Series was successfully completed.", 200);
           }
+        }, (error: any) => {
+          this.toastService.showStandardToast("An error occurred adding this message. Try again.", 400);
         });
       }
 
@@ -86,25 +88,15 @@ export class EditSeriesComponent implements OnInit {
         // display its headers
 
         if (resp.status > 200) {
-          this.showStandardToast("An error occurred adding this message. Try again.", resp.status);
+          this.toastService.showStandardToast("An error occurred adding this message. Try again.", resp.status);
         }
         else if (resp.body) {
-          this.showStandardToast("New message was successfully added.", 200);
+          this.toastService.showStandardToast("New message was successfully added.", 200);
         }
       }, (error: any) => {
-          this.showStandardToast("An error occurred adding this message. Try again.", 400);
+          this.toastService.showStandardToast("An error occurred adding this message. Try again.", 400);
       });
     }
-  }
-
-  showStandardToast(text: string, httpCode: number): void {
-
-    const newToast: ToastMessage = {
-      Message: text,
-      Type: httpCode === 200 ? ToastMessageType.Info : ToastMessageType.Error
-    };
-    
-    this.toastService.show(newToast);
   }
 
   /**

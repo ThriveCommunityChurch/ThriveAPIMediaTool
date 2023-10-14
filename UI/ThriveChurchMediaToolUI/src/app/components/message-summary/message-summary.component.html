@@ -1,14 +1,66 @@
-<li class="list-group-item">
+<div class="message-summary">
 	<div class="title">
-		{{message?.Title}}
+		{{message.Title}}<span *ngIf="message.VideoUrl"><a target="_blank" href="{{message.VideoUrl}}"><i class="fab fa-youtube"></i></a></span>
 	</div>
 	<div class="additional-info">
-
+		<div class="row">
+			<div class="col">
+				<div class="data-title">
+					Date
+				</div>
+				<div class="data">
+					{{ message.Date | date: 'MMMM d, YYYY':'UTC' }}
+				</div>
+			</div>
+			<div class="col">
+				<div class="data-title">
+					Duration
+				</div>
+				<div class="data">
+					{{ message.AudioDuration ?? 0 | duration: 'm[m] s[s]' }}
+				</div>
+			</div>
+			<div class="col">
+				<div class="data-title">
+					File Size
+				</div>
+				<div class="data">
+					{{ message.AudioFileSize ?? 0 | filesize: 'MB' }}
+				</div>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col">
+				<div class="data-title">
+					Passage
+				</div>
+				<div class="data">
+					{{ message.PassageRef ?? "N/A"}} <a *ngIf="message.PassageRef" target="_blank" href="https://www.biblegateway.com/passage/?search={{encodedPassage}}&version=ESV"><i class="fas fa-external-link-alt"></i></a>
+				</div>
+			</div>
+			<div class="col">
+				<div class="data-title">
+					Speaker
+				</div>
+				<div class="data">
+					{{ message.Speaker }}
+				</div>
+			</div>
+			<div class="col">
+				<div class="data-title">
+					Message ID
+				</div>
+				<div class="data">
+					{{ message.MessageId }}
+				</div>
+			</div>
+		</div>
+		<!-- Maybe we can eventually do this but not now. -->
+		<!-- <div *ngIf="message.AudioUrl" class="row">
+			<audio controls>
+				<source src="{{message.AudioUrl}}" type="audio/mp3">
+				Your browser does not support the audio element.
+			</audio>
+		</div> -->
 	</div>
-</li>
-
-<!-- <div class="card-body">
-	<h5 class="card-title">{{message?.Title}}</h5>
-	<p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
-	<a href="#" class="btn btn-primary">Go somewhere</a>
-</div> -->
+</div>

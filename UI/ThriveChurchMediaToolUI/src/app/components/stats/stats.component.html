@@ -67,7 +67,7 @@
 						Messages Per Series
 					</div>
 					<div class="data">
-						{{ AvgMessagesPerSeries | duration }}
+						{{ AvgMessagesPerSeries | number: '1.1-2' }}
 					</div>
 				</div>
 			</div>
@@ -77,7 +77,7 @@
 						Audio Duration
 					</div>
 					<div class="data">
-						{{ TotalAudioLength | duration: 'd h' }}
+						{{ TotalAudioLength | duration: 'd[d] h[h]' }}
 					</div>
 				</div>
 			</div>
@@ -89,7 +89,7 @@
 						Avg. Audio Duration
 					</div>
 					<div class="data">
-						{{ AvgAudioLength | duration: 'm s' }}
+						{{ AvgAudioLength | duration: 'm[m] s[s]' }}
 					</div>
 				</div>
 			</div>
@@ -99,7 +99,7 @@
 						Total File Size
 					</div>
 					<div class="data">
-						{{ TotalFileSize | filesize: 'GB' }} <span class="unit">GB</span>
+						{{ TotalFileSize | filesize: 'GB' }}
 					</div>
 				</div>
 			</div>
@@ -109,7 +109,7 @@
 						Avg. File Size
 					</div>
 					<div class="data">
-						{{ AvgFileSize | filesize: 'MB' }} <span class="unit">MB</span>
+						{{ AvgFileSize | filesize: 'MB' }}
 					</div>
 				</div>
 			</div>
@@ -128,7 +128,7 @@
 								Duration
 							</div>
 							<div class="data-details">
-								{{ LongestMessage.AudioDuration ?? 0 | duration: 'm s' }}
+								{{ LongestMessage.AudioDuration ?? 0 | duration: 'm[m] s[s]' }}
 							</div>
 						</div>
 						<div class="col">
@@ -231,7 +231,7 @@
 				<td>{{ speaker.Name }}</td>
 				<td>{{ speaker.MessageCount }}</td>
 				<td>{{ (speaker.MessageCount / TotalMessageNum) * 100 | number: '1.1-2' }}%</td>
-				<td>{{ speaker.AvgLength | duration: 'm s' }} </td>
+				<td>{{ speaker.AvgLength | duration: 'm[m] s[s]' }} </td>
 			</tr>
 		</tbody>
 	</table>

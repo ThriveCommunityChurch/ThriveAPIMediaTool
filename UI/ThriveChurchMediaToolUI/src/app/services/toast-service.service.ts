@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { ToastMessage } from '../Domain/ToastMessage';
 import { BehaviorSubject, Observable } from 'rxjs';
+import { ToastMessageType } from '../Domain/ToastMessageType';
 
 @Injectable()
 export class ToastService {
@@ -23,5 +24,15 @@ export class ToastService {
 		const updatedToasts = this.toastsSubject.value.filter((t) => t !== toast);
 		this.toastsSubject.next(updatedToasts);
 	}
+
+	showStandardToast(text: string, httpCode: number): void {
+
+		const newToast: ToastMessage = {
+		  Message: text,
+		  Type: httpCode === 200 ? ToastMessageType.Info : ToastMessageType.Error
+		};
+	
+		this.show(newToast);
+	  }
   
 }
