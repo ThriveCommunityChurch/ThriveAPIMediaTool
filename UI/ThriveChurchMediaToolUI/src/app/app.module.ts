@@ -19,6 +19,8 @@ import { DurationPipe } from './pipes/DurationPipe';
 import { PluralityPipe } from './pipes/PluralityPipe';
 import { FileSizePipe } from './pipes/FileSizePipe';
 import { MessageSummaryComponent } from './components/message-summary/message-summary.component';
+import { ToastMessageComponent } from './components/toast-message/toast-message.component';
+import { ToastService } from './services/toast-service.service';
 
 
 @NgModule({
@@ -36,7 +38,8 @@ import { MessageSummaryComponent } from './components/message-summary/message-su
     DurationPipe,
     PluralityPipe,
     FileSizePipe,
-    MessageSummaryComponent
+    MessageSummaryComponent,
+    ToastMessageComponent
   ],
   imports: [
     BrowserModule,
@@ -46,7 +49,8 @@ import { MessageSummaryComponent } from './components/message-summary/message-su
   ],  
   providers: [
     ApiService,
-    SeriesListComponent
+    SeriesListComponent,
+    ToastService
   ],
   bootstrap: [
     AppComponent

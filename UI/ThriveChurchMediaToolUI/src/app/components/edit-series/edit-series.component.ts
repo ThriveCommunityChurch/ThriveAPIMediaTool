@@ -4,6 +4,9 @@ import { AddMessagesToSeriesRequest } from 'src/app/DTO/AddMessagesToSeriesReque
 import { SermonMessageRequest } from 'src/app/DTO/SermonMessageRequest';
 import { SermonSeries } from 'src/app/DTO/SermonSeries';
 import { ApiService } from 'src/app/services/api-service.service';
+import { ToastService } from 'src/app/services/toast-service.service';
+import { ToastMessage } from '../../Domain/ToastMessage'
+import { ToastMessageType } from '../../Domain/ToastMessageType'
 
 @Component({
   selector: 'app-edit-series',
@@ -23,12 +26,13 @@ export class EditSeriesComponent implements OnInit {
   constructor(
     private route: ActivatedRoute,
     private _router: Router,
-    private apiService: ApiService
+    private apiService: ApiService,
+    private toastService: ToastService
   ) { }
 
   ngOnInit(): void {
     this.seriesId = this.route.snapshot.paramMap.get('id');
-    
+   
     if (this.seriesId) {
       this.apiService.getSeries(this.seriesId)
       // clone the data object, using its known Config shape
@@ -63,10 +67,10 @@ export class EditSeriesComponent implements OnInit {
           // display its headers
   
           if (resp.status > 200) {
-            console.log(resp.body);
+            this.showStandardToast("An error occurred updating this series. Try again.", resp.status);
           }
           else if (resp.body) {
-            alert("Success!");
+            this.showStandardToast("Series was successfully completed.", 200);
           }
         });
       }
@@ -82,13 +86,25 @@ export class EditSeriesComponent implements OnInit {
         // display its headers
 
         if (resp.status > 200) {
-          console.log(resp.body);
+          this.showStandardToast("An error occurred adding this message. Try again.", resp.status);
         }
         else if (resp.body) {
-          alert("Success!");
+          this.showStandardToast("New message was successfully added.", 200);
         }
+      }, (error: any) => {
+          this.showStandardToast("An error occurred adding this message. Try again.", 400);
       });
     }
+  }
+
+  showStandardToast(text: string, httpCode: number): void {
+
+    const newToast: ToastMessage = {
+      Message: text,
+      Type: httpCode === 200 ? ToastMessageType.Info : ToastMessageType.Error
+    };
+    
+    this.toastService.show(newToast);
   }
 
   /**

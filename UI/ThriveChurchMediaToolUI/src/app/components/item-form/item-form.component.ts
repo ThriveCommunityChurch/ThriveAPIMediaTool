@@ -53,8 +53,6 @@ export class ItemFormComponent implements OnInit {
       LastInSeries: this._checked
     };
 
-    console.log(mediaItem);
-
     this.submitItemEvent.emit(mediaItem);
     this.clearForm();
   }
@@ -77,8 +75,6 @@ export class ItemFormComponent implements OnInit {
           audioContext.decodeAudioData(arrayBuffer).then((audioBuffer: AudioBuffer) => {
             this.itemAudioDuration = audioBuffer.duration;
             this.loadingDuration = false;
-            console.log(audioBuffer.duration);
-            console.log(this.loadingDuration);
           });
       }
 
@@ -109,9 +105,6 @@ export class ItemFormComponent implements OnInit {
       this.loadingDuration = true;
       this.getFileDuration(event.target.value);
     }
-    else {
-      console.log(event);
-    }
   }
 
   // TS
@@ -122,7 +115,6 @@ export class ItemFormComponent implements OnInit {
       var file = fileList[0];
 
       this.itemAudioMB = file.size / Math.pow(1024, 2);
-      console.log(this.itemAudioMB);
     }
   }
 
