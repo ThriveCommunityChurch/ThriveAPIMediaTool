@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
+import { SermonMessage } from 'src/app/DTO/SermonMessage';
 import { SermonSeries } from 'src/app/DTO/SermonSeries';
 import { ApiService } from 'src/app/services/api-service.service';
 
@@ -13,6 +14,8 @@ export class ViewSeriesComponent implements OnInit {
   seriesId: string | null = null;
   seriesName: string = "N/A";
   sermonSeries: SermonSeries | undefined;
+
+  messages: SermonMessage[] = [];
 
   totalDuration: number = 0;
   totalFileSize: number = 0;
@@ -37,6 +40,8 @@ export class ViewSeriesComponent implements OnInit {
         }
         else if (resp.body) {
           this.sermonSeries = resp.body;
+
+          this.messages = this.sermonSeries.Messages.reverse();
 
           this.totalDuration = this.sermonSeries.Messages.reduce((sum, current) => {
             if (!current.AudioDuration) {
