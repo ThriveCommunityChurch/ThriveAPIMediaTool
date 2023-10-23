@@ -24,6 +24,6 @@ export const environment = {
   ```
   
 ## Screenshots
-![image](https://user-images.githubusercontent.com/22202975/205739159-096eb0bb-5f23-4819-8ea0-0cc860f530d8.png)
-![image](https://user-images.githubusercontent.com/22202975/205739389-20952d2c-6b95-497d-9b1c-9912ed828786.png)
-
+<img src="https://github.com/ThriveCommunityChurch/ThriveAPIMediaTool/assets/22202975/c8d24d38-528a-4d4e-a914-c38f90f18d10" width="100%">
+<img src="https://github.com/ThriveCommunityChurch/ThriveAPIMediaTool/assets/22202975/7c89b9a8-877f-400e-81cb-650238c9eb2a" width="100%">
+<img src="https://github.com/ThriveCommunityChurch/ThriveAPIMediaTool/assets/22202975/007e057f-4da2-4dee-9109-c590ff855e2e" width="100%">
