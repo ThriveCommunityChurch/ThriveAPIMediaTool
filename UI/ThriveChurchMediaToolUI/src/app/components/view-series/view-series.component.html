@@ -10,12 +10,14 @@
 				<h2>{{sermonSeries.Name}}</h2>
 				<p *ngIf="sermonSeries?.StartDate && !sermonSeries.EndDate"
 					class="time-span">Current Series</p>
-				<p *ngIf="sermonSeries.StartDate && sermonSeries.EndDate"
+				<p *ngIf="sermonSeries.EndDate && sermonSeries.StartDate === sermonSeries.EndDate"
+					class="time-span">{{ sermonSeries.StartDate | date: 'MMMM d, YYYY':'UTC' }}</p>
+				<p *ngIf="sermonSeries.EndDate && sermonSeries.StartDate !== sermonSeries.EndDate"
 				class="time-span">{{ sermonSeries.StartDate | date: 'MMMM d, YYYY':'UTC' }} - {{ sermonSeries.EndDate | date: 'MMMM d, YYYY':'UTC' }}</p>
 				<div class="row">
 					<div class="col">
 						<div class="detail">
-							<p><strong>Total Duration:</strong> {{ totalDuration | duration: 'h[h] m[m] s[s]' }}</p>
+							<p><strong>Total Duration:</strong> {{ totalDuration | duration: 'h[h] m[m]' }}</p>
 						</div>
 					</div>
 					<div class="col">

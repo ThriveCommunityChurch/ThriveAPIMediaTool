@@ -12,12 +12,13 @@
 		<h5 class="card-title"
 			title="{{summary?.Title}}">{{summary?.Title}}</h5>
 		<h6 class="card-subtitle mb-2 text-muted">
-			<span *ngIf="summary?.EndDate">
-				<span>{{ this.summary?.StartDate | date: 'MMMM d, YYYY':'UTC' }} - {{ this.summary?.EndDate | date: 'MMMM d, YYYY':'UTC' }}</span>
-			</span>
 			<span *ngIf="!summary?.EndDate">
 				<span>Started {{ this.summary?.StartDate | date: 'MMMM d, YYYY':'UTC' }}</span>
 			</span>
+			<span *ngIf="summary?.EndDate && summary?.StartDate === summary?.EndDate"
+				class="time-span">{{ this.summary?.StartDate | date: 'MMMM d, YYYY':'UTC' }}</span>
+			<span *ngIf="summary?.EndDate && summary?.StartDate && summary?.StartDate !== summary?.EndDate"
+			class="time-span">{{ this.summary?.StartDate | date: 'MMMM d, YYYY':'UTC' }} - {{ this.summary?.EndDate | date: 'MMMM d, YYYY':'UTC' }}</span>
 		</h6>
 		<h6 class="card-text">
 			<span *ngIf="(summary?.MessageCount ?? 0) > 0 && (summary?.MessageCount ?? 0) !== 1">
