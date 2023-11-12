@@ -25,6 +25,7 @@
     "moment": "^2.29.4",
     "moment-duration-format": "^2.3.2",
     "moment-timezone": "^0.5.35",
+    "ngx-skeleton-loader": "^8.1.0",
     "rxjs": "~7.4.0",
     "zone.js": "^0.13.3"
   },

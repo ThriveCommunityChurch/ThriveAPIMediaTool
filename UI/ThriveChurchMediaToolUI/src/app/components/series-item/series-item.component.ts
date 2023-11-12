@@ -1,8 +1,8 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { Router } from '@angular/router';
 import * as moment from 'moment-timezone';
 import { SermonSeriesSummary } from 'src/app/DTO/SermonSeriesSummary';
-import { SeriesListComponent } from '../series-list/series-list.component';
+import { SeriesDataService } from 'src/app/services/series-data-service';
 
 @Component({
   selector: 'app-series-item',
@@ -11,13 +11,17 @@ import { SeriesListComponent } from '../series-list/series-list.component';
 })
 export class SeriesItemComponent implements OnInit {
 
-  @Input() summary: SermonSeriesSummary | null = null;
+  @Input() summary: SermonSeriesSummary;
   localizedLastUpdated: string;
 
+  
+
   constructor(
-    private _router: Router
+    private _router: Router,
+    private _seriesDataService: SeriesDataService
     ) 
   { 
+
   }
 
   ngOnInit(): void {
@@ -25,6 +29,10 @@ export class SeriesItemComponent implements OnInit {
     if (this.summary) {
       this.localizedLastUpdated = moment(Date.parse(this.summary.LastUpdated)).tz('UTC').fromNow();
     }
+  }
+
+  setSeriesDataForNavigation() {
+    this._seriesDataService.add(this.summary);
   }
 
 }

@@ -21,6 +21,10 @@ import { FileSizePipe } from './pipes/FileSizePipe';
 import { MessageSummaryComponent } from './components/message-summary/message-summary.component';
 import { ToastMessageComponent } from './components/toast-message/toast-message.component';
 import { ToastService } from './services/toast-service.service';
+import { NgxSkeletonLoaderModule } from 'ngx-skeleton-loader';
+import { SeriesItemSkeletonComponent } from './components/series-item-skeleton/series-item-skeleton.component';
+import { SeriesDataService } from './services/series-data-service';
+import { MessageSummarySkeletonComponent } from './components/message-summary-skeleton/message-summary-skeleton.component';
 
 
 @NgModule({
@@ -39,18 +43,22 @@ import { ToastService } from './services/toast-service.service';
     PluralityPipe,
     FileSizePipe,
     MessageSummaryComponent,
-    ToastMessageComponent
+    ToastMessageComponent,
+    SeriesItemSkeletonComponent,
+    MessageSummarySkeletonComponent
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     HttpClientModule,
-    FormsModule
+    FormsModule,
+    NgxSkeletonLoaderModule
   ],  
   providers: [
     ApiService,
     SeriesListComponent,
-    ToastService
+    ToastService,
+    SeriesDataService
   ],
   bootstrap: [
     AppComponent

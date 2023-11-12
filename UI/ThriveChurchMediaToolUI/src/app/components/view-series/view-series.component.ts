@@ -1,8 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
+import { Subscription } from 'rxjs';
 import { SermonMessage } from 'src/app/DTO/SermonMessage';
 import { SermonSeries } from 'src/app/DTO/SermonSeries';
 import { ApiService } from 'src/app/services/api-service.service';
+import { SeriesDataService } from 'src/app/services/series-data-service';
 
 @Component({
   selector: 'app-view-series',
@@ -16,19 +18,24 @@ export class ViewSeriesComponent implements OnInit {
   sermonSeries: SermonSeries | undefined;
 
   messages: SermonMessage[] = [];
+  private summariesSubscription: Subscription;
 
   totalDuration: number = 0;
   totalFileSize: number = 0;
+  messageCount: number = 5;
+  errorsOccurred: Boolean = false;
+  isContentLoaded: Boolean = false;
 
   constructor(
     private route: ActivatedRoute,
     private _router: Router,
-    private apiService: ApiService
+    private apiService: ApiService,
+    private _seriesDataService: SeriesDataService
   ) { }
 
   ngOnInit(): void {
     this.seriesId = this.route.snapshot.paramMap.get('id');
-    
+      
     if (this.seriesId) {
       this.apiService.getSeries(this.seriesId)
       // clone the data object, using its known Config shape
@@ -36,7 +43,8 @@ export class ViewSeriesComponent implements OnInit {
         // display its headers
 
         if (resp.status > 200) {
-          console.log(resp.body);
+          this.errorsOccurred = true;
+          this.isContentLoaded = true;
         }
         else if (resp.body) {
           this.sermonSeries = resp.body;
@@ -56,9 +64,19 @@ export class ViewSeriesComponent implements OnInit {
             }
             return sum + current.AudioFileSize;
           }, 0);
+
+          this.isContentLoaded = true;
         }
+      },
+      error => {
+        this.errorsOccurred = true;
+        this.isContentLoaded = true;
       });
     }
+  }
+
+  ngOnDestroy() {
+    this.summariesSubscription.unsubscribe();
   }
 
 }

@@ -1,6 +1,11 @@
-<div class="card-group">
+<div class="card-group" *ngIf="isContentLoaded">
     <app-series-item
         *ngFor="let summary of summaries"
         [summary]="summary">
     </app-series-item>
+</div>
+<div class="card-group" *ngIf="!isContentLoaded">
+    <app-series-item-skeleton *ngFor="let item of [].constructor(9)">
+        {{item}}
+    </app-series-item-skeleton>
 </div>
