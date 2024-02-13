@@ -1,4 +1,4 @@
-import { Chart, registerables } from 'chart.js';
+import { Chart, Tick, TooltipItem, registerables } from 'chart.js';
 import * as moment from 'moment';
 
 import { Component, OnInit } from '@angular/core';
@@ -18,13 +18,14 @@ import { ApiService } from 'src/app/services/api-service.service';
 export class StatsComponent implements OnInit {
 
   apiService: ApiService;
+
   stats: SermonStatsResponse;
   speakers: SpeakerStats[] = [];
   chartDataItems: ChartDataItem[] = [];
   chartAggregateType: string = "Monthly"
   chartType: string = "AudioDuration"
-  chartTypeName: string = "Audio Duration"
-  chartUnit: string = "seconds"
+  chartTypeName: string = "Avg. Audio Duration"
+  chartUnit: string = "mm:ss"
   chartDisplayName: string = ""
 
   chart: Chart | null = null;
@@ -38,6 +39,7 @@ export class StatsComponent implements OnInit {
   AvgAudioLength: number = 0;
   TotalFileSize: number = 0;
   AvgFileSize: number = 0;
+  chartID: number = 0;
   defaultDateRange: number = 120;
 
   LongestMessage: SermonMessageSummary | undefined | null;
@@ -114,7 +116,7 @@ export class StatsComponent implements OnInit {
   }
 
   setChartName() {
-    this.chartDisplayName = `${this.chartAggregateType} ${this.chartTypeName} (${this.chartUnit})`;
+    this.chartDisplayName = `${this.chartAggregateType} ${this.chartTypeName}`;
   }
 
   setChartType(chartType: string) {
@@ -123,16 +125,19 @@ export class StatsComponent implements OnInit {
     switch (chartType)  
     {
       case "TotAudioFileSize":
-        this.chartTypeName = "Total Audio File Size"
-        this.chartUnit = "Mb"
+          this.chartID = 2;
+          this.chartTypeName = "Total Audio File Size"
+          this.chartUnit = "GB"
           break;
       case "AudioDuration":
-          this.chartTypeName = "Audio Duration"
-          this.chartUnit = "seconds"
+          this.chartID = 0;
+          this.chartTypeName = "Avg. Audio Duration"
+          this.chartUnit = "mm:ss"
         break;
       case "TotAudioDuration":
+          this.chartID = 1;
           this.chartTypeName = "Total Audio Duration"
-          this.chartUnit = "seconds"
+          this.chartUnit = "hh:mm"
         break;
     }
 
@@ -150,7 +155,6 @@ export class StatsComponent implements OnInit {
         data: {
           labels: this.chartDataItems.map((item) => item.Label),
           datasets: [{
-            label: `${this.chartDisplayName}`,
             data: this.chartDataItems.map((item) => item.Value),
             borderWidth: 2,
             tension: 0.2
@@ -158,13 +162,30 @@ export class StatsComponent implements OnInit {
         },
         options: {
           responsive: true,
+          plugins: {
+            legend: {
+              display: false
+            },
+            title: {
+              display: true,
+              text: `${this.chartDisplayName}`
+            },
+            tooltip: {
+              callbacks: {
+                label: this.tooltipCallback()
+              }
+            }
+          },
           scales: {
             y: {
-              beginAtZero: false
+              beginAtZero: false,
+              ticks: {
+                callback: this.ticksCallBack()
+              }
             },
             x: {
               ticks: {
-                maxTicksLimit: 50
+                maxTicksLimit: 10
               }
             }
           }
@@ -173,6 +194,64 @@ export class StatsComponent implements OnInit {
     }
 
     return null;
+  }
+
+  tooltipCallback(): (item: TooltipItem<any>) => String {
+    
+    switch(this.chartID) {
+      case 1: 
+        return (item: TooltipItem<any>) => {
+          var tmp = Number(item.parsed.y);
+          var formatted = moment.duration(tmp, "seconds").format("d[d] h[h]");
+          return formatted;
+        }
+
+      case 2:
+        return (item: TooltipItem<any>) => {
+          var tmp = Number(item.parsed.y);
+          var value = `${tmp / 1024}`;
+          value = `${value.substring(0, value.indexOf('.') + 4)}`;
+          value = value.replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ",")
+          return `${value} ${this.chartUnit}`;
+        }
+
+      case 0:
+      default:
+        return (item: TooltipItem<any>) => {
+          var tmp = Number(item.parsed.y);
+          var formatted = moment.duration(tmp, "seconds").format("m[m] s[s]");
+          return formatted;
+        }
+    }
+  }
+
+  ticksCallBack(): (tickValue: number | string, index: number, ticks: Tick[]) => string | number | string[] | number[] | null | undefined 
+  {
+    switch(this.chartID) {
+      case 1: 
+        return (value: number | string, index: number, ticks: Tick[]) => {
+          var tmp = Number(value);
+          var formatted = moment.duration(tmp, "seconds").format("d[d] h[h]");
+          return formatted;
+        }
+
+      case 2:
+        return (value: number | string, index: number, ticks: Tick[]) => {
+          var tmp = Number(value);
+          var formatted = `${tmp / 1024}`;
+          formatted = `${formatted.substring(0, formatted.indexOf('.') + 3)}`;
+          formatted = formatted.replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ",")
+          return `${formatted} ${this.chartUnit}`;
+        }
+
+      case 0:
+      default:
+        return (value: number | string, index: number, ticks: Tick[]) => {
+          var tmp = Number(value);
+          var formatted = moment.duration(tmp, "seconds").format("m[m] s[s]");
+          return formatted;
+        }
+    }
   }
 
   loadChartData() {
@@ -198,11 +277,11 @@ export class StatsComponent implements OnInit {
               switch (this.chartAggregateType) {
 
                 case "Daily":
-                  dateString = moment(Date.parse(data.Date)).utcOffset(0).format("MMM Do YYYY");
+                  dateString = moment(Date.parse(data.Date)).utcOffset(0).format("M/D/YY");
                   break;
 
                 case "Weekly":
-                  dateString = moment(Date.parse(data.Date)).utcOffset(0).format("MMM Do");
+                  dateString = moment(Date.parse(data.Date)).utcOffset(0).format("M/D/YY");
                   break;
 
                 case "Monthly":
