@@ -9,6 +9,7 @@ import { SermonSummaryResponse } from '../DTO/SermonSummaryResponse';
 import { SermonStatsChartResponse } from '../DTO/SermonStatsChartResponse';
 import { CreateSermonSeriesRequest } from '../DTO/CreateSermonSeriesRequest';
 import { SermonSeries } from '../DTO/SermonSeries';
+import { SermonSeriesUpdateRequest } from '../DTO/SermonSeriesUpdateRequest';
 import { AddMessagesToSeriesRequest } from '../DTO/AddMessagesToSeriesRequest';
 import { SermonStatsResponse } from '../DTO/SermonStatsResponse';
 
@@ -17,7 +18,7 @@ export class ApiService {
 
   apiUrl: string = environment.apiURL;
 
-  constructor(private http: HttpClient) { 
+  constructor(private http: HttpClient) {
 
   }
 
@@ -59,10 +60,10 @@ export class ApiService {
     )
   }
 
-  editSeries(seriesId: string, newMessage: SermonSeries): Observable<HttpResponse<SermonSeries>> {
+  editSeries(seriesId: string, updateRequest: SermonSeriesUpdateRequest): Observable<HttpResponse<SermonSeries>> {
     return this.http.put<SermonSeries>(
       this.apiUrl.concat(`/api/sermons/series/${seriesId}`),
-      newMessage,
+      updateRequest,
       {
         observe: 'response'
       }
@@ -79,16 +80,16 @@ export class ApiService {
   }
 
   getStatsChart(startDate: string | null, endDate: string | null, reportType: string, displayType: string): Observable<HttpResponse<SermonStatsChartResponse>> {
-    
+
     const queryParams = {
       startDate: startDate,
       endDate: endDate,
       chartType: reportType,
       displayType: displayType
     };
-    
+
     const queryString = UrlFormatter.formatQueryParams(queryParams);
-    
+
     return this.http.get<SermonStatsChartResponse>(
       this.apiUrl.concat(`/api/sermons/stats/chart${queryString}`),
       {

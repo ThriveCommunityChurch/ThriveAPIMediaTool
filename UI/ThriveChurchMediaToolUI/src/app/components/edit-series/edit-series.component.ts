@@ -1,12 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { AddMessagesToSeriesRequest } from 'src/app/DTO/AddMessagesToSeriesRequest';
-import { SermonMessageRequest } from 'src/app/DTO/SermonMessageRequest';
 import { SermonSeries } from 'src/app/DTO/SermonSeries';
+import { SermonSeriesUpdateRequest } from 'src/app/DTO/SermonSeriesUpdateRequest';
 import { ApiService } from 'src/app/services/api-service.service';
 import { ToastService } from 'src/app/services/toast-service.service';
-import { ToastMessage } from '../../Domain/ToastMessage'
-import { ToastMessageType } from '../../Domain/ToastMessageType'
 
 @Component({
   selector: 'app-edit-series',
@@ -16,94 +13,114 @@ import { ToastMessageType } from '../../Domain/ToastMessageType'
 export class EditSeriesComponent implements OnInit {
 
   seriesId: string | null = null;
-  seriesName: string = "N/A";
-  sermonSeries: SermonSeries;
+  isLoading: boolean = true;
 
-  // Item form
-  submitButtonMessage = "Add item";
-  cancelButtonMessage = "Cancel adding item";
+  // Form fields
+  seriesName: string;
+  startDate: string;
+  endDate: string;
+  seriesSlug: string;
+  seriesThumbnailUrl: string;
+  seriesArtUrl: string;
+
+  // Original series data
+  sermonSeries: SermonSeries;
 
   constructor(
     private route: ActivatedRoute,
-    private _router: Router,
+    private router: Router,
     private apiService: ApiService,
     private toastService: ToastService
   ) { }
 
   ngOnInit(): void {
     this.seriesId = this.route.snapshot.paramMap.get('id');
-   
-    if (this.seriesId) {
-      this.apiService.getSeries(this.seriesId)
-      // clone the data object, using its known Config shape
-      .subscribe(resp => {
-        // display its headers
 
+    if (this.seriesId) {
+      this.loadSeriesData();
+    }
+  }
+
+  loadSeriesData(): void {
+    this.isLoading = true;
+
+    if (!this.seriesId) {
+      this.toastService.showStandardToast("Series ID is missing. Cannot load series data.", 400);
+      this.isLoading = false;
+      return;
+    }
+
+    this.apiService.getSeries(this.seriesId)
+      .subscribe(resp => {
         if (resp.status > 200) {
-          console.log(resp.body);
+          this.toastService.showStandardToast("An error occurred loading the series. Try again.", resp.status);
+          this.isLoading = false;
         }
         else if (resp.body) {
           this.sermonSeries = resp.body;
+
+          // Populate form fields with current values
           this.seriesName = resp.body.Name;
-        }
-      });
-    }
-  }
+          this.startDate = this.formatDateForInput(resp.body.StartDate);
+          this.endDate = this.formatDateForInput(resp.body.EndDate);
+          this.seriesSlug = resp.body.Slug;
+          this.seriesThumbnailUrl = resp.body.Thumbnail;
+          this.seriesArtUrl = resp.body.ArtUrl || '';
 
- /**
- * Method to add new Series Media.
- * @param item - `SeriesMedia`: to create
- */
-  addItemEventHandler(item: SermonMessageRequest): void {
-    if (item && this.seriesId && this.sermonSeries) {
-
-      if (item.LastInSeries === true) {
-
-        this.sermonSeries.EndDate = item.Date;
-
-        this.apiService.editSeries(this.seriesId, this.sermonSeries)      
-        // clone the data object, using its known Config shape
-        .subscribe(resp => {
-          // display its headers
-  
-          if (resp.status > 200) {
-            this.toastService.showStandardToast("An error occurred updating this series. Try again.", resp.status);
-          }
-          else if (resp.body) {
-            this.toastService.showStandardToast("Series was successfully completed.", 200);
-          }
-        }, (error: any) => {
-          this.toastService.showStandardToast("An error occurred adding this message. Try again.", 400);
-        });
-      }
-
-      let tempItems: SermonMessageRequest[] = [item];
-      let request: AddMessagesToSeriesRequest = {
-        MessagesToAdd: tempItems
-      }
-
-      this.apiService.addMessageToSeries(this.seriesId, request)
-      // clone the data object, using its known Config shape
-      .subscribe(resp => {
-        // display its headers
-
-        if (resp.status > 200) {
-          this.toastService.showStandardToast("An error occurred adding this message. Try again.", resp.status);
-        }
-        else if (resp.body) {
-          this.toastService.showStandardToast("New message was successfully added.", 200);
+          this.isLoading = false;
         }
       }, (error: any) => {
-          this.toastService.showStandardToast("An error occurred adding this message. Try again.", 400);
+        this.toastService.showStandardToast("An error occurred loading the series. Try again.", 400);
+        this.isLoading = false;
       });
-    }
+  }
+
+  formatDateForInput(dateString: string | undefined | null): string {
+    if (!dateString) return '';
+
+    // Convert date string to YYYY-MM-DD format for input[type="date"]
+    const date = new Date(dateString);
+    return date.toISOString().split('T')[0];
   }
 
   /**
-  * Handler method to close AddItem sub form from the child component.
-  */
-  cancelAddItemEventHandler(): void {
-    // do nothing
+   * Update the series with the form data
+   */
+  updateSeries(): void {
+    if (!this.seriesId) return;
+
+    // Create update request
+    const updateRequest: SermonSeriesUpdateRequest = {
+      Name: this.seriesName,
+      StartDate: this.startDate || '',
+      EndDate: this.endDate || '',
+      Slug: this.seriesSlug,
+      Thumbnail: this.seriesThumbnailUrl,
+      ArtUrl: this.seriesArtUrl
+    };
+
+    // Update the series
+    this.apiService.editSeries(this.seriesId, updateRequest)
+      .subscribe(resp => {
+        if (resp.status > 200) {
+          this.toastService.showStandardToast("An error occurred updating the series. Try again.", resp.status);
+        }
+        else if (resp.body) {
+          this.toastService.showStandardToast("Series was successfully updated.", 200);
+          // Navigate back to dashboard after successful update
+          this.router.navigate(['/']);
+        }
+      }, (error: any) => {
+        this.toastService.showStandardToast("An error occurred updating the series. Try again.", 400);
+      });
+  }
+
+  /**
+   * Cancel editing and return to dashboard
+   */
+  cancel(): void {
+    // Navigate back to dashboard
+    this.router.navigate(['/']);
   }
 
 }
