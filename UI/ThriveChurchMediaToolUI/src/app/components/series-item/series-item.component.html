@@ -1,6 +1,6 @@
 <div class="d-inline-flex p-2 align-items-stretch">
 	<div class="card h-100">
-	<img class="card-img-top" 
+	<img class="card-img-top"
 		 src="{{summary.ArtUrl}}"
 		 alt="Card image cap"
 		 loading="lazy">
@@ -31,13 +31,13 @@
 		<p class="card-text"><small class="text-muted">Updated {{localizedLastUpdated}}</small></p>
 	</div>
 	<div class="card-footer">
-		<a href="edit/{{summary.Id}}">
-			<small>EDIT</small>
+		<a href="add/{{summary.Id}}">
+			<small>ADD</small>
 		</a>
 		&nbsp;
 		<a href="view/{{summary.Id}}"
 		(click)="setSeriesDataForNavigation()">
 			<small>VIEW</small>
 		</a>
-	</div>	
+	</div>
 </div>
