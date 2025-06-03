@@ -1,6 +1,6 @@
 <div class="message-summary">
 	<div class="title">
-		{{message.Title}}<span *ngIf="message.VideoUrl"><a target="_blank" href="{{message.VideoUrl}}"><i class="fab fa-youtube"></i></a></span>
+		{{message.Title}}<span *ngIf="message.VideoUrl"><a target="_blank" href="{{message.VideoUrl}}"><i class="fab fa-youtube"></i></a></span><span (click)="copyMessageId()" style="cursor: pointer;"><i class="fa fa-clone" title="{{message.MessageId}}"></i></span>
 	</div>
 	<div class="additional-info">
 		<div class="row">
@@ -48,10 +48,10 @@
 			</div>
 			<div class="col">
 				<div class="data-title">
-					Message ID
+					Play Count
 				</div>
 				<div class="data">
-					{{ message.MessageId }}
+					{{ message.PlayCount }}
 				</div>
 			</div>
 		</div>

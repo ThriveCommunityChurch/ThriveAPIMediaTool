@@ -17,6 +17,16 @@
 					color: #F00;
 				}
 			}
+
+			.fa-clone {
+				color: deepskyblue;
+				cursor: pointer;
+				width: 0.65em;
+
+				&:hover {
+					color: deepskyblue;
+				}
+			}
 		}
 	}
 

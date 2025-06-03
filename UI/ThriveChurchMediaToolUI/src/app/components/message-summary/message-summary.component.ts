@@ -19,4 +19,35 @@ export class MessageSummaryComponent implements OnInit {
     }
   }
 
+  copyMessageId(): void {
+    if (navigator.clipboard && window.isSecureContext) {
+      navigator.clipboard.writeText(this.message.MessageId).catch(() => {
+        this.fallbackCopyTextToClipboard(this.message.MessageId);
+      });
+    } else {
+      this.fallbackCopyTextToClipboard(this.message.MessageId);
+    }
+  }
+
+  private fallbackCopyTextToClipboard(text: string): void {
+    const textArea = document.createElement("textarea");
+    textArea.value = text;
+    textArea.style.top = "0";
+    textArea.style.left = "0";
+    textArea.style.position = "fixed";
+    textArea.style.opacity = "0";
+
+    document.body.appendChild(textArea);
+    textArea.focus();
+    textArea.select();
+
+    try {
+      document.execCommand('copy');
+    } catch (err) {
+      // Silent fail
+    }
+
+    document.body.removeChild(textArea);
+  }
+
 }
