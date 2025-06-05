@@ -12,7 +12,7 @@ jobs:
 
     strategy:
       matrix:
-        node-version: [16.x]
+        node-version: ['16.20.2']
 
     steps:
       - uses: actions/checkout@v4
@@ -21,8 +21,6 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: ${{ matrix.node-version }}
-          cache: 'npm'
-          cache-dependency-path: 'UI/ThriveChurchMediaToolUI/package-lock.json'
           
 #      - name: Get npm cache directory
 #        id: npm-cache-dir
@@ -44,13 +42,24 @@ jobs:
 
       - name: Install Dependencies
         run: |
-          npm --prefix 'UI/ThriveChurchMediaToolUI' ci --legacy-peer-deps
+          npm --prefix 'UI/ThriveChurchMediaToolUI' ci --legacy-peer-deps --no-optional
+        env:
+          NODE_OPTIONS: "--max-old-space-size=4096"
+
+      - name: Verify Angular versions
+        run: |
+          cd UI/ThriveChurchMediaToolUI
+          echo "Angular CLI version:"
+          npx ng version
+          echo "Package versions:"
+          npm list @angular/core @angular-devkit/build-angular --depth=0
+
 #      - name: Lint
 #        run: |
 #          npm --prefix 'UI/ThriveChurchMediaToolUI' run lint
-          
+
       - name: Build
         run: |
-          npm --prefix 'UI/ThriveChurchMediaToolUI' run build
+          cd UI/ThriveChurchMediaToolUI && npx ng build
         env:
           NODE_OPTIONS: "--max-old-space-size=4096"
