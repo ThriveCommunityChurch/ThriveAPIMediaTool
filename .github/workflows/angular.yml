@@ -12,7 +12,7 @@ jobs:
 
     strategy:
       matrix:
-        node-version: [18.x]
+        node-version: [16.x]
 
     steps:
       - uses: actions/checkout@v4
@@ -38,6 +38,10 @@ jobs:
 #          restore-keys: |
 #            ${{ runner.os }}-node-
             
+      - name: Clear npm cache
+        run: |
+          npm cache clean --force
+
       - name: Install Dependencies
         run: |
           npm --prefix 'UI/ThriveChurchMediaToolUI' ci --legacy-peer-deps
@@ -48,3 +52,5 @@ jobs:
       - name: Build
         run: |
           npm --prefix 'UI/ThriveChurchMediaToolUI' run build
+        env:
+          NODE_OPTIONS: "--max-old-space-size=4096"
