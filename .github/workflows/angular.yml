@@ -12,15 +12,17 @@ jobs:
 
     strategy:
       matrix:
-        node-version: [16.x]
+        node-version: [18.x]
 
     steps:
       - uses: actions/checkout@v4
 
       - name: Use Node.js ${{ matrix.node-version }}
-        uses: actions/setup-node@v3
+        uses: actions/setup-node@v4
         with:
           node-version: ${{ matrix.node-version }}
+          cache: 'npm'
+          cache-dependency-path: 'UI/ThriveChurchMediaToolUI/package-lock.json'
           
 #      - name: Get npm cache directory
 #        id: npm-cache-dir
@@ -38,7 +40,7 @@ jobs:
             
       - name: Install Dependencies
         run: |
-          npm --prefix 'UI/ThriveChurchMediaToolUI' ci
+          npm --prefix 'UI/ThriveChurchMediaToolUI' ci --legacy-peer-deps
 #      - name: Lint
 #        run: |
 #          npm --prefix 'UI/ThriveChurchMediaToolUI' run lint
