@@ -12,6 +12,8 @@ import { SermonSeries } from '../DTO/SermonSeries';
 import { SermonSeriesUpdateRequest } from '../DTO/SermonSeriesUpdateRequest';
 import { AddMessagesToSeriesRequest } from '../DTO/AddMessagesToSeriesRequest';
 import { SermonStatsResponse } from '../DTO/SermonStatsResponse';
+import { UpdateMessagesInSermonSeriesRequest } from '../DTO/UpdateMessagesInSermonSeriesRequest';
+import { SermonMessage } from '../DTO/SermonMessage';
 
 @Injectable()
 export class ApiService {
@@ -24,7 +26,7 @@ export class ApiService {
 
   getSummaries(): Observable<HttpResponse<SermonSummaryResponse>> {
     return this.http.get<SermonSummaryResponse>(
-      this.apiUrl.concat("/api/sermons"),
+      this.apiUrl.concat("/api/sermons?highResImg=true"),
       {
         observe: 'response'
       }
@@ -73,6 +75,16 @@ export class ApiService {
   getStats(): Observable<HttpResponse<SermonStatsResponse>> {
     return this.http.get<SermonStatsResponse>(
       this.apiUrl.concat(`/api/sermons/stats`),
+      {
+        observe: 'response'
+      }
+    )
+  }
+
+  updateMessage(messageId: string, request: UpdateMessagesInSermonSeriesRequest): Observable<HttpResponse<SermonMessage>> {
+    return this.http.put<SermonMessage>(
+      this.apiUrl.concat(`/api/sermons/series/message/${messageId}`),
+      request,
       {
         observe: 'response'
       }

@@ -19,6 +19,7 @@ export class AddMessageComponent implements OnInit {
   seriesId: string | null = null;
   seriesName: string = "N/A";
   sermonSeries: SermonSeries;
+  isLoading: boolean = true;
 
   // Item form
   submitButtonMessage = "Add message";
@@ -42,11 +43,16 @@ export class AddMessageComponent implements OnInit {
 
         if (resp.status > 200) {
           console.log(resp.body);
+          this.isLoading = false;
         }
         else if (resp.body) {
           this.sermonSeries = resp.body;
           this.seriesName = resp.body.Name;
+          this.isLoading = false;
         }
+      }, (error: any) => {
+        this.toastService.showStandardToast("An error occurred loading the series. Try again.", 400);
+        this.isLoading = false;
       });
     }
   }

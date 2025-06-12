@@ -2,6 +2,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Component, OnInit, Output, EventEmitter, Input, OnChanges, SimpleChanges } from '@angular/core';
 import { Observable, take, tap } from 'rxjs';
 import { SermonMessageRequest } from 'src/app/DTO/SermonMessageRequest';
+import { SermonMessage } from 'src/app/DTO/SermonMessage';
 import { DurationPipe } from 'src/app/pipes/DurationPipe';
 import { FileSizePipe } from 'src/app/pipes/FileSizePipe';
 
@@ -16,6 +17,7 @@ export class ItemFormComponent implements OnInit {
 
   @Input() submitButtonMessage: string = "Add item";
   @Input() cancelButtonMessage: string = "Cancel adding item";
+  @Input() existingMessage: SermonMessage | null = null;
 
   private _checked: boolean = false;
 
@@ -33,6 +35,27 @@ export class ItemFormComponent implements OnInit {
   constructor(private http: HttpClient) {}
   
   ngOnInit(): void {
+    if (this.existingMessage) {
+      this.populateFormWithExistingMessage();
+    }
+  }
+
+  populateFormWithExistingMessage(): void {
+    if (!this.existingMessage) return;
+
+    this.itemTitle = this.existingMessage.Title;
+    this.itemSpeaker = this.existingMessage.Speaker;
+    this.itemAudioUrl = this.existingMessage.AudioUrl;
+    this.itemAudioDuration = this.existingMessage.AudioDuration;
+    this.itemAudioMB = this.existingMessage.AudioFileSize;
+    this.itemVideoURL = this.existingMessage.VideoUrl;
+    this.itemPassageRef = this.existingMessage.PassageRef;
+
+    // Format date for input field (YYYY-MM-DD)
+    if (this.existingMessage.Date) {
+      const date = new Date(this.existingMessage.Date);
+      this.itemDate = date.toISOString().split('T')[0];
+    }
   }
   
   /**
@@ -54,7 +77,9 @@ export class ItemFormComponent implements OnInit {
     };
 
     this.submitItemEvent.emit(mediaItem);
-    this.clearForm();
+    if (!this.existingMessage) {
+      this.clearForm();
+    }
   }
 
   /**

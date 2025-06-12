@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { SermonMessage } from 'src/app/DTO/SermonMessage';
@@ -11,14 +11,14 @@ import { SeriesDataService } from 'src/app/services/series-data-service';
   templateUrl: './view-series.component.html',
   styleUrls: ['./view-series.component.scss']
 })
-export class ViewSeriesComponent implements OnInit {
+export class ViewSeriesComponent implements OnInit, OnDestroy {
 
   seriesId: string | null = null;
   seriesName: string = "N/A";
   sermonSeries: SermonSeries | undefined;
 
   messages: SermonMessage[] = [];
-  private summariesSubscription: Subscription;
+  private summariesSubscription: Subscription | undefined;
 
   totalDuration: number = 0;
   totalFileSize: number = 0;
@@ -37,7 +37,7 @@ export class ViewSeriesComponent implements OnInit {
     this.seriesId = this.route.snapshot.paramMap.get('id');
       
     if (this.seriesId) {
-      this.apiService.getSeries(this.seriesId)
+      this.summariesSubscription = this.apiService.getSeries(this.seriesId)
       // clone the data object, using its known Config shape
       .subscribe(resp => {
         // display its headers
@@ -76,7 +76,9 @@ export class ViewSeriesComponent implements OnInit {
   }
 
   ngOnDestroy() {
-    this.summariesSubscription.unsubscribe();
+    if (this.summariesSubscription) {
+      this.summariesSubscription.unsubscribe();
+    }
   }
 
 }

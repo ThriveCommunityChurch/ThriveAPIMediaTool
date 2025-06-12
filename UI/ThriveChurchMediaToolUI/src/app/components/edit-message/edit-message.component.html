@@ -1,10 +1,11 @@
-<div class="container" *ngIf="!isLoading">
-	<p class="display-4">Adding message to '{{seriesName}}'</p>
+<div class="container" *ngIf="!isLoading && message">
+	<p class="display-4">Editing message in '{{seriesName}}'</p>
 	<app-item-form
 		[submitButtonMessage]="submitButtonMessage"
 		[cancelButtonMessage]="cancelButtonMessage"
-		(submitItemEvent)="addItemEventHandler($event)"
-		(cancelAddItemEvent)="cancelAddItemEventHandler()">
+		[existingMessage]="message"
+		(submitItemEvent)="updateMessageEventHandler($event)"
+		(cancelAddItemEvent)="cancelEditEventHandler()">
 	</app-item-form>
 </div>
 <div class="container" *ngIf="isLoading">

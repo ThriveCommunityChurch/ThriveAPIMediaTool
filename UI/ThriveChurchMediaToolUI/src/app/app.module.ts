@@ -13,6 +13,7 @@ import { PageNotFoundComponent } from './components/page-not-found/page-not-foun
 import { EditSeriesComponent } from './components/edit-series/edit-series.component';
 import { AddMessageComponent } from './components/add-message/add-message.component';
 import { ViewSeriesComponent } from './components/view-series/view-series.component';
+import { EditMessageComponent } from './components/edit-message/edit-message.component';
 import { SeriesItemComponent } from './components/series-item/series-item.component';
 import { ItemFormComponent } from './components/item-form/item-form.component';
 import { StatsComponent } from './components/stats/stats.component';
@@ -38,6 +39,7 @@ import { MessageSummarySkeletonComponent } from './components/message-summary-sk
     EditSeriesComponent,
     AddMessageComponent,
     ViewSeriesComponent,
+    EditMessageComponent,
     SeriesItemComponent,
     ItemFormComponent,
     StatsComponent,

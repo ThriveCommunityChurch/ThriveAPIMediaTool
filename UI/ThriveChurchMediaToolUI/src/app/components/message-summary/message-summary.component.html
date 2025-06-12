@@ -1,6 +1,6 @@
 <div class="message-summary">
 	<div class="title">
-		{{message.Title}}<span *ngIf="message.VideoUrl"><a target="_blank" href="{{message.VideoUrl}}"><i class="fab fa-youtube"></i></a></span><span (click)="copyMessageId()" style="cursor: pointer;"><i class="fa fa-clone" title="{{message.MessageId}}"></i></span>
+		{{message.Title}}<span *ngIf="message.VideoUrl"><a target="_blank" href="{{message.VideoUrl}}"><i class="fab fa-youtube"></i></a></span><span (click)="copyMessageId()"><i class="fa fa-clone" title="{{message.MessageId}}"></i></span><span (click)="editMessage()"><i id="edit-pencil" class="fa fa-pencil" title="Edit Message"></i></span>
 	</div>
 	<div class="additional-info">
 		<div class="row">
