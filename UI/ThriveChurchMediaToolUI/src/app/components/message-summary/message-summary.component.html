@@ -55,6 +55,14 @@
 				</div>
 			</div>
 		</div>
+		<div *ngIf="message.AudioUrl" class="row">
+			<div class="data-title">
+					Audio Url
+				</div>
+				<div class="data">
+					{{ message.AudioUrl }} <a target="_blank" href="{{message.AudioUrl}}"><i class="fas fa-external-link-alt"></i></a>
+				</div>
+		</div>
 		<!-- Maybe we can eventually do this but not now. -->
 		<!-- <div *ngIf="message.AudioUrl" class="row">
 			<audio controls>
