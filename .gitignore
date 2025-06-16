@@ -29,3 +29,5 @@ UI/ThriveChurchMediaToolUI/.vscode/
 # Prod configs
 **/environments/
 **/node_modules/
+
+*.code-workspace
