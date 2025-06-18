@@ -42,11 +42,10 @@
 					   class="form-control"
 					   name="itemAudioUrl"
 					   [(ngModel)]="itemAudioUrl"
-					   (input)="change($event)"
 					   id="itemAudioUrlInput"
 					   #itemAudioUrlInput
 					   placeholder="Url to audio link">
-				<label for="itemAudioUrlInput">Audio URL (Paste only)</label>
+				<label for="itemAudioUrlInput">Audio URL</label>
 			</div>
 		</div>
 	</div>
@@ -84,10 +83,10 @@
 		<p class="file-info-duration">Duration:
 			<span *ngIf="!loadingDuration && !itemAudioDuration">{{ durationLoadingText }}</span>
 			<span *ngIf="loadingDuration"><i class="fas fa-spinner rotating"></i></span>
-			<span *ngIf="!loadingDuration && itemAudioDuration">{{ itemAudioDuration | duration: 'm s' }}</span>
+			<span *ngIf="!loadingDuration && itemAudioDuration">{{ itemAudioDuration | duration: 'm[m] s[s]' }}</span>
 		</p>
 		<p class="file-info-size">Size:
-			<span *ngIf="itemAudioMB">{{ itemAudioMB | filesize }} MB</span>
+			<span *ngIf="itemAudioMB">{{ itemAudioMB | filesize }}</span>
 			<span *ngIf="!itemAudioMB">{{ durationLoadingText }}</span>
 		</p>
 	</div>

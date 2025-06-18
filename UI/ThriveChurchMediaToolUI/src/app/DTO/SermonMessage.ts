@@ -8,4 +8,5 @@ export interface SermonMessage {
     Title: string;
     Date: Date | null;
 	MessageId: string;
+	PlayCount: number;
 }

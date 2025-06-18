@@ -9,21 +9,24 @@ import { SermonSummaryResponse } from '../DTO/SermonSummaryResponse';
 import { SermonStatsChartResponse } from '../DTO/SermonStatsChartResponse';
 import { CreateSermonSeriesRequest } from '../DTO/CreateSermonSeriesRequest';
 import { SermonSeries } from '../DTO/SermonSeries';
+import { SermonSeriesUpdateRequest } from '../DTO/SermonSeriesUpdateRequest';
 import { AddMessagesToSeriesRequest } from '../DTO/AddMessagesToSeriesRequest';
 import { SermonStatsResponse } from '../DTO/SermonStatsResponse';
+import { UpdateMessagesInSermonSeriesRequest } from '../DTO/UpdateMessagesInSermonSeriesRequest';
+import { SermonMessage } from '../DTO/SermonMessage';
 
 @Injectable()
 export class ApiService {
 
   apiUrl: string = environment.apiURL;
 
-  constructor(private http: HttpClient) { 
+  constructor(private http: HttpClient) {
 
   }
 
   getSummaries(): Observable<HttpResponse<SermonSummaryResponse>> {
     return this.http.get<SermonSummaryResponse>(
-      this.apiUrl.concat("/api/sermons"),
+      this.apiUrl.concat("/api/sermons?highResImg=true"),
       {
         observe: 'response'
       }
@@ -59,10 +62,10 @@ export class ApiService {
     )
   }
 
-  editSeries(seriesId: string, newMessage: SermonSeries): Observable<HttpResponse<SermonSeries>> {
+  editSeries(seriesId: string, updateRequest: SermonSeriesUpdateRequest): Observable<HttpResponse<SermonSeries>> {
     return this.http.put<SermonSeries>(
       this.apiUrl.concat(`/api/sermons/series/${seriesId}`),
-      newMessage,
+      updateRequest,
       {
         observe: 'response'
       }
@@ -78,17 +81,27 @@ export class ApiService {
     )
   }
 
+  updateMessage(messageId: string, request: UpdateMessagesInSermonSeriesRequest): Observable<HttpResponse<SermonMessage>> {
+    return this.http.put<SermonMessage>(
+      this.apiUrl.concat(`/api/sermons/series/message/${messageId}`),
+      request,
+      {
+        observe: 'response'
+      }
+    )
+  }
+
   getStatsChart(startDate: string | null, endDate: string | null, reportType: string, displayType: string): Observable<HttpResponse<SermonStatsChartResponse>> {
-    
+
     const queryParams = {
       startDate: startDate,
       endDate: endDate,
       chartType: reportType,
       displayType: displayType
     };
-    
+
     const queryString = UrlFormatter.formatQueryParams(queryParams);
-    
+
     return this.http.get<SermonStatsChartResponse>(
       this.apiUrl.concat(`/api/sermons/stats/chart${queryString}`),
       {

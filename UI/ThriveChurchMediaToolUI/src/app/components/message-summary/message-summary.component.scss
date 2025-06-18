@@ -17,6 +17,26 @@
 					color: #F00;
 				}
 			}
+
+			.fa-clone {
+				color: deepskyblue;
+				cursor: pointer;
+				width: 0.65em;
+
+				&:hover {
+					color: rgb(0, 162, 216);
+				}
+			}
+
+			#edit-pencil {
+				color: deepskyblue;
+				cursor: pointer;
+				width: 0.65em;
+
+				&:hover {
+					color: rgb(0, 162, 216);
+				}
+			}
 		}
 	}
 

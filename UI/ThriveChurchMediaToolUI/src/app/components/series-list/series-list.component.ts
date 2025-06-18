@@ -14,6 +14,7 @@ export class SeriesListComponent implements OnInit {
 
   apiService: ApiService;
   summaries: SermonSeriesSummary[] = [];
+  isContentLoaded: Boolean = false;
 
   constructor(
     apiService: ApiService,
@@ -35,8 +36,8 @@ export class SeriesListComponent implements OnInit {
         resp.body.Summaries.forEach(summary => {
           this.summaries.push(summary);
         });
+        this.isContentLoaded = true;
       }
-
     });
   }
 

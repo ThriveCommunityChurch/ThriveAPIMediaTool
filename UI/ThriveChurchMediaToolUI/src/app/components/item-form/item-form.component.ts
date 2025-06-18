@@ -2,6 +2,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Component, OnInit, Output, EventEmitter, Input, OnChanges, SimpleChanges } from '@angular/core';
 import { Observable, take, tap } from 'rxjs';
 import { SermonMessageRequest } from 'src/app/DTO/SermonMessageRequest';
+import { SermonMessage } from 'src/app/DTO/SermonMessage';
 import { DurationPipe } from 'src/app/pipes/DurationPipe';
 import { FileSizePipe } from 'src/app/pipes/FileSizePipe';
 
@@ -16,6 +17,7 @@ export class ItemFormComponent implements OnInit {
 
   @Input() submitButtonMessage: string = "Add item";
   @Input() cancelButtonMessage: string = "Cancel adding item";
+  @Input() existingMessage: SermonMessage | null = null;
 
   private _checked: boolean = false;
 
@@ -33,6 +35,27 @@ export class ItemFormComponent implements OnInit {
   constructor(private http: HttpClient) {}
   
   ngOnInit(): void {
+    if (this.existingMessage) {
+      this.populateFormWithExistingMessage();
+    }
+  }
+
+  populateFormWithExistingMessage(): void {
+    if (!this.existingMessage) return;
+
+    this.itemTitle = this.existingMessage.Title;
+    this.itemSpeaker = this.existingMessage.Speaker;
+    this.itemAudioUrl = this.existingMessage.AudioUrl;
+    this.itemAudioDuration = this.existingMessage.AudioDuration;
+    this.itemAudioMB = this.existingMessage.AudioFileSize;
+    this.itemVideoURL = this.existingMessage.VideoUrl;
+    this.itemPassageRef = this.existingMessage.PassageRef;
+
+    // Format date for input field (YYYY-MM-DD)
+    if (this.existingMessage.Date) {
+      const date = new Date(this.existingMessage.Date);
+      this.itemDate = date.toISOString().split('T')[0];
+    }
   }
   
   /**
@@ -54,34 +77,9 @@ export class ItemFormComponent implements OnInit {
     };
 
     this.submitItemEvent.emit(mediaItem);
-    this.clearForm();
-  }
-
-  getFileDuration(url: string) {
-
-    this.http.get(url, 
-    {
-      responseType: 'blob'
-    }).pipe(take(1)).subscribe(blob => {
-
-      const fileReader = new FileReader();
-      const audioContext = new (window.AudioContext)();
-
-      fileReader.onloadend = () => {
-
-          const arrayBuffer = fileReader.result as ArrayBuffer
-
-          // Convert array buffer into audio buffer
-          audioContext.decodeAudioData(arrayBuffer).then((audioBuffer: AudioBuffer) => {
-            this.itemAudioDuration = audioBuffer.duration;
-            this.loadingDuration = false;
-          });
-      }
-
-      //Load blob
-      fileReader.readAsArrayBuffer(blob);
-      
-    });
+    if (!this.existingMessage) {
+      this.clearForm();
+    }
   }
 
   /**
@@ -99,22 +97,31 @@ export class ItemFormComponent implements OnInit {
     this._checked = false;
   }
 
-  change(event: any){
-
-    if (event.target.value && event.target.value.includes("thrive-fl.org/wp-content/uploads/")) {
-      this.loadingDuration = true;
-      this.getFileDuration(event.target.value);
-    }
-  }
-
   // TS
   uploadFile(event: Event) {
+    this.loadingDuration = true;
     const element = event.currentTarget as HTMLInputElement;
     let fileList: FileList | null = element.files;
     if (fileList) {
       var file = fileList[0];
 
       this.itemAudioMB = file.size / Math.pow(1024, 2);
+
+      const fileReader = new FileReader();
+      const audioContext = new (window.AudioContext)();
+
+      fileReader.onloadend = () => {
+        const arrayBuffer = fileReader.result as ArrayBuffer
+
+        // Convert array buffer into audio buffer
+        audioContext.decodeAudioData(arrayBuffer).then((audioBuffer: AudioBuffer) => {
+          this.itemAudioDuration = audioBuffer.duration;
+          this.loadingDuration = false;
+        });
+      }
+
+      //Load blob
+      fileReader.readAsArrayBuffer(file);
     }
   }
 

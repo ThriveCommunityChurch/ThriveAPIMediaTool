@@ -1,7 +1,7 @@
-<div *ngIf="sermonSeries"
+<div *ngIf="!errorsOccurred"
 	class="container">
-	<div 
-	class="d-flex align-items-stretch">
+	<div class="d-flex align-items-stretch"
+		*ngIf="isContentLoaded && sermonSeries">
 		<img class="series-img" 
 		src="{{sermonSeries.ArtUrl}}"
 		alt="Series image">
@@ -10,12 +10,14 @@
 				<h2>{{sermonSeries.Name}}</h2>
 				<p *ngIf="sermonSeries?.StartDate && !sermonSeries.EndDate"
 					class="time-span">Current Series</p>
-				<p *ngIf="sermonSeries.StartDate && sermonSeries.EndDate"
+				<p *ngIf="sermonSeries.EndDate && sermonSeries.StartDate === sermonSeries.EndDate"
+					class="time-span">{{ sermonSeries.StartDate | date: 'MMMM d, YYYY':'UTC' }}</p>
+				<p *ngIf="sermonSeries.EndDate && sermonSeries.StartDate !== sermonSeries.EndDate"
 				class="time-span">{{ sermonSeries.StartDate | date: 'MMMM d, YYYY':'UTC' }} - {{ sermonSeries.EndDate | date: 'MMMM d, YYYY':'UTC' }}</p>
 				<div class="row">
 					<div class="col">
 						<div class="detail">
-							<p><strong>Total Duration:</strong> {{ totalDuration | duration: 'h[h] m[m] s[s]' }}</p>
+							<p><strong>Total Duration:</strong> {{ totalDuration | duration: 'h[h] m[m]' }}</p>
 						</div>
 					</div>
 					<div class="col">
@@ -27,13 +29,95 @@
 			</div>
 		</div>
 	</div>	 
-
-	<div class="message-list">
+	<div class="message-list"
+		 *ngIf="isContentLoaded && sermonSeries">
 		<app-message-summary
 			*ngFor="let message of messages"
-			[message]="message">
+			[message]="message"
+			[seriesId]="sermonSeries.Id">
 		</app-message-summary>
 	</div>
-	
+	<div class="d-flex align-items-stretch"
+		*ngIf="!isContentLoaded">
+		<div class="col">
+			<div class="row">
+				<ngx-skeleton-loader
+				count="1"
+				[theme]="{
+					'height': '190px',
+					'width': 'auto',
+					'border-radius': '10px',
+					'aspect-ratio': '16/9',
+					'cursor': 'default',
+					'margin': '0',
+					'display': 'flex'
+				}">
+			</ngx-skeleton-loader>
+			</div>
+		</div>
+		<div class="col">
+			<div class="row">
+				<div class="summary-info">
+					<div class="series-details">
+						<ngx-skeleton-loader 
+							count="1"
+							appearance="line"
+							animation="pulse"
+							[theme]="{
+								'width': '100%',
+								'cursor': 'default',
+								'height': '24px'
+							}">
+						</ngx-skeleton-loader>
+						<ngx-skeleton-loader 
+							count="1"
+							appearance="line"
+							animation="pulse"
+							[theme]="{
+								'width': '75%',
+								'cursor': 'default',
+								'height': '1rem'
+							}">
+						</ngx-skeleton-loader>
+						<div class="row">
+							<div class="col">
+								<div class="detail">
+									<ngx-skeleton-loader 
+										count="1"
+										appearance="line"
+										animation="pulse"
+										[theme]="{
+											'cursor': 'default',
+											'height': '1rem'
+										}">
+									</ngx-skeleton-loader>
+								</div>
+							</div>
+							<div class="col">
+								<div class="detail">
+									<ngx-skeleton-loader 
+										count="1"
+										appearance="line"
+										animation="pulse"
+										[theme]="{
+											'cursor': 'default',
+											'height': '1rem'
+										}">
+									</ngx-skeleton-loader>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>	 
+	<div class="message-list" 
+		 *ngIf="!isContentLoaded">
+		<app-message-summary-skeleton
+			*ngFor="let item of [].constructor(messageCount)">
+			{{item}}
+		</app-message-summary-skeleton>
+	</div>
 </div>
-<app-page-not-found *ngIf="!sermonSeries"></app-page-not-found>
+<app-page-not-found *ngIf="isContentLoaded && errorsOccurred"></app-page-not-found>

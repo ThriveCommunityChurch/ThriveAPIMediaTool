@@ -1,6 +1,6 @@
 <div class="message-summary">
 	<div class="title">
-		{{message.Title}}<span *ngIf="message.VideoUrl"><a target="_blank" href="{{message.VideoUrl}}"><i class="fab fa-youtube"></i></a></span>
+		{{message.Title}}<span *ngIf="message.VideoUrl"><a target="_blank" href="{{message.VideoUrl}}"><i class="fab fa-youtube"></i></a></span><span (click)="copyMessageId()"><i class="fa fa-clone" title="{{message.MessageId}}"></i></span><span (click)="editMessage()"><i id="edit-pencil" class="fa fa-pencil" title="Edit Message"></i></span>
 	</div>
 	<div class="additional-info">
 		<div class="row">
@@ -48,12 +48,20 @@
 			</div>
 			<div class="col">
 				<div class="data-title">
-					Message ID
+					Play Count
 				</div>
 				<div class="data">
-					{{ message.MessageId }}
+					{{ message.PlayCount }}
 				</div>
 			</div>
+		</div>
+		<div *ngIf="message.AudioUrl" class="row">
+			<div class="data-title">
+					Audio Url
+				</div>
+				<div class="data">
+					{{ message.AudioUrl }} <a target="_blank" href="{{message.AudioUrl}}"><i class="fas fa-external-link-alt"></i></a>
+				</div>
 		</div>
 		<!-- Maybe we can eventually do this but not now. -->
 		<!-- <div *ngIf="message.AudioUrl" class="row">
