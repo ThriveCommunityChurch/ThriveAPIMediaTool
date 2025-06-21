@@ -44,7 +44,8 @@
 					   [(ngModel)]="itemAudioUrl"
 					   id="itemAudioUrlInput"
 					   #itemAudioUrlInput
-					   placeholder="Url to audio link">
+					   placeholder="Upload an audio file to populate this field"
+					   disabled>
 				<label for="itemAudioUrlInput">Audio URL</label>
 			</div>
 		</div>
@@ -75,19 +76,54 @@
 		</div>
 	</div>
 
-	<input type="file" 
-		   class="form-control" 
-		   id="audioFile" 
-		   (change)="uploadFile($event)">
+	<input type="file"
+		   class="form-control"
+		   id="audioFile"
+		   accept=".mp3"
+		   (change)="selectFile($event)">
+
+	<!-- Upload Button Section -->
+	<div *ngIf="selectedFile && !validationMessage" class="mt-3">
+		<button type="button"
+				class="btn btn-primary"
+				[disabled]="uploadingFile || loadingDuration"
+				(click)="uploadToS3()">
+			<!-- Spinner only when loading -->
+			<span *ngIf="uploadingFile || loadingDuration" class="spinner-border spinner-border-sm me-2" role="status"></span>
+			<span [innerHTML]="getButtonText()"></span>
+		</button>
+		<button type="button"
+				class="btn btn-secondary ms-2"
+				[disabled]="uploadingFile || loadingDuration"
+				(click)="clearFile()">
+			<i class="fas fa-times me-2"></i>
+			Clear
+		</button>
+	</div>
+
+	<!-- Validation Messages Section -->
+	<div *ngIf="validationMessage" class="mt-2">
+		<div class="alert alert-danger" role="alert">
+			<i class="fas fa-exclamation-triangle"></i> {{ validationMessage }}
+		</div>
+	</div>
+
+	<!-- Upload Success/Failure Section -->
+	<div *ngIf="uploadMessage" class="mt-2">
+		<div class="alert" [ngClass]="uploadSuccess ? 'alert-success' : 'alert-danger'" role="alert">
+			<i class="fas" [ngClass]="uploadSuccess ? 'fa-check-circle' : 'fa-times-circle'"></i> {{ uploadMessage }}
+		</div>
+	</div>
 	<div>
 		<p class="file-info-duration">Duration:
 			<span *ngIf="!loadingDuration && !itemAudioDuration">{{ durationLoadingText }}</span>
-			<span *ngIf="loadingDuration"><i class="fas fa-spinner rotating"></i></span>
+			<span *ngIf="loadingDuration"><span class="spinner-border spinner-border-sm me-2" role="status"></span> Processing...</span>
 			<span *ngIf="!loadingDuration && itemAudioDuration">{{ itemAudioDuration | duration: 'm[m] s[s]' }}</span>
 		</p>
 		<p class="file-info-size">Size:
 			<span *ngIf="itemAudioMB">{{ itemAudioMB | filesize }}</span>
-			<span *ngIf="!itemAudioMB">{{ durationLoadingText }}</span>
+			<span *ngIf="!itemAudioMB && loadingDuration"><span class="spinner-border spinner-border-sm me-2" role="status"></span> Processing...</span>
+			<span *ngIf="!itemAudioMB && !loadingDuration">{{ durationLoadingText }}</span>
 		</p>
 	</div>
 

@@ -110,4 +110,17 @@ export class ApiService {
     )
   }
 
+  uploadAudioFile(file: File): Observable<HttpResponse<string>> {
+    const formData = new FormData();
+    formData.append('file', file);
+
+    return this.http.post<string>(
+      this.apiUrl.concat("/api/sermons/audio/upload"),
+      formData,
+      {
+        observe: 'response'
+      }
+    )
+  }
+
 }

@@ -5,6 +5,7 @@ import { SermonMessageRequest } from 'src/app/DTO/SermonMessageRequest';
 import { SermonMessage } from 'src/app/DTO/SermonMessage';
 import { DurationPipe } from 'src/app/pipes/DurationPipe';
 import { FileSizePipe } from 'src/app/pipes/FileSizePipe';
+import { ApiService } from 'src/app/services/api-service.service';
 
 @Component({
   selector: 'app-item-form',
@@ -24,15 +25,20 @@ export class ItemFormComponent implements OnInit {
   itemAudioUrl: string | null = null;
   durationLoadingText: string | null = "Waiting on file...";
   loadingDuration: boolean = false;
+  uploadingFile: boolean = false;
   itemAudioDuration: number | null = null;
   itemAudioMB: number | null = null;
+  validationMessage: string | null = null;
+  uploadMessage: string | null = null;
+  uploadSuccess: boolean = false;
+  selectedFile: File | null = null;
   itemPassageRef: string | null = null;
   itemSpeaker: string;
   itemTitle: string;
   itemDate: string;
   itemVideoURL: string | null = null;
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient, private apiService: ApiService) {}
   
   ngOnInit(): void {
     if (this.existingMessage) {
@@ -97,31 +103,133 @@ export class ItemFormComponent implements OnInit {
     this._checked = false;
   }
 
-  // TS
-  uploadFile(event: Event) {
-    this.loadingDuration = true;
+  // TS - File selection and validation
+  selectFile(event: Event) {
+    // Clear previous messages
+    this.validationMessage = null;
+    this.uploadMessage = null;
+    this.uploadSuccess = false;
+    this.itemAudioUrl = null;
+    this.selectedFile = null;
+
     const element = event.currentTarget as HTMLInputElement;
     let fileList: FileList | null = element.files;
     if (fileList) {
       var file = fileList[0];
 
-      this.itemAudioMB = file.size / Math.pow(1024, 2);
-
-      const fileReader = new FileReader();
-      const audioContext = new (window.AudioContext)();
-
-      fileReader.onloadend = () => {
-        const arrayBuffer = fileReader.result as ArrayBuffer
-
-        // Convert array buffer into audio buffer
-        audioContext.decodeAudioData(arrayBuffer).then((audioBuffer: AudioBuffer) => {
-          this.itemAudioDuration = audioBuffer.duration;
-          this.loadingDuration = false;
-        });
+      // Validate file type - ONLY MP3 files allowed
+      const fileExtension = file.name.toLowerCase().substring(file.name.lastIndexOf('.'));
+      if (fileExtension !== '.mp3') {
+        this.validationMessage = "Invalid file type. Only MP3 files are allowed.";
+        return;
       }
 
-      //Load blob
-      fileReader.readAsArrayBuffer(file);
+      // Validate file name format: YYYY-MM-DD-Description.mp3
+      if (!this.isValidFileName(file.name)) {
+        this.validationMessage = "Invalid file name format. Please use: YYYY-MM-DD-Description.mp3 (e.g., 2025-03-15-Recording.mp3)";
+        return;
+      }
+
+      // Validate file size (50MB limit)
+      const maxSizeMB = 50;
+      this.itemAudioMB = file.size / Math.pow(1024, 2);
+      if (this.itemAudioMB > maxSizeMB) {
+        this.validationMessage = `File too large. Maximum size is ${maxSizeMB}MB.`;
+        return;
+      }
+
+      // File is valid, store it and process duration
+      this.selectedFile = file;
+      this.loadingDuration = true;
+      this.processAudioFile(file);
+    }
+  }
+
+  // Process audio file to get duration
+  private processAudioFile(file: File) {
+    const fileReader = new FileReader();
+    const audioContext = new (window.AudioContext)();
+
+    fileReader.onloadend = () => {
+      const arrayBuffer = fileReader.result as ArrayBuffer
+
+      // Convert array buffer into audio buffer
+      audioContext.decodeAudioData(arrayBuffer).then((audioBuffer: AudioBuffer) => {
+        this.itemAudioDuration = audioBuffer.duration;
+        this.loadingDuration = false;
+      });
+    }
+
+    //Load blob
+    fileReader.readAsArrayBuffer(file);
+  }
+
+  // Upload file to S3 (called by button click)
+  uploadToS3() {
+    if (!this.selectedFile) {
+      this.uploadMessage = "No file selected for upload.";
+      this.uploadSuccess = false;
+      return;
+    }
+
+    this.uploadingFile = true;
+    this.uploadMessage = null;
+
+    this.apiService.uploadAudioFile(this.selectedFile).subscribe({
+      next: (response) => {
+        // Ensure clean state reset
+        this.uploadingFile = false;
+        this.loadingDuration = false;
+
+        // The API returns a plain string (the URL), not an object with a url property
+        if (response.body && response.body.trim().length > 0) {
+          this.itemAudioUrl = response.body;
+          this.uploadMessage = "File uploaded successfully to S3!";
+          this.uploadSuccess = true;
+        } else {
+          this.uploadMessage = "Upload failed: Invalid response from server.";
+          this.uploadSuccess = false;
+        }
+      },
+      error: (error) => {
+        console.error('Upload failed:', error);
+
+        // Ensure clean state reset
+        this.uploadingFile = false;
+        this.loadingDuration = false;
+        this.uploadSuccess = false;
+
+        // Provide user-friendly error messages
+        if (error.status === 400) {
+          this.uploadMessage = error.error?.error || "File validation failed on server.";
+        } else if (error.status === 413) {
+          this.uploadMessage = "File too large for upload.";
+        } else if (error.status === 0) {
+          this.uploadMessage = "Network error. Please check your connection.";
+        } else {
+          this.uploadMessage = "Upload failed. Please try again.";
+        }
+      }
+    });
+  }
+
+  // Clear selected file and reset state
+  clearFile() {
+    this.selectedFile = null;
+    this.itemAudioUrl = null;
+    this.itemAudioDuration = null;
+    this.itemAudioMB = null;
+    this.validationMessage = null;
+    this.uploadMessage = null;
+    this.uploadSuccess = false;
+    this.loadingDuration = false;
+    this.uploadingFile = false;
+    this.durationLoadingText = "Waiting on file...";
+
+    // Clear the file input
+    const fileInput = document.getElementById('audioFile') as HTMLInputElement;
+    if (fileInput) {
+      fileInput.value = '';
     }
   }
 
@@ -143,5 +251,55 @@ export class ItemFormComponent implements OnInit {
    */
   hideAddItemSubForm(): void {
     this.cancelAddItemEvent.emit();
+  }
+
+
+
+  /**
+   * Validates if the filename follows the required format: YYYY-MM-DD-Description.mp3
+   * @param fileName The filename to validate
+   * @returns true if valid, false otherwise
+   */
+  /**
+   * Get the button text with icon
+   */
+  getButtonText(): string {
+    if (this.uploadingFile) {
+      return 'Uploading...';
+    } else if (this.loadingDuration) {
+      return 'Processing...';
+    } else {
+      return '<i class="fas fa-cloud-upload-alt me-2"></i>Upload';
+    }
+  }
+
+  private isValidFileName(fileName: string): boolean {
+    // Remove the .mp3 extension for validation
+    const nameWithoutExtension = fileName.replace(/\.mp3$/i, '');
+
+    // Regex pattern for YYYY-MM-DD-Description format
+    // - YYYY: 4 digits (year)
+    // - MM: 2 digits (01-12)
+    // - DD: 2 digits (01-31)
+    // - Description: at least one character, can contain letters, numbers, hyphens, spaces
+    const pattern = /^(\d{4})-(0[1-9]|1[0-2])-(0[1-9]|[12]\d|3[01])-(.+)$/;
+
+    const match = nameWithoutExtension.match(pattern);
+    if (!match) {
+      return false;
+    }
+
+    const [, year, month, day, description] = match;
+
+    // Additional validation: check if it's a valid date
+    const date = new Date(parseInt(year), parseInt(month) - 1, parseInt(day));
+    const isValidDate = date.getFullYear() == parseInt(year) &&
+                       date.getMonth() == parseInt(month) - 1 &&
+                       date.getDate() == parseInt(day);
+
+    // Check if description is not empty after trimming
+    const isValidDescription = description.trim().length > 0;
+
+    return isValidDate && isValidDescription;
   }
 }
