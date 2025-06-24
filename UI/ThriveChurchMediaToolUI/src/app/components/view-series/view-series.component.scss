@@ -1,5 +1,15 @@
+/* Add margin to the component host element */
+:host {
+	display: block;
+	padding-bottom: 20px;
+}
+
 .container {
 	margin-top: 20px;
+	background-color: var(--color-background-secondary);
+	color: var(--color-text-primary);
+	border-radius: 8px;
+	padding: 20px;
 }
 
 img {
@@ -16,11 +26,32 @@ img {
 	padding: 10px;
 	margin-left: 10px;
 
+	h2 {
+		color: var(--color-text-primary);
+	}
+
+	p {
+		color: var(--color-text-secondary);
+	}
+
 	.detail {
 		padding-top: 10px;
+		color: var(--color-text-secondary);
 	}
 }
 
 .message-list {
-	margin-top: 30px;
+	margin-top: 20px;
+}
+
+/* Remove border from the last message summary component */
+::ng-deep app-message-summary:last-child .message-summary {
+	border-bottom: none !important;
+	padding-bottom: 0;
+}
+
+/* Remove border from the last message summary component */
+::ng-deep app-message-summary:last-child .message-summary-skeleton {
+	border-bottom: none !important;
+	padding-bottom: 0;
 }

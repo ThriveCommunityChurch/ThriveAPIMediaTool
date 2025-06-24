@@ -1,155 +1,102 @@
 <div class="message-summary">
-	<ngx-skeleton-loader 
-		count="1" 
-		appearance="line" 
+	<ngx-skeleton-loader
+		count="1"
+		appearance="line"
 		animation="pulse"
-		[theme]="{
-			'width': '95%',
-			'cursor': 'default',
-			'height': '24px',
-			'margin': '0'
-		}">
+		[theme]="titleTheme$ | async">
 	</ngx-skeleton-loader>
 	<div class="additional-info">
 		<div class="row">
 			<div class="col">
-				<ngx-skeleton-loader 
+				<ngx-skeleton-loader
 					count="1"
 					appearance="line"
 					animation="pulse"
-					[theme]="{
-						'width': '30%',
-						'cursor': 'default',
-						'height': '1rem'
-					}">
+					[theme]="smallTheme$ | async">
 				</ngx-skeleton-loader>
 				<br>
-				<ngx-skeleton-loader 
+				<ngx-skeleton-loader
 					count="1"
 					appearance="line"
 					animation="pulse"
-					[theme]="{
-						'width': '100%',
-						'cursor': 'default',
-						'height': '1rem'
-					}">
+					[theme]="fullWidthTheme$ | async">
 				</ngx-skeleton-loader>
 			</div>
 			<div class="col">
-				<ngx-skeleton-loader 
+				<ngx-skeleton-loader
 					count="1"
 					appearance="line"
 					animation="pulse"
-					[theme]="{
-						'width': '50%',
-						'cursor': 'default',
-						'height': '1rem'
-					}">
+					[theme]="mediumTheme$ | async">
 				</ngx-skeleton-loader>
 				<br>
-				<ngx-skeleton-loader 
+				<ngx-skeleton-loader
 					count="1"
 					appearance="line"
 					animation="pulse"
-					[theme]="{
-						'width': '30%',
-						'cursor': 'default',
-						'height': '1rem'
-					}">
+					[theme]="smallTheme$ | async">
 				</ngx-skeleton-loader>
 			</div>
 			<div class="col">
-				<ngx-skeleton-loader 
+				<ngx-skeleton-loader
 					count="1"
 					appearance="line"
 					animation="pulse"
-					[theme]="{
-						'width': '60%',
-						'cursor': 'default',
-						'height': '1rem'
-					}">
+					[theme]="largeTheme$ | async">
 				</ngx-skeleton-loader>
 				<br>
-				<ngx-skeleton-loader 
+				<ngx-skeleton-loader
 					count="1"
 					appearance="line"
 					animation="pulse"
-					[theme]="{
-						'width': '50%',
-						'cursor': 'default',
-						'height': '1rem'
-					}">
+					[theme]="mediumTheme$ | async">
 				</ngx-skeleton-loader>
 			</div>
 		</div>
 		<div class="row">
 			<div class="col">
-				<ngx-skeleton-loader 
+				<ngx-skeleton-loader
 					count="1"
 					appearance="line"
 					animation="pulse"
-					[theme]="{
-						'width': '50%',
-						'cursor': 'default',
-						'height': '1rem'
-					}">
+					[theme]="mediumTheme$ | async">
 				</ngx-skeleton-loader>
 				<br>
-				<ngx-skeleton-loader 
+				<ngx-skeleton-loader
 					count="1"
 					appearance="line"
 					animation="pulse"
-					[theme]="{
-						'width': '100%',
-						'cursor': 'default',
-						'height': '1rem'
-					}">
+					[theme]="fullWidthTheme$ | async">
 				</ngx-skeleton-loader>
 			</div>
 			<div class="col">
-				<ngx-skeleton-loader 
+				<ngx-skeleton-loader
 					count="1"
 					appearance="line"
 					animation="pulse"
-					[theme]="{
-						'width': '50%',
-						'cursor': 'default',
-						'height': '1rem'
-					}">
+					[theme]="mediumTheme$ | async">
 				</ngx-skeleton-loader>
 				<br>
-				<ngx-skeleton-loader 
+				<ngx-skeleton-loader
 					count="1"
 					appearance="line"
 					animation="pulse"
-					[theme]="{
-						'width': '100%',
-						'cursor': 'default',
-						'height': '1rem'
-					}">
+					[theme]="fullWidthTheme$ | async">
 				</ngx-skeleton-loader>
 			</div>
 			<div class="col">
-				<ngx-skeleton-loader 
+				<ngx-skeleton-loader
 					count="1"
 					appearance="line"
 					animation="pulse"
-					[theme]="{
-						'width': '50%',
-						'cursor': 'default',
-						'height': '1rem'
-					}">
+					[theme]="mediumTheme$ | async">
 				</ngx-skeleton-loader>
 				<br>
-				<ngx-skeleton-loader 
+				<ngx-skeleton-loader
 					count="1"
 					appearance="line"
 					animation="pulse"
-					[theme]="{
-						'width': '100%',
-						'cursor': 'default',
-						'height': '1rem'
-					}">
+					[theme]="fullWidthTheme$ | async">
 				</ngx-skeleton-loader>
 			</div>
 		</div>

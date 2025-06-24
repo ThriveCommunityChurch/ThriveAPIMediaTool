@@ -1,9 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
+import { Observable } from 'rxjs';
 import { SermonSeries } from 'src/app/DTO/SermonSeries';
 import { SermonSeriesUpdateRequest } from 'src/app/DTO/SermonSeriesUpdateRequest';
 import { ApiService } from 'src/app/services/api-service.service';
 import { ToastService } from 'src/app/services/toast-service.service';
+import { SkeletonThemeService } from '../../services/skeleton-theme.service';
 
 @Component({
   selector: 'app-edit-series',
@@ -26,14 +28,35 @@ export class EditSeriesComponent implements OnInit {
   // Original series data
   sermonSeries: SermonSeries;
 
+  // Skeleton themes
+  titleTheme$: Observable<any>;
+  formInputTheme$: Observable<any>;
+  buttonTheme$: Observable<any>;
+
   constructor(
     private route: ActivatedRoute,
     private router: Router,
     private apiService: ApiService,
-    private toastService: ToastService
+    private toastService: ToastService,
+    private skeletonThemeService: SkeletonThemeService
   ) { }
 
   ngOnInit(): void {
+    // Initialize skeleton themes
+    this.titleTheme$ = this.skeletonThemeService.getTitleTheme({
+      'width': '60%',
+      'height': '3.5rem',
+      'margin-bottom': '2rem',
+      'margin-top': '1rem'
+    });
+
+    this.formInputTheme$ = this.skeletonThemeService.getFormInputTheme();
+
+    this.buttonTheme$ = this.skeletonThemeService.getButtonTheme({
+      'width': '120px',
+      'margin-right': '0.5rem'
+    });
+
     this.seriesId = this.route.snapshot.paramMap.get('id');
 
     if (this.seriesId) {

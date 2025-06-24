@@ -1,9 +1,77 @@
 <div class="container">
-	<p class="display-4">Edit Series: {{seriesName}}</p>
+	<p class="display-4" *ngIf="!isLoading">Edit Series: {{seriesName}}</p>
 
-	<div *ngIf="isLoading" class="text-center">
-		<div class="spinner-border" role="status">
-			<span class="visually-hidden">Loading...</span>
+	<!-- Skeleton loading state -->
+	<div *ngIf="isLoading">
+		<ngx-skeleton-loader
+			count="1"
+			appearance="line"
+			animation="pulse"
+			[theme]="titleTheme$ | async">
+		</ngx-skeleton-loader>
+
+		<!-- Title field skeleton -->
+		<div class="form-floating mb-3">
+			<ngx-skeleton-loader
+				count="1"
+				[theme]="formInputTheme$ | async">
+			</ngx-skeleton-loader>
+		</div>
+
+		<!-- Date fields skeleton -->
+		<div class="row g-2">
+			<div class="col-md">
+				<div class="form-floating mb-3">
+					<ngx-skeleton-loader
+						count="1"
+						[theme]="formInputTheme$ | async">
+					</ngx-skeleton-loader>
+				</div>
+			</div>
+			<div class="col-md">
+				<div class="form-floating mb-3">
+					<ngx-skeleton-loader
+						count="1"
+						[theme]="formInputTheme$ | async">
+					</ngx-skeleton-loader>
+				</div>
+			</div>
+		</div>
+
+		<!-- Slug field skeleton -->
+		<div class="form-floating mb-3">
+			<ngx-skeleton-loader
+				count="1"
+				[theme]="formInputTheme$ | async">
+			</ngx-skeleton-loader>
+		</div>
+
+		<!-- Thumbnail URL field skeleton -->
+		<div class="form-floating mb-3">
+			<ngx-skeleton-loader
+				count="1"
+				[theme]="formInputTheme$ | async">
+			</ngx-skeleton-loader>
+		</div>
+
+		<!-- Art URL field skeleton -->
+		<div class="form-floating mb-3">
+			<ngx-skeleton-loader
+				count="1"
+				[theme]="formInputTheme$ | async">
+			</ngx-skeleton-loader>
+		</div>
+
+		<!-- Buttons skeleton -->
+		<div class="mt-4">
+			<ngx-skeleton-loader
+				count="1"
+				[theme]="buttonTheme$ | async">
+			</ngx-skeleton-loader>
+			<ngx-skeleton-loader
+				count="1"
+				[theme]="buttonTheme$ | async">
+			</ngx-skeleton-loader>
 		</div>
 	</div>
 

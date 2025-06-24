@@ -27,6 +27,9 @@ import { NgxSkeletonLoaderModule } from 'ngx-skeleton-loader';
 import { SeriesItemSkeletonComponent } from './components/series-item-skeleton/series-item-skeleton.component';
 import { SeriesDataService } from './services/series-data-service';
 import { MessageSummarySkeletonComponent } from './components/message-summary-skeleton/message-summary-skeleton.component';
+import { ThemeToggleComponent } from './components/theme-toggle/theme-toggle.component';
+import { ThemeService } from './services/theme.service';
+import { SkeletonThemeService } from './services/skeleton-theme.service';
 
 
 @NgModule({
@@ -49,7 +52,8 @@ import { MessageSummarySkeletonComponent } from './components/message-summary-sk
     MessageSummaryComponent,
     ToastMessageComponent,
     SeriesItemSkeletonComponent,
-    MessageSummarySkeletonComponent
+    MessageSummarySkeletonComponent,
+    ThemeToggleComponent
   ],
   imports: [
     BrowserModule,
@@ -62,7 +66,9 @@ import { MessageSummarySkeletonComponent } from './components/message-summary-sk
     ApiService,
     SeriesListComponent,
     ToastService,
-    SeriesDataService
+    SeriesDataService,
+    ThemeService,
+    SkeletonThemeService
   ],
   bootstrap: [
     AppComponent

@@ -1,18 +1,22 @@
 .file-info-duration {
 	margin-bottom: 0;
 	font-weight: 700;
+	color: var(--color-text-primary);
 
 	span {
 		font-weight: normal;
+		color: var(--color-text-secondary);
 	}
 }
 
 .file-info-size {
 	margin-bottom: 0.5rem;
 	font-weight: 700;
+	color: var(--color-text-primary);
 
 	span {
 		font-weight: normal;
+		color: var(--color-text-secondary);
 	}
 }
 

@@ -5,14 +5,38 @@
 	height: 1vh;
 }
 
+.toast {
+	background-color: var(--color-background) !important;
+	border-color: var(--color-border) !important;
+	color: var(--color-text-primary) !important;
+}
+
+.toast-body {
+	background-color: var(--color-background) !important;
+	color: var(--color-text-primary) !important;
+}
+
+.btn-close {
+	filter: var(--close-button-filter) !important;
+	opacity: 0.8 !important;
+}
+
+.btn-close:hover {
+	opacity: 1 !important;
+}
+
 .Info {
 	.toast-header {
-		background-color: #abf3ae;
+		background-color: var(--color-toast-success) !important;
+		color: var(--color-text-primary) !important;
+		border-color: var(--color-border) !important;
 	}
 }
 
 .Error {
 	.toast-header {
-		background-color: #f5aca6;
+		background-color: var(--color-toast-error) !important;
+		color: var(--color-text-primary) !important;
+		border-color: var(--color-border) !important;
 	}
 }

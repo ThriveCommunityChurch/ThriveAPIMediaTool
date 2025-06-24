@@ -1,40 +1,41 @@
 .message-summary {
-	border-bottom: 1px solid #dfdfdf;
+	border-bottom: 1px solid var(--color-message-border);
 	padding: 10px 0 15px 0;
 
 	.title {
 		font-weight: 500;
 		font-size: larger;
+		color: var(--color-text-primary);
 
 		span {
 			padding-left: 8px;
 			vertical-align: text-top;
 
 			.fa-youtube {
-				color: #F00;
+				color: var(--color-youtube);
 
 				:hover {
-					color: #F00;
+					color: var(--color-youtube);
 				}
 			}
 
 			.fa-clone {
-				color: deepskyblue;
+				color: var(--color-action-icon);
 				cursor: pointer;
 				width: 0.65em;
 
 				&:hover {
-					color: rgb(0, 162, 216);
+					color: var(--color-action-icon-hover);
 				}
 			}
 
 			#edit-pencil {
-				color: deepskyblue;
+				color: var(--color-action-icon);
 				cursor: pointer;
 				width: 0.65em;
 
 				&:hover {
-					color: rgb(0, 162, 216);
+					color: var(--color-action-icon-hover);
 				}
 			}
 		}
@@ -47,22 +48,24 @@
 
 		.data-title {
 			font-weight: 400;
+			color: var(--color-text-secondary);
 		}
-	
+
 		.data {
 			font-weight: 500;
 			font-size: small;
-			
+			color: var(--color-text-primary);
+
 			a {
 				padding-left: 3px;
 				vertical-align: unset;
 
 				.fa-external-link-alt {
-					color: deepskyblue;
+					color: var(--color-action-icon);
 					width: 0.8em;
 
 					:hover {
-						color: deepskyblue;
+						color: var(--color-action-icon-hover);
 					}
 				}
 			}

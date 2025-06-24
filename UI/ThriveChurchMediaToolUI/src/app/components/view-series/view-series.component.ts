@@ -1,10 +1,11 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { Subscription } from 'rxjs';
+import { Subscription, Observable } from 'rxjs';
 import { SermonMessage } from 'src/app/DTO/SermonMessage';
 import { SermonSeries } from 'src/app/DTO/SermonSeries';
 import { ApiService } from 'src/app/services/api-service.service';
 import { SeriesDataService } from 'src/app/services/series-data-service';
+import { SkeletonThemeService } from '../../services/skeleton-theme.service';
 
 @Component({
   selector: 'app-view-series',
@@ -26,14 +27,41 @@ export class ViewSeriesComponent implements OnInit, OnDestroy {
   errorsOccurred: Boolean = false;
   isContentLoaded: Boolean = false;
 
+  // Skeleton themes
+  imageTheme$: Observable<any>;
+  titleTheme$: Observable<any>;
+  subtitleTheme$: Observable<any>;
+  detailTheme$: Observable<any>;
+
   constructor(
     private route: ActivatedRoute,
     private _router: Router,
     private apiService: ApiService,
-    private _seriesDataService: SeriesDataService
+    private _seriesDataService: SeriesDataService,
+    private skeletonThemeService: SkeletonThemeService
   ) { }
 
   ngOnInit(): void {
+    // Initialize skeleton themes
+    this.imageTheme$ = this.skeletonThemeService.getBaseTheme({
+      'height': '190px',
+      'width': 'auto',
+      'border-radius': '10px',
+      'aspect-ratio': '16/9',
+      'margin': '0',
+      'display': 'flex'
+    });
+
+    this.titleTheme$ = this.skeletonThemeService.getTitleTheme({
+      'width': '100%'
+    });
+
+    this.subtitleTheme$ = this.skeletonThemeService.getLineTheme({
+      'width': '75%'
+    });
+
+    this.detailTheme$ = this.skeletonThemeService.getLineTheme();
+
     this.seriesId = this.route.snapshot.paramMap.get('id');
       
     if (this.seriesId) {

@@ -10,14 +10,17 @@
 #footer {
     text-align: center;
     padding-bottom: 5px;
+    color: var(--color-text-secondary);
 }
 
 #link {
     width: 15px;
-    color: #0645AD;
+    color: var(--color-dashboard-link);
 }
 
 .mode-banner {
     padding-top: 5px;
     text-align: center;
+    background-color: var(--color-background-secondary);
+    color: var(--color-text-secondary);
 }

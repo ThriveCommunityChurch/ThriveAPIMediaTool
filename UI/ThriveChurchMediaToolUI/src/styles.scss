@@ -1,32 +1,40 @@
 @import '../node_modules/bootstrap/scss/bootstrap';
-
-// Bootstrap Color Overwrites
-$custom-primary: #54baca;
-$custom-secondary: #A9BCD0;
-$custom-tertiary: #343A40;
-$custom-light: #D8DBE2;
-$white: #ffffff;
-$custom-dark: #1B1B1E;
-
+@import 'themes.scss';
 
 /* You can add global styles to this file, and also import other style files */
+
+/* Apply theme to body and html */
+html {
+    /* To make use of full height of page*/
+    height: 100%;
+    margin: 0;
+    background-color: var(--color-background);
+    color: var(--color-text-primary);
+}
+
+body {
+    height: 100%;
+    margin: 0;
+    min-width: min-content;
+    background-color: var(--color-background);
+    color: var(--color-text-primary);
+}
+
+/* Global component styles using CSS custom properties */
 #web-icon {
     padding-right: 2px;
     padding-left: 2px;
 }
 
 #submit-button {
-    background-color: #5F9FA8;
-    border-color: #5F9FA8;
-}
-
-#submit-button {
-    color: #fff
+    background-color: var(--color-submit-button);
+    border-color: var(--color-submit-button);
+    color: var(--color-text-inverse);
 }
 
 #submit-button:not(:disabled):not(.disabled):active {
-    background-color: #427B83;
-    border-color: #427B83;
+    background-color: var(--color-submit-button-active);
+    border-color: var(--color-submit-button-active);
 }
 
 button:focus {
@@ -35,20 +43,20 @@ button:focus {
 }
 
 #submit-button:hover {
-    background-color: #5096A0;
-    border-color: #5096A0;
+    background-color: var(--color-submit-button-hover);
+    border-color: var(--color-submit-button-hover);
 }
 
 a {
-    color: rgba(255,255,255,.5);
+    color: var(--color-navbar-text);
 }
 
 a:active {
-    color: rgba(255,255,255,.75);
+    color: var(--color-navbar-text-active);
 }
 
 a:hover {
-    color: rgba(255,255,255,.75);
+    color: var(--color-navbar-text-hover);
 }
 
 #profile-dropdown {
@@ -56,18 +64,7 @@ a:hover {
 }
 
 .dropdown-item:active {
-    background-color: #B0C2D4;
-}
-
-html {
-    /* To make use of full height of page*/
-    height: 100%;
-    margin: 0;
-}
-body {
-    height: 100%;
-    margin: 0;
-    min-width: min-content;
+    background-color: var(--color-dropdown-item-active);
 }
 
 .login-modal-footer {
@@ -76,131 +73,133 @@ body {
 
 .login-modal-footer {
     .mr-auto {
-        color: #5096A0 !important;
+        color: var(--color-login-modal) !important;
     }
 }
 
+/* Bootstrap Color Overrides using CSS Custom Properties */
+
 // Primary
 .text-primary {
-    color: $custom-primary !important;
+    color: var(--color-primary) !important;
 }
 a.text-primary:hover{
-    color: darken($custom-primary, 15%) !important;
+    color: var(--color-primary-hover) !important;
 }
 .btn-primary,
 .border-primary {
-    border-color: $custom-primary !important;
+    border-color: var(--color-primary) !important;
 }
 .btn-primary,
 .bg-primary {
-    background-color: $custom-primary !important;
+    background-color: var(--color-primary) !important;
 }
 .btn-primary:hover {
-    background-color: darken($custom-primary, 15%) !important;
-    border-color: darken($custom-primary, 15%) !important;
+    background-color: var(--color-primary-hover) !important;
+    border-color: var(--color-primary-hover) !important;
 }
 .btn-primary:not(.disabled):active:focus,
 .btn-primary:focus {
-    background-color: darken($custom-primary, 13%) !important;
-    border-color: darken($custom-primary, 13%) !important;
+    background-color: var(--color-primary-active) !important;
+    border-color: var(--color-primary-active) !important;
 }
 
 // Secondary
 .text-secondary {
-    color: $custom-tertiary !important;
+    color: var(--color-tertiary) !important;
 }
 a.text-secondary:hover {
-    color: darken($custom-tertiary, 15%) !important;
+    color: var(--color-tertiary-hover) !important;
 }
 .btn-secondary,
 .border-secondary {
-    border-color: $custom-tertiary !important;
+    border-color: var(--color-tertiary) !important;
 }
 .btn-secondary,
 .bg-secondary {
-    background-color: $custom-tertiary !important;
+    background-color: var(--color-tertiary) !important;
 }
 .btn-secondary:hover {
-    background-color: darken($custom-tertiary, 15%) !important;
-    border-color: darken($custom-tertiary, 15%) !important;
+    background-color: var(--color-tertiary-hover) !important;
+    border-color: var(--color-tertiary-hover) !important;
 }
 .btn-secondary:not(.disabled):active:focus,
 .btn-secondary:focus {
-    background-color: darken($custom-tertiary, 13%) !important;
-    border-color: darken($custom-tertiary, 13%) !important;
+    background-color: var(--color-tertiary-active) !important;
+    border-color: var(--color-tertiary-active) !important;
 }
 
 // Tertiary
 .text-tertiary {
-    color: $custom-tertiary !important;
+    color: var(--color-tertiary) !important;
 }
 a.text-tertiary:hover {
-    color: darken($custom-tertiary, 15%) !important;
+    color: var(--color-tertiary-hover) !important;
 }
 .btn-tertiary,
 .border-tertiary {
-    border-color: $custom-tertiary !important;
+    border-color: var(--color-tertiary) !important;
 }
 .btn-tertiary,
 .bg-tertiary {
-    background-color: $custom-tertiary !important;
+    background-color: var(--color-tertiary) !important;
 }
 .btn-tertiary:hover {
-    background-color: darken($custom-tertiary, 15%) !important;
-    border-color: darken($custom-tertiary, 15%) !important;
+    background-color: var(--color-tertiary-hover) !important;
+    border-color: var(--color-tertiary-hover) !important;
 }
 .btn-tertiary:not(.disabled):active:focus,
 .btn-tertiary:focus {
-    background-color: darken($custom-tertiary, 13%) !important;
-    border-color: darken($custom-tertiary, 13%) !important;
+    background-color: var(--color-tertiary-active) !important;
+    border-color: var(--color-tertiary-active) !important;
 }
 
 // Light
 .text-light {
-    color: $white !important;
+    color: var(--color-text-inverse) !important;
 }
 a.text-light:hover {
-    color: darken($white, 15%) !important;
+    color: var(--color-text-secondary) !important;
 }
 .btn-light,
 .border-light {
-    border-color: $white !important;
+    border-color: var(--color-background) !important;
 }
 .btn-light,
 .bg-light {
-    background-color: $white !important;
+    background-color: var(--color-background) !important;
 }
 .btn-light:hover {
-    background-color: darken($white, 15%) !important;
-    border-color: darken($white, 15%) !important;
+    background-color: var(--color-background-secondary) !important;
+    border-color: var(--color-background-secondary) !important;
 }
 .btn-light:not(.disabled):active:focus,
 .btn-light:focus {
-    background-color: darken($white, 13%) !important;
-    border-color: darken($white, 13%) !important;
+    background-color: var(--color-background-tertiary) !important;
+    border-color: var(--color-background-tertiary) !important;
 }
 
 // Dark
 .text-dark {
-    color: $custom-dark !important;
+    color: var(--color-text-primary) !important;
 }
 a.text-dark:hover {
-    color: darken($custom-dark, 15%) !important;
+    color: var(--color-text-secondary) !important;
 }
 .btn-dark,
 .border-dark {
-    border-color: $custom-dark !important;
+    border-color: var(--color-navbar-bg) !important;
 }
 .btn-dark,
 .bg-dark {
-    background-color: $custom-dark !important;
+    background-color: var(--color-navbar-bg) !important;
 }
 .btn-dark:hover {
-    background-color: darken($custom-dark, 15%) !important;
-    border-color: darken($custom-dark, 15%) !important;
+    background-color: var(--color-background-tertiary) !important;
+    border-color: var(--color-background-tertiary) !important;
 }
 .btn-dark:not(.disabled):active:focus,
 .btn-dark:focus {
-    background-color: darken($custom-dark, 13%) !important;
-    border-color: darken($custom-dark, 13%) !important;
+    background-color: var(--color-background-secondary) !important;
+    border-color: var(--color-background-secondary) !important;
 }

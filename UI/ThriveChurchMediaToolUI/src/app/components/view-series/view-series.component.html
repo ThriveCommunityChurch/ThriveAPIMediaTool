@@ -43,15 +43,7 @@
 			<div class="row">
 				<ngx-skeleton-loader
 				count="1"
-				[theme]="{
-					'height': '190px',
-					'width': 'auto',
-					'border-radius': '10px',
-					'aspect-ratio': '16/9',
-					'cursor': 'default',
-					'margin': '0',
-					'display': 'flex'
-				}">
+				[theme]="imageTheme$ | async">
 			</ngx-skeleton-loader>
 			</div>
 		</div>
@@ -59,50 +51,36 @@
 			<div class="row">
 				<div class="summary-info">
 					<div class="series-details">
-						<ngx-skeleton-loader 
+						<ngx-skeleton-loader
 							count="1"
 							appearance="line"
 							animation="pulse"
-							[theme]="{
-								'width': '100%',
-								'cursor': 'default',
-								'height': '24px'
-							}">
+							[theme]="titleTheme$ | async">
 						</ngx-skeleton-loader>
-						<ngx-skeleton-loader 
+						<ngx-skeleton-loader
 							count="1"
 							appearance="line"
 							animation="pulse"
-							[theme]="{
-								'width': '75%',
-								'cursor': 'default',
-								'height': '1rem'
-							}">
+							[theme]="subtitleTheme$ | async">
 						</ngx-skeleton-loader>
 						<div class="row">
 							<div class="col">
 								<div class="detail">
-									<ngx-skeleton-loader 
+									<ngx-skeleton-loader
 										count="1"
 										appearance="line"
 										animation="pulse"
-										[theme]="{
-											'cursor': 'default',
-											'height': '1rem'
-										}">
+										[theme]="detailTheme$ | async">
 									</ngx-skeleton-loader>
 								</div>
 							</div>
 							<div class="col">
 								<div class="detail">
-									<ngx-skeleton-loader 
+									<ngx-skeleton-loader
 										count="1"
 										appearance="line"
 										animation="pulse"
-										[theme]="{
-											'cursor': 'default',
-											'height': '1rem'
-										}">
+										[theme]="detailTheme$ | async">
 									</ngx-skeleton-loader>
 								</div>
 							</div>
