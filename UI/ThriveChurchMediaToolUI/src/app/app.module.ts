@@ -1,4 +1,4 @@
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { FormsModule } from '@angular/forms';
@@ -30,6 +30,10 @@ import { MessageSummarySkeletonComponent } from './components/message-summary-sk
 import { ThemeToggleComponent } from './components/theme-toggle/theme-toggle.component';
 import { ThemeService } from './services/theme.service';
 import { SkeletonThemeService } from './services/skeleton-theme.service';
+import { LoginComponent } from './components/login/login.component';
+import { AuthenticationService } from './services/authentication.service';
+import { AuthInterceptor } from './interceptors/auth.interceptor';
+import { AuthGuard } from './guards/auth.guard';
 
 
 @NgModule({
@@ -53,7 +57,8 @@ import { SkeletonThemeService } from './services/skeleton-theme.service';
     ToastMessageComponent,
     SeriesItemSkeletonComponent,
     MessageSummarySkeletonComponent,
-    ThemeToggleComponent
+    ThemeToggleComponent,
+    LoginComponent
   ],
   imports: [
     BrowserModule,
@@ -68,7 +73,14 @@ import { SkeletonThemeService } from './services/skeleton-theme.service';
     ToastService,
     SeriesDataService,
     ThemeService,
-    SkeletonThemeService
+    SkeletonThemeService,
+    AuthenticationService,
+    AuthGuard,
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: AuthInterceptor,
+      multi: true
+    }
   ],
   bootstrap: [
     AppComponent

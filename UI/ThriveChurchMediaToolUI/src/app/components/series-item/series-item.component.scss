@@ -43,12 +43,22 @@
 	background-color: var(--color-background-secondary);
 	border-color: var(--color-border);
 
-	a {
+	.action-link {
 		text-decoration: none;
 		color: var(--color-series-link);
 		font-size: smaller;
 		letter-spacing: 2px;
 		font-weight: bold;
+		transition: all 0.15s ease-in-out;
+
+		&:hover {
+			color: var(--color-series-link-hover, #007bff);
+			transform: translateY(-1px);
+		}
+
+		i {
+			font-size: 0.8em;
+		}
 	}
 }
 

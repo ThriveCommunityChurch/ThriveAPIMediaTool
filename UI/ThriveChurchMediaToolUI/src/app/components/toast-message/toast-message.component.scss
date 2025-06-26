@@ -40,3 +40,32 @@
 		border-color: var(--color-border) !important;
 	}
 }
+
+.Success {
+	.toast-header {
+		background-color: #28a745 !important; // Bootstrap success green
+		color: white !important;
+		border-color: var(--color-border) !important;
+	}
+}
+
+.Warning {
+	.toast-header {
+		background-color: #ffc107 !important; // Bootstrap warning yellow
+		color: #212529 !important; // Dark text for better contrast
+		border-color: var(--color-border) !important;
+	}
+}
+
+// Dark theme adjustments
+[data-theme="dark"] {
+	.Success .toast-header {
+		background-color: #198754 !important; // Darker green for dark theme
+		color: white !important;
+	}
+
+	.Warning .toast-header {
+		background-color: #fd7e14 !important; // Orange for dark theme
+		color: white !important;
+	}
+}

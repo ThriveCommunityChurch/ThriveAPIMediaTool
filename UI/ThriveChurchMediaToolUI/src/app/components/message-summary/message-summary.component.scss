@@ -18,10 +18,14 @@
 					color: var(--color-youtube);
 				}
 			}
+		}
+
+		.action-icon {
+			cursor: pointer;
+			transition: all 0.15s ease-in-out;
 
 			.fa-clone {
 				color: var(--color-action-icon);
-				cursor: pointer;
 				width: 0.65em;
 
 				&:hover {
@@ -31,12 +35,21 @@
 
 			#edit-pencil {
 				color: var(--color-action-icon);
-				cursor: pointer;
 				width: 0.65em;
 
 				&:hover {
 					color: var(--color-action-icon-hover);
 				}
+			}
+
+			&:hover {
+				transform: translateY(-1px);
+			}
+		}
+
+		.edit-icon {
+			&:hover #edit-pencil {
+				color: #28a745; // Green color for edit action
 			}
 		}
 	}

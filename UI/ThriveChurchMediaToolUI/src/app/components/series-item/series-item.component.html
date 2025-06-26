@@ -31,16 +31,21 @@
 		<p class="card-text"><small class="text-muted">Updated {{localizedLastUpdated}}</small></p>
 	</div>
 	<div class="card-footer">
-		<a href="add/{{summary.Id}}">
-			<small>ADD</small>
-		</a>
-		&nbsp;
-		<a href="edit/{{summary.Id}}">
-			<small>EDIT</small>
-		</a>
-		&nbsp;
+		<!-- Admin-only controls -->
+		<ng-container *ngIf="isAuthenticated$ | async">
+			<a href="#" (click)="onAddClick($event)" class="action-link">
+				<small>ADD</small>
+			</a>
+			&nbsp;
+			<a href="#" (click)="onEditClick($event)" class="action-link">
+				<small>EDIT</small>
+			</a>
+			&nbsp;
+		</ng-container>
+
+		<!-- Always visible VIEW link -->
 		<a href="view/{{summary.Id}}"
-		(click)="setSeriesDataForNavigation()">
+		(click)="setSeriesDataForNavigation()" class="action-link">
 			<small>VIEW</small>
 		</a>
 	</div>
