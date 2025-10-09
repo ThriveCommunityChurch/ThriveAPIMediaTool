@@ -1,238 +1,244 @@
 <div class="container">
-	<div class="row align-items-center">
-		<p class="display-5">Sermon Stats</p>
-		<hr>
-	</div>
-	<br />
-	<div class="chart">
-		<div id="chart-header" class="d-flex">
-			<div class="d-flex">
-				<h6>Start Date</h6>
-				<input id="startDate" class="form-control" type="date" />
-			</div>
-			<div class="d-flex">
-				<h6>End Date</h6>
-				<input id="endDate" class="form-control" type="date" />
-			</div>
-			<div class="dropdown">
-				<button class="btn btn-primary dropdown-toggle ml-auto btn-sm" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
-				  Choose Display
-				</button>
-				<ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
-				  <li><a class="dropdown-item" (click)="setAggreate('Daily')">Daily</a></li>
-				  <li><a class="dropdown-item" (click)="setAggreate('Weekly')">Weekly</a></li>
-				  <li><a class="dropdown-item" (click)="setAggreate('Monthly')">Monthly</a></li>
-				  <li><a class="dropdown-item" (click)="setAggreate('Yearly')">Yearly</a></li>
-				</ul>
-			</div>
-			<div class="dropdown">
-				<button class="btn btn-primary dropdown-toggle ml-auto btn-sm" type="button" id="dropdownMenuButton2" data-bs-toggle="dropdown" aria-expanded="false">
-				  Chart Type
-				</button>
-				<ul class="dropdown-menu" aria-labelledby="dropdownMenuButton2">
-				  <li><a class="dropdown-item" (click)="setChartType('AudioDuration')">Audio Duration</a></li>
-				  <li><a class="dropdown-item" (click)="setChartType('TotAudioDuration')">Total Audio Duration</a></li>
-				  <li><a class="dropdown-item" (click)="setChartType('TotAudioFileSize')">Total Audio Size</a></li>
-				</ul>
-			</div>
-		</div>
-		<canvas id="myChart"></canvas>
-	</div>
-	<br />
-	<div id="datum-container" class="container">
-		<div class="row">
-			<div class="col">
-				<div class="datum">
-					<div class="datum-header">
-						# Of Sermon Series
-					</div>
-					<div class="data">
-						{{ TotalSeriesNum }}
-					</div>
-				</div>
-			</div>
-			<div class="col">
-				<div class="datum">
-					<div class="datum-header">
-						# Of Messages
-					</div>
-					<div class="data">
-						{{ TotalMessageNum }}
-					</div>
-				</div>
-			</div>
-			<div class="col">
-				<div class="datum">
-					<div class="datum-header">
-						Messages Per Series
-					</div>
-					<div class="data">
-						{{ AvgMessagesPerSeries | number: '1.1-2' }}
-					</div>
-				</div>
-			</div>
-			<div class="col">
-				<div class="datum">
-					<div class="datum-header">
-						Audio Duration
-					</div>
-					<div class="data">
-						{{ TotalAudioLength | duration: 'd[d] h[h]' }}
-					</div>
-				</div>
-			</div>
-		</div>
-		<div class="row">
-			<div class="col">
-				<div class="datum">
-					<div class="datum-header">
-						Avg. Audio Duration
-					</div>
-					<div class="data">
-						{{ AvgAudioLength | duration: 'm[m] s[s]' }}
-					</div>
-				</div>
-			</div>
-			<div class="col">
-				<div class="datum">
-					<div class="datum-header">
-						Total File Size
-					</div>
-					<div class="data">
-						{{ TotalFileSize | filesize: 'GB' }}
-					</div>
-				</div>
-			</div>
-			<div class="col">
-				<div class="datum">
-					<div class="datum-header">
-						Avg. File Size
-					</div>
-					<div class="data">
-						{{ AvgFileSize | filesize: 'MB' }}
-					</div>
-				</div>
-			</div>
-		</div>
-		<div class="row">
-			<div class="col"
-			*ngIf="LongestMessage">
-				<div class="datum">
-					<div class="datum-header">
-						Longest Message
-					</div>
-					<br />
-					<div class="row">
-						<div class="col">
-							<div class="data-details-header">
-								Duration
-							</div>
-							<div class="data-details">
-								{{ LongestMessage.AudioDuration ?? 0 | duration: 'm[m] s[s]' }}
-							</div>
-						</div>
-						<div class="col">
-							<div class="col">
-								<div class="data-details-header">
-									Message Date
-								</div>
-								<div class="data-details">
-									{{ LongestMessage.Date | date: 'MMMM d, YYYY':'UTC' }}	
-								</div>
-							</div>
-						</div>
-						<div class="col">
-							<div class="data-details-header">
-								Speaker
-							</div>
-							<div class="data-details">
-								{{ LongestMessage.Speaker }}	
-							</div>
-						</div>
-					</div>
-					<div class="row">
-						<div class="col">
-							<div class="data-details-header">
-								Series Name
-							</div>
-							<div class="data-details">
-								{{ LongestMessage.SeriesName }}
-							</div>
-						</div>
-						<div class="col">
-							<div class="data-details-header">
-								Title
-							</div>
-							<div class="data-details">
-								{{ LongestMessage.Title }}	
-							</div>
-						</div>
-					</div>
-				</div>
-			</div>
-			<div class="col"
-			*ngIf="LongestSeries">
-				<div class="datum">
-					<div class="datum-header">
-						Longest Series
-					</div>
-					<br />
-					<div class="row">
-						<div class="col">
-							<div class="data-details-header">
-								Messages
-							</div>
-							<div class="data-details">
-								{{ LongestSeries.SeriesLength }}
-							</div>
-						</div>
-						<div class="col">
-							<div class="col">
-								<div class="data-details-header">
-									Start Date
-								</div>
-								<div class="data-details">
-									{{ LongestSeries.StartDate | date: 'MMMM d, YYYY':'UTC' }}	
-								</div>
-							</div>
-						</div>
-					</div>
-					<div class="row">
-						<div class="col">
-							<div class="data-details-header">
-								Title
-							</div>
-							<div class="data-details">
-								{{ LongestSeries.Title }}	
-							</div>
-						</div>
-						<div class="col">
-							<div class="data-details-art">
-								<img src="{{LongestSeries.ArtUrl}}" alt="{{LongestSeries.Title}}">
-							</div>
-						</div>
-					</div>
-				</div>
-			</div>
-		</div>
-	</div>
-	<br />
-	<table class="table table-striped">
-		<thead>
-			<tr>
-				<th scope="col">Speaker</th>
-				<th scope="col">Messages</th>
-				<th scope="col">% Of Total</th>
-				<th scope="col">Avg. Duration</th>
-			</tr>
-		</thead>
-		<tbody>
-			<tr *ngFor="let speaker of speakers">
-				<td>{{ speaker.Name }}</td>
-				<td>{{ speaker.MessageCount }}</td>
-				<td>{{ (speaker.MessageCount / TotalMessageNum) * 100 | number: '1.1-2' }}%</td>
-				<td>{{ speaker.AvgLength | duration: 'm[m] s[s]' }} </td>
-			</tr>
-		</tbody>
-	</table>
-</div>
+  <div class="row align-items-center">
+    <p class="display-5">Sermon Stats</p>
+    <hr>
+    </div>
+    <br />
+    <div class="chart">
+      <div id="chart-header" class="d-flex">
+        <div class="d-flex">
+          <h6>Start Date</h6>
+          <input id="startDate" class="form-control" type="date" />
+        </div>
+        <div class="d-flex">
+          <h6>End Date</h6>
+          <input id="endDate" class="form-control" type="date" />
+        </div>
+        <div class="dropdown">
+          <button class="btn btn-primary dropdown-toggle ml-auto btn-sm" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+            Choose Display
+          </button>
+          <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+            <li><a class="dropdown-item" (click)="setAggreate('Daily')">Daily</a></li>
+            <li><a class="dropdown-item" (click)="setAggreate('Weekly')">Weekly</a></li>
+            <li><a class="dropdown-item" (click)="setAggreate('Monthly')">Monthly</a></li>
+            <li><a class="dropdown-item" (click)="setAggreate('Yearly')">Yearly</a></li>
+          </ul>
+        </div>
+        <div class="dropdown">
+          <button class="btn btn-primary dropdown-toggle ml-auto btn-sm" type="button" id="dropdownMenuButton2" data-bs-toggle="dropdown" aria-expanded="false">
+            Chart Type
+          </button>
+          <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton2">
+            <li><a class="dropdown-item" (click)="setChartType('AudioDuration')">Audio Duration</a></li>
+            <li><a class="dropdown-item" (click)="setChartType('TotAudioDuration')">Total Audio Duration</a></li>
+            <li><a class="dropdown-item" (click)="setChartType('TotAudioFileSize')">Total Audio Size</a></li>
+          </ul>
+        </div>
+      </div>
+      <canvas id="myChart"></canvas>
+    </div>
+    <br />
+    <div id="datum-container" class="container">
+      <div class="row">
+        <div class="col">
+          <div class="datum">
+            <div class="datum-header">
+              # Of Sermon Series
+            </div>
+            <div class="data">
+              {{ TotalSeriesNum }}
+            </div>
+          </div>
+        </div>
+        <div class="col">
+          <div class="datum">
+            <div class="datum-header">
+              # Of Messages
+            </div>
+            <div class="data">
+              {{ TotalMessageNum }}
+            </div>
+          </div>
+        </div>
+        <div class="col">
+          <div class="datum">
+            <div class="datum-header">
+              Messages Per Series
+            </div>
+            <div class="data">
+              {{ AvgMessagesPerSeries | number: '1.1-2' }}
+            </div>
+          </div>
+        </div>
+        <div class="col">
+          <div class="datum">
+            <div class="datum-header">
+              Audio Duration
+            </div>
+            <div class="data">
+              {{ TotalAudioLength | duration: 'd[d] h[h]' }}
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col">
+          <div class="datum">
+            <div class="datum-header">
+              Avg. Audio Duration
+            </div>
+            <div class="data">
+              {{ AvgAudioLength | duration: 'm[m] s[s]' }}
+            </div>
+          </div>
+        </div>
+        <div class="col">
+          <div class="datum">
+            <div class="datum-header">
+              Total File Size
+            </div>
+            <div class="data">
+              {{ TotalFileSize | filesize: 'GB' }}
+            </div>
+          </div>
+        </div>
+        <div class="col">
+          <div class="datum">
+            <div class="datum-header">
+              Avg. File Size
+            </div>
+            <div class="data">
+              {{ AvgFileSize | filesize: 'MB' }}
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        @if (LongestMessage) {
+          <div class="col"
+            >
+            <div class="datum">
+              <div class="datum-header">
+                Longest Message
+              </div>
+              <br />
+              <div class="row">
+                <div class="col">
+                  <div class="data-details-header">
+                    Duration
+                  </div>
+                  <div class="data-details">
+                    {{ LongestMessage.AudioDuration ?? 0 | duration: 'm[m] s[s]' }}
+                  </div>
+                </div>
+                <div class="col">
+                  <div class="col">
+                    <div class="data-details-header">
+                      Message Date
+                    </div>
+                    <div class="data-details">
+                      {{ LongestMessage.Date | date: 'MMMM d, YYYY':'UTC' }}
+                    </div>
+                  </div>
+                </div>
+                <div class="col">
+                  <div class="data-details-header">
+                    Speaker
+                  </div>
+                  <div class="data-details">
+                    {{ LongestMessage.Speaker }}
+                  </div>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col">
+                  <div class="data-details-header">
+                    Series Name
+                  </div>
+                  <div class="data-details">
+                    {{ LongestMessage.SeriesName }}
+                  </div>
+                </div>
+                <div class="col">
+                  <div class="data-details-header">
+                    Title
+                  </div>
+                  <div class="data-details">
+                    {{ LongestMessage.Title }}
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        }
+        @if (LongestSeries) {
+          <div class="col"
+            >
+            <div class="datum">
+              <div class="datum-header">
+                Longest Series
+              </div>
+              <br />
+              <div class="row">
+                <div class="col">
+                  <div class="data-details-header">
+                    Messages
+                  </div>
+                  <div class="data-details">
+                    {{ LongestSeries.SeriesLength }}
+                  </div>
+                </div>
+                <div class="col">
+                  <div class="col">
+                    <div class="data-details-header">
+                      Start Date
+                    </div>
+                    <div class="data-details">
+                      {{ LongestSeries.StartDate | date: 'MMMM d, YYYY':'UTC' }}
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col">
+                  <div class="data-details-header">
+                    Title
+                  </div>
+                  <div class="data-details">
+                    {{ LongestSeries.Title }}
+                  </div>
+                </div>
+                <div class="col">
+                  <div class="data-details-art">
+                    <img src="{{LongestSeries.ArtUrl}}" alt="{{LongestSeries.Title}}">
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        }
+      </div>
+    </div>
+    <br />
+    <table class="table table-striped">
+      <thead>
+        <tr>
+          <th scope="col">Speaker</th>
+          <th scope="col">Messages</th>
+          <th scope="col">% Of Total</th>
+          <th scope="col">Avg. Duration</th>
+        </tr>
+      </thead>
+      <tbody>
+        @for (speaker of speakers; track speaker) {
+          <tr>
+            <td>{{ speaker.Name }}</td>
+            <td>{{ speaker.MessageCount }}</td>
+            <td>{{ (speaker.MessageCount / TotalMessageNum) * 100 | number: '1.1-2' }}%</td>
+            <td>{{ speaker.AvgLength | duration: 'm[m] s[s]' }} </td>
+          </tr>
+        }
+      </tbody>
+    </table>
+  </div>

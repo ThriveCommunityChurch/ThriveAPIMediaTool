@@ -5,9 +5,10 @@ import * as bootstrap from 'bootstrap';
 import { Subscription } from 'rxjs';
 
 @Component({
-  selector: 'app-toast-message',
-  templateUrl: './toast-message.component.html',
-  styleUrls: ['./toast-message.component.scss']
+    selector: 'app-toast-message',
+    templateUrl: './toast-message.component.html',
+    styleUrls: ['./toast-message.component.scss'],
+    standalone: false
 })
 export class ToastMessageComponent {
 

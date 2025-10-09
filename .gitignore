@@ -31,3 +31,5 @@ UI/ThriveChurchMediaToolUI/.vscode/
 **/node_modules/
 
 *.code-workspace
+
+*.http

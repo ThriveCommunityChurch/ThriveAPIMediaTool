@@ -8,9 +8,10 @@ import { ToastService } from 'src/app/services/toast-service.service';
 import { SkeletonThemeService } from '../../services/skeleton-theme.service';
 
 @Component({
-  selector: 'app-edit-series',
-  templateUrl: './edit-series.component.html',
-  styleUrls: ['./edit-series.component.scss']
+    selector: 'app-edit-series',
+    templateUrl: './edit-series.component.html',
+    styleUrls: ['./edit-series.component.scss'],
+    standalone: false
 })
 export class EditSeriesComponent implements OnInit {
 

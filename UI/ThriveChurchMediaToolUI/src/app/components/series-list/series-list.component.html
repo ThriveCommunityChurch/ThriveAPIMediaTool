@@ -1,11 +1,18 @@
-<div class="card-group" *ngIf="isContentLoaded">
-    <app-series-item
-        *ngFor="let summary of summaries"
+@if (isContentLoaded) {
+  <div class="card-group">
+    @for (summary of summaries; track summary) {
+      <app-series-item
         [summary]="summary">
-    </app-series-item>
-</div>
-<div class="card-group" *ngIf="!isContentLoaded">
-    <app-series-item-skeleton *ngFor="let item of [].constructor(9)">
+      </app-series-item>
+    }
+  </div>
+}
+@if (!isContentLoaded) {
+  <div class="card-group">
+    @for (item of [].constructor(9); track item) {
+      <app-series-item-skeleton>
         {{item}}
-    </app-series-item-skeleton>
-</div>
+      </app-series-item-skeleton>
+    }
+  </div>
+}

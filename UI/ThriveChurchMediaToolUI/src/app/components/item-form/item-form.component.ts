@@ -3,14 +3,16 @@ import { Component, OnInit, Output, EventEmitter, Input, OnChanges, SimpleChange
 import { Observable, take, tap } from 'rxjs';
 import { SermonMessageRequest } from 'src/app/DTO/SermonMessageRequest';
 import { SermonMessage } from 'src/app/DTO/SermonMessage';
+import { MessageTag, getMessageTagLabel, getMessageTagName, getMessageTagFromName } from 'src/app/DTO/MessageTag';
 import { DurationPipe } from 'src/app/pipes/DurationPipe';
 import { FileSizePipe } from 'src/app/pipes/FileSizePipe';
 import { ApiService } from 'src/app/services/api-service.service';
 
 @Component({
-  selector: 'app-item-form',
-  templateUrl: './item-form.component.html',
-  styleUrls: ['./item-form.component.scss']
+    selector: 'app-item-form',
+    templateUrl: './item-form.component.html',
+    styleUrls: ['./item-form.component.scss'],
+    standalone: false
 })
 export class ItemFormComponent implements OnInit {
   @Output() submitItemEvent = new EventEmitter;
@@ -37,8 +39,22 @@ export class ItemFormComponent implements OnInit {
   itemTitle: string;
   itemDate: string;
   itemVideoURL: string | null = null;
+  itemSummary: string | null = null;
+  itemTags: MessageTag[] = [];
 
-  constructor(private http: HttpClient, private apiService: ApiService) {}
+  // Available tags for the dropdown
+  availableTags: { value: MessageTag; label: string }[] = [];
+
+  constructor(private http: HttpClient, private apiService: ApiService) {
+    // Initialize available tags (excluding Unknown)
+    this.availableTags = Object.values(MessageTag)
+      .filter(value => typeof value === 'number' && value !== MessageTag.Unknown)
+      .map(value => ({
+        value: value as MessageTag,
+        label: getMessageTagLabel(value as MessageTag)
+      }))
+      .sort((a, b) => a.label.localeCompare(b.label));
+  }
   
   ngOnInit(): void {
     if (this.existingMessage) {
@@ -56,6 +72,9 @@ export class ItemFormComponent implements OnInit {
     this.itemAudioMB = this.existingMessage.AudioFileSize;
     this.itemVideoURL = this.existingMessage.VideoUrl;
     this.itemPassageRef = this.existingMessage.PassageRef;
+    this.itemSummary = this.existingMessage.Summary;
+    // Convert tag string names from API to enum values for ng-select
+    this.itemTags = (this.existingMessage.Tags || []).map(tagName => getMessageTagFromName(tagName));
 
     // Format date for input field (YYYY-MM-DD)
     if (this.existingMessage.Date) {
@@ -69,16 +88,18 @@ export class ItemFormComponent implements OnInit {
    */
   createMediaItem(): void {
 
-    // construct item
+    // construct item - convert MessageTag enum values to string names for API
     let mediaItem: SermonMessageRequest = {
       AudioUrl: this.itemAudioUrl,
       AudioDuration: this.itemAudioDuration,
       PassageRef: this.itemPassageRef,
       Speaker: !this.itemSpeaker ? 'John Roth' : this.itemSpeaker,
       Title: this.itemTitle,
+      Summary: this.itemSummary,
       AudioFileSize: this.itemAudioMB,
       Date: this.itemDate,
       VideoUrl: this.itemVideoURL,
+      Tags: this.itemTags.map(tag => getMessageTagName(tag)),
       LastInSeries: this._checked
     };
 
@@ -100,6 +121,8 @@ export class ItemFormComponent implements OnInit {
     this.itemTitle = "";
     this.itemDate = "";
     this.itemVideoURL = null;
+    this.itemSummary = null;
+    this.itemTags = [];
     this._checked = false;
   }
 
@@ -236,6 +259,20 @@ export class ItemFormComponent implements OnInit {
   changeStatus(event: Event) {
     const element = event.currentTarget as HTMLInputElement;
     this._checked = element.checked;
+  }
+
+  /**
+   * Get the label for a tag value
+   */
+  getTagLabel(tagValue: MessageTag): string {
+    return getMessageTagLabel(tagValue);
+  }
+
+  /**
+   * Remove a tag from the selected tags array
+   */
+  removeTag(tagValue: MessageTag): void {
+    this.itemTags = this.itemTags.filter(tag => tag !== tagValue);
   }
 
   /**

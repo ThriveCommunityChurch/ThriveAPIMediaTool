@@ -8,9 +8,10 @@ import { SeriesDataService } from 'src/app/services/series-data-service';
 import { SkeletonThemeService } from '../../services/skeleton-theme.service';
 
 @Component({
-  selector: 'app-view-series',
-  templateUrl: './view-series.component.html',
-  styleUrls: ['./view-series.component.scss']
+    selector: 'app-view-series',
+    templateUrl: './view-series.component.html',
+    styleUrls: ['./view-series.component.scss'],
+    standalone: false
 })
 export class ViewSeriesComponent implements OnInit, OnDestroy {
 

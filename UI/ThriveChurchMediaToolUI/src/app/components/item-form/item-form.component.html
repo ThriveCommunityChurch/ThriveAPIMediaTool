@@ -1,150 +1,223 @@
-<div class="container" 
-	 id="addItemSubform">
-	<div class="row g-2">
-		<div class="col-md">
-			<div class="form-floating mb-3">
-				<input type="text" 
-					   class="form-control" 
-					   name="itemTitle" 
-					   [(ngModel)]="itemTitle"
-					   id="itemTitleInput"
-					   placeholder="Title of item">
-				<label for="itemTitleInput">Message Title</label>
-			</div>
-		</div>
-		<div class="col-md">
-			<div class="form-floating mb-3">
-				<input type="text"
-					   class="form-control"
-					   name="itemSpeaker"
-					   [(ngModel)]="itemSpeaker"
-					   id="itemSpeakerInput"
-					   placeholder="John Roth">
-				<label for="itemSpeakerInput">Speaker Name</label>
-			</div>
-		</div>
-	</div>
-	<div class="row g-2">
-		<div class="col-md">
-			<div class="form-floating mb-3">
-				<input type="date" 
-					   class="form-control"
-					   name="itemDate"
-					   [(ngModel)]="itemDate"
-					   id="itemDateInput"
-					   #itemDateInput>
-				<label for="itemDateInput">Date</label>
-			</div>
-		</div>
-		<div class="col-md">
-			<div class="form-floating mb-3">
-				<input type="text"
-					   class="form-control"
-					   name="itemAudioUrl"
-					   [(ngModel)]="itemAudioUrl"
-					   id="itemAudioUrlInput"
-					   #itemAudioUrlInput
-					   placeholder="Upload an audio file to populate this field"
-					   disabled>
-				<label for="itemAudioUrlInput">Audio URL</label>
-			</div>
-		</div>
-	</div>
-	<div class="row g-2">
-		<div class="col-md">
-			<div class="form-floating mb-3">
-				<input type="text"
-					   class="form-control"
-					   name="itemVideoURL" 
-					   [(ngModel)]="itemVideoURL"
-					   id="itemVideoURLInput" 
-					   #itemVideoURLInput 
-					   placeholder="Video URL">
-				<label for="itemVideoURLInput">Video URL</label>
-			</div>
-		</div>
-		<div class="col-md">
-			<div class="form-floating mb-3">
-				<input type="text"
-					   class="form-control" 
-					   name="itemPassageRef" 
-					   [(ngModel)]="itemPassageRef"
-					   id="itemPassageRefInput"
-					   placeholder="Luke 9: 57 - 62">
-				<label for="itemPassageRefInput">Passage Reference</label>
-			</div>
-		</div>
-	</div>
+<div class="container"
+  id="addItemSubform">
+  <div class="row g-2">
+    <div class="col-md">
+      <div class="form-floating mb-3">
+        <input type="text"
+          class="form-control"
+          name="itemTitle"
+          [(ngModel)]="itemTitle"
+          id="itemTitleInput"
+          placeholder="Title of item">
+          <label for="itemTitleInput">Message Title</label>
+        </div>
+      </div>
+      <div class="col-md">
+        <div class="form-floating mb-3">
+          <input type="text"
+            class="form-control"
+            name="itemSpeaker"
+            [(ngModel)]="itemSpeaker"
+            id="itemSpeakerInput"
+            placeholder="John Roth">
+            <label for="itemSpeakerInput">Speaker Name</label>
+          </div>
+        </div>
+      </div>
+      <div class="row g-2">
+        <div class="col-md">
+          <div class="form-floating mb-3">
+            <input type="date"
+              class="form-control"
+              name="itemDate"
+              [(ngModel)]="itemDate"
+              id="itemDateInput"
+              #itemDateInput>
+              <label for="itemDateInput">Date</label>
+            </div>
+          </div>
+          <div class="col-md">
+            <div class="form-floating mb-3">
+              <input type="text"
+                class="form-control"
+                name="itemAudioUrl"
+                [(ngModel)]="itemAudioUrl"
+                id="itemAudioUrlInput"
+                #itemAudioUrlInput
+                placeholder="Upload an audio file to populate this field"
+                disabled>
+                <label for="itemAudioUrlInput">Audio URL</label>
+              </div>
+            </div>
+          </div>
+          <div class="row g-2">
+            <div class="col-md">
+              <div class="form-floating mb-3">
+                <input type="text"
+                  class="form-control"
+                  name="itemVideoURL"
+                  [(ngModel)]="itemVideoURL"
+                  id="itemVideoURLInput"
+                  #itemVideoURLInput
+                  placeholder="Video URL">
+                  <label for="itemVideoURLInput">Video URL</label>
+                </div>
+              </div>
+              <div class="col-md">
+                <div class="form-floating mb-3">
+                  <input type="text"
+                    class="form-control"
+                    name="itemPassageRef"
+                    [(ngModel)]="itemPassageRef"
+                    id="itemPassageRefInput"
+                    placeholder="Luke 9: 57 - 62">
+                    <label for="itemPassageRefInput">Passage Reference</label>
+                  </div>
+                </div>
+              </div>
 
-	<input type="file"
-		   class="form-control"
-		   id="audioFile"
-		   accept=".mp3"
-		   (change)="selectFile($event)">
+              <!-- Summary Field -->
+              <div class="row g-2">
+                <div class="col-12">
+                  <div class="form-floating mb-3">
+                    <textarea class="form-control"
+                      name="itemSummary"
+                      [(ngModel)]="itemSummary"
+                      id="itemSummaryInput"
+                      placeholder="Brief description of the message"
+                    style="height: 100px"></textarea>
+                    <label for="itemSummaryInput">Summary (Optional)</label>
+                  </div>
+                </div>
+              </div>
 
-	<!-- Upload Button Section -->
-	<div *ngIf="selectedFile && !validationMessage" class="mt-3">
-		<button type="button"
-				class="btn btn-primary"
-				[disabled]="uploadingFile || loadingDuration"
-				(click)="uploadToS3()">
-			<!-- Spinner only when loading -->
-			<span *ngIf="uploadingFile || loadingDuration" class="spinner-border spinner-border-sm me-2" role="status"></span>
-			<span [innerHTML]="getButtonText()"></span>
-		</button>
-		<button type="button"
-				class="btn btn-secondary ms-2"
-				[disabled]="uploadingFile || loadingDuration"
-				(click)="clearFile()">
-			<i class="fas fa-times me-2"></i>
-			Clear
-		</button>
-	</div>
+              <!-- Tags Field -->
+              <div class="row g-2">
+                <div class="col-12">
+                  <label for="itemTagsInput" class="form-label">Tags (Optional)</label>
 
-	<!-- Validation Messages Section -->
-	<div *ngIf="validationMessage" class="mt-2">
-		<div class="alert alert-danger" role="alert">
-			<i class="fas fa-exclamation-triangle"></i> {{ validationMessage }}
-		</div>
-	</div>
+                  <!-- Selected Tags Display (Outside Input) -->
+                  <div class="selected-tags-container mb-2" *ngIf="itemTags && itemTags.length > 0">
+                    <span class="badge bg-primary me-2 mb-2" *ngFor="let tagValue of itemTags">
+                      {{ getTagLabel(tagValue) }}
+                      <button type="button" class="btn-close ms-2"
+                              (click)="removeTag(tagValue)"
+                              aria-label="Remove tag"
+                              style="font-size: 0.65rem; padding: 0; width: 0.75rem; height: 0.75rem; vertical-align: middle;"></button>
+                    </span>
+                  </div>
 
-	<!-- Upload Success/Failure Section -->
-	<div *ngIf="uploadMessage" class="mt-2">
-		<div class="alert" [ngClass]="uploadSuccess ? 'alert-success' : 'alert-danger'" role="alert">
-			<i class="fas" [ngClass]="uploadSuccess ? 'fa-check-circle' : 'fa-times-circle'"></i> {{ uploadMessage }}
-		</div>
-	</div>
-	<div>
-		<p class="file-info-duration">Duration:
-			<span *ngIf="!loadingDuration && !itemAudioDuration">{{ durationLoadingText }}</span>
-			<span *ngIf="loadingDuration"><span class="spinner-border spinner-border-sm me-2" role="status"></span> Processing...</span>
-			<span *ngIf="!loadingDuration && itemAudioDuration">{{ itemAudioDuration | duration: 'm[m] s[s]' }}</span>
-		</p>
-		<p class="file-info-size">Size:
-			<span *ngIf="itemAudioMB">{{ itemAudioMB | filesize }}</span>
-			<span *ngIf="!itemAudioMB && loadingDuration"><span class="spinner-border spinner-border-sm me-2" role="status"></span> Processing...</span>
-			<span *ngIf="!itemAudioMB && !loadingDuration">{{ durationLoadingText }}</span>
-		</p>
-	</div>
+                  <!-- Tag Selection Dropdown (Clean, No Chips) -->
+                  <ng-select
+                    [items]="availableTags"
+                    bindLabel="label"
+                    bindValue="value"
+                    [(ngModel)]="itemTags"
+                    [multiple]="true"
+                    [closeOnSelect]="false"
+                    [searchable]="true"
+                    [clearable]="false"
+                    [hideSelected]="true"
+                    placeholder="Search and select tags..."
+                    name="itemTags"
+                    id="itemTagsInput">
+                    <ng-template ng-multi-label-tmp let-items="items">
+                      <!-- Empty template - tags are displayed above -->
+                    </ng-template>
+                  </ng-select>
+                  <small class="form-text text-muted">Search and select multiple tags to categorize this message</small>
+                </div>
+              </div>
 
-	<div class="form-check">
-		<input class="form-check-input" 
-			   type="checkbox" 
-			   value="" 
-			   id="closeSeries" 
-			   (change)="changeStatus($event)">
-		<label class="form-check-label" for="closeSeries">
-			Close series with message
-		</label>
-	</div>
+              <input type="file"
+                class="form-control mt-3"
+                id="audioFile"
+                accept=".mp3"
+                (change)="selectFile($event)">
 
-	<hr />
-	<div class="row p-2 button-container">
-		<button class="btn btn-info col-12" (click)="createMediaItem()">
-			{{ submitButtonMessage }}
-		</button>
-		<button class="btn btn-secondary col-12 mt-3" (click)="hideAddItemSubForm()">
-			{{ cancelButtonMessage}}
-		</button>
-	</div>
-</div>
+                <!-- Upload Button Section -->
+                @if (selectedFile && !validationMessage) {
+                  <div class="mt-3">
+                    <button type="button"
+                      class="btn btn-primary"
+                      [disabled]="uploadingFile || loadingDuration"
+                      (click)="uploadToS3()">
+                      <!-- Spinner only when loading -->
+                      @if (uploadingFile || loadingDuration) {
+                        <span class="spinner-border spinner-border-sm me-2" role="status"></span>
+                      }
+                      <span [innerHTML]="getButtonText()"></span>
+                    </button>
+                    <button type="button"
+                      class="btn btn-secondary ms-2"
+                      [disabled]="uploadingFile || loadingDuration"
+                      (click)="clearFile()">
+                      <i class="fas fa-times me-2"></i>
+                      Clear
+                    </button>
+                  </div>
+                }
+
+                <!-- Validation Messages Section -->
+                @if (validationMessage) {
+                  <div class="mt-2">
+                    <div class="alert alert-danger" role="alert">
+                      <i class="fas fa-exclamation-triangle"></i> {{ validationMessage }}
+                    </div>
+                  </div>
+                }
+
+                <!-- Upload Success/Failure Section -->
+                @if (uploadMessage) {
+                  <div class="mt-2">
+                    <div class="alert" [ngClass]="uploadSuccess ? 'alert-success' : 'alert-danger'" role="alert">
+                      <i class="fas" [ngClass]="uploadSuccess ? 'fa-check-circle' : 'fa-times-circle'"></i> {{ uploadMessage }}
+                    </div>
+                  </div>
+                }
+                <div>
+                  <p class="file-info-duration">Duration:
+                    @if (!loadingDuration && !itemAudioDuration) {
+                      <span>{{ durationLoadingText }}</span>
+                    }
+                    @if (loadingDuration) {
+                      <span><span class="spinner-border spinner-border-sm me-2" role="status"></span> Processing...</span>
+                    }
+                    @if (!loadingDuration && itemAudioDuration) {
+                      <span>{{ itemAudioDuration | duration: 'm[m] s[s]' }}</span>
+                    }
+                  </p>
+                  <p class="file-info-size">Size:
+                    @if (itemAudioMB) {
+                      <span>{{ itemAudioMB | filesize }}</span>
+                    }
+                    @if (!itemAudioMB && loadingDuration) {
+                      <span><span class="spinner-border spinner-border-sm me-2" role="status"></span> Processing...</span>
+                    }
+                    @if (!itemAudioMB && !loadingDuration) {
+                      <span>{{ durationLoadingText }}</span>
+                    }
+                  </p>
+                </div>
+
+                <div class="form-check">
+                  <input class="form-check-input"
+                    type="checkbox"
+                    value=""
+                    id="closeSeries"
+                    (change)="changeStatus($event)">
+                    <label class="form-check-label" for="closeSeries">
+                      Close series with message
+                    </label>
+                  </div>
+
+                  <hr />
+                  <div class="row p-2 button-container">
+                    <button class="btn btn-info col-12" (click)="createMediaItem()">
+                      {{ submitButtonMessage }}
+                    </button>
+                    <button class="btn btn-secondary col-12 mt-3" (click)="hideAddItemSubForm()">
+                      {{ cancelButtonMessage}}
+                    </button>
+                  </div>
+                </div>

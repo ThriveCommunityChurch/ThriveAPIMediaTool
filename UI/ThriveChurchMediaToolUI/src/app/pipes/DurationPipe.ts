@@ -2,7 +2,10 @@ import { Pipe, PipeTransform } from '@angular/core';
 import * as moment from 'moment';
 import 'moment-duration-format';
 
-@Pipe({ name: 'duration' })
+@Pipe({
+    name: 'duration',
+    standalone: false
+})
 export class DurationPipe implements PipeTransform {
 	
 	transform(duration: number, format: string = 's[s]'): string {

@@ -3,9 +3,10 @@ import { Observable, Subject } from 'rxjs';
 import { SkeletonThemeService } from '../../services/skeleton-theme.service';
 
 @Component({
-  selector: 'app-message-summary-skeleton',
-  templateUrl: './message-summary-skeleton.component.html',
-  styleUrls: ['./message-summary-skeleton.component.scss']
+    selector: 'app-message-summary-skeleton',
+    templateUrl: './message-summary-skeleton.component.html',
+    styleUrls: ['./message-summary-skeleton.component.scss'],
+    standalone: false
 })
 export class MessageSummarySkeletonComponent implements OnInit, OnDestroy {
   private destroy$ = new Subject<void>();
