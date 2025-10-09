@@ -1,5 +1,5 @@
 import { Chart, Tick, TooltipItem, registerables } from 'chart.js';
-import * as moment from 'moment';
+import moment from 'moment';
 
 import { Component, OnInit } from '@angular/core';
 
@@ -11,9 +11,10 @@ import { SpeakerStats } from 'src/app/DTO/SpeakerStats';
 import { ApiService } from 'src/app/services/api-service.service';
 
 @Component({
-  selector: 'app-stats',
-  templateUrl: './stats.component.html',
-  styleUrls: ['./stats.component.scss']
+    selector: 'app-stats',
+    templateUrl: './stats.component.html',
+    styleUrls: ['./stats.component.scss'],
+    standalone: false
 })
 export class StatsComponent implements OnInit {
 
@@ -76,7 +77,7 @@ export class StatsComponent implements OnInit {
         // display its headers
 
         if (resp.status > 200) {
-          console.log(resp.body);
+          // Error response
         }
         else if (resp.body) {
           this.stats = resp.body;
@@ -265,7 +266,7 @@ export class StatsComponent implements OnInit {
         // display its headers
 
         if (resp.status > 200) {
-          console.log(resp.body);
+          // Error response
         }
         else if (resp.body) {
           //this.stats = resp.body;

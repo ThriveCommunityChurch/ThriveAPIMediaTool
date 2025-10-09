@@ -4,9 +4,10 @@ import { takeUntil } from 'rxjs/operators';
 import { ThemeService, Theme, ResolvedTheme } from '../../services/theme.service';
 
 @Component({
-  selector: 'app-theme-toggle',
-  templateUrl: './theme-toggle.component.html',
-  styleUrls: ['./theme-toggle.component.scss']
+    selector: 'app-theme-toggle',
+    templateUrl: './theme-toggle.component.html',
+    styleUrls: ['./theme-toggle.component.scss'],
+    standalone: false
 })
 export class ThemeToggleComponent implements OnInit, OnDestroy {
   private destroy$ = new Subject<void>();

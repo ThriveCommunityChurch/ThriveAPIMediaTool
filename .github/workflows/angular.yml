@@ -12,37 +12,44 @@ jobs:
 
     strategy:
       matrix:
-        node-version: [16.x]
+        node-version: ['22.x']
 
     steps:
       - uses: actions/checkout@v4
 
       - name: Use Node.js ${{ matrix.node-version }}
-        uses: actions/setup-node@v3
+        uses: actions/setup-node@v4
         with:
           node-version: ${{ matrix.node-version }}
-          
-#      - name: Get npm cache directory
-#        id: npm-cache-dir
-#        shell: pwsh
-#        run: echo "dir=$(npm config get cache)" >> ${env:GITHUB_OUTPUT}
-#        
-#      - name: Cache node modules
-#        uses: actions/cache@v3
-#        id: npm-cache
-#        with:
-#          path: ${{ steps.npm-cache-dir.outputs.dir }}
-#          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
-#          restore-keys: |
-#            ${{ runner.os }}-node-
-            
+          cache: 'npm'
+          cache-dependency-path: 'UI/ThriveChurchMediaToolUI/package-lock.json'
+
       - name: Install Dependencies
         run: |
-          npm --prefix 'UI/ThriveChurchMediaToolUI' ci
+          npm --prefix 'UI/ThriveChurchMediaToolUI' ci --legacy-peer-deps
+        env:
+          NODE_OPTIONS: "--max-old-space-size=4096"
+
+      - name: Verify Angular versions
+        run: |
+          cd UI/ThriveChurchMediaToolUI
+          echo "=== Angular CLI version ==="
+          npx ng version
+          echo ""
+          echo "=== Package versions ==="
+          npm list @angular/core @angular/build @angular/cli --depth=0
+          echo ""
+          echo "=== Expected vs Actual ==="
+          echo "Expected @angular/core: ^20.3.4"
+          echo "Expected @angular/build: ^20.3.5"
+          echo "Expected @angular/cli: ^20.3.5"
+
 #      - name: Lint
 #        run: |
 #          npm --prefix 'UI/ThriveChurchMediaToolUI' run lint
-          
+
       - name: Build
         run: |
-          npm --prefix 'UI/ThriveChurchMediaToolUI' run build
+          cd UI/ThriveChurchMediaToolUI && npx ng build
+        env:
+          NODE_OPTIONS: "--max-old-space-size=4096"

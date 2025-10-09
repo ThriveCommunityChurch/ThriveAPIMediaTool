@@ -8,9 +8,10 @@ import { ApiService } from 'src/app/services/api-service.service';
 import { ToastService } from 'src/app/services/toast-service.service';
 
 @Component({
-  selector: 'app-edit-message',
-  templateUrl: './edit-message.component.html',
-  styleUrls: ['./edit-message.component.scss']
+    selector: 'app-edit-message',
+    templateUrl: './edit-message.component.html',
+    styleUrls: ['./edit-message.component.scss'],
+    standalone: false
 })
 export class EditMessageComponent implements OnInit {
 

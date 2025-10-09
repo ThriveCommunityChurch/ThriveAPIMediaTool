@@ -10,9 +10,10 @@ import { ToastMessage } from '../../Domain/ToastMessage'
 import { ToastMessageType } from '../../Domain/ToastMessageType'
 
 @Component({
-  selector: 'app-add-message',
-  templateUrl: './add-message.component.html',
-  styleUrls: ['./add-message.component.scss']
+    selector: 'app-add-message',
+    templateUrl: './add-message.component.html',
+    styleUrls: ['./add-message.component.scss'],
+    standalone: false
 })
 export class AddMessageComponent implements OnInit {
 

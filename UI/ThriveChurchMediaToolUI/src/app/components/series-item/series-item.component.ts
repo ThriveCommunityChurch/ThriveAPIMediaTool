@@ -1,13 +1,14 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { Router } from '@angular/router';
-import * as moment from 'moment-timezone';
+import moment from 'moment-timezone';
 import { SermonSeriesSummary } from 'src/app/DTO/SermonSeriesSummary';
 import { SeriesDataService } from 'src/app/services/series-data-service';
 
 @Component({
-  selector: 'app-series-item',
-  templateUrl: './series-item.component.html',
-  styleUrls: ['./series-item.component.scss']
+    selector: 'app-series-item',
+    templateUrl: './series-item.component.html',
+    styleUrls: ['./series-item.component.scss'],
+    standalone: false
 })
 export class SeriesItemComponent implements OnInit {
 

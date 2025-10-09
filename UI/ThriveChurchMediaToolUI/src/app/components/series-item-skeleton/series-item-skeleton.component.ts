@@ -4,9 +4,10 @@ import { takeUntil } from 'rxjs/operators';
 import { SkeletonThemeService } from '../../services/skeleton-theme.service';
 
 @Component({
-  selector: 'app-series-item-skeleton',
-  templateUrl: './series-item-skeleton.component.html',
-  styleUrls: ['./series-item-skeleton.component.scss']
+    selector: 'app-series-item-skeleton',
+    templateUrl: './series-item-skeleton.component.html',
+    styleUrls: ['./series-item-skeleton.component.scss'],
+    standalone: false
 })
 export class SeriesItemSkeletonComponent implements OnInit, OnDestroy {
   private destroy$ = new Subject<void>();

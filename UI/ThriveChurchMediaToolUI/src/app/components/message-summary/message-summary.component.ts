@@ -1,11 +1,13 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { SermonMessage } from 'src/app/DTO/SermonMessage';
+import { MessageTag, getMessageTagLabel, getMessageTagFromName } from 'src/app/DTO/MessageTag';
 
 @Component({
-  selector: 'app-message-summary',
-  templateUrl: './message-summary.component.html',
-  styleUrls: ['./message-summary.component.scss']
+    selector: 'app-message-summary',
+    templateUrl: './message-summary.component.html',
+    styleUrls: ['./message-summary.component.scss'],
+    standalone: false
 })
 export class MessageSummaryComponent implements OnInit {
 
@@ -56,6 +58,14 @@ export class MessageSummaryComponent implements OnInit {
     if (this.seriesId && this.message.MessageId) {
       this.router.navigate(['/view', this.seriesId, 'edit', this.message.MessageId]);
     }
+  }
+
+  /**
+   * Get the human-readable label for a message tag string name
+   */
+  getTagLabel(tagName: string): string {
+    const tagEnum = getMessageTagFromName(tagName);
+    return getMessageTagLabel(tagEnum);
   }
 
 }
