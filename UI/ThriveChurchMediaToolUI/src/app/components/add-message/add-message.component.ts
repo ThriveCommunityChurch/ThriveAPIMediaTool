@@ -73,7 +73,8 @@ export class AddMessageComponent implements OnInit {
           EndDate: item.Date,
           Slug: this.sermonSeries.Slug,
           Thumbnail: this.sermonSeries.Thumbnail,
-          ArtUrl: this.sermonSeries.ArtUrl || ''
+          ArtUrl: this.sermonSeries.ArtUrl || '',
+          Summary: this.sermonSeries.Summary || null
         };
 
         this.apiService.editSeries(this.seriesId, updateRequest)

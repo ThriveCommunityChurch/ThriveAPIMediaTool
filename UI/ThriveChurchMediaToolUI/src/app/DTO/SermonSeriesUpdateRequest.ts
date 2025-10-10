@@ -5,4 +5,5 @@ export interface SermonSeriesUpdateRequest {
     Slug: string;
     Thumbnail: string;
     ArtUrl: string;
+    Summary: string | null;
 }

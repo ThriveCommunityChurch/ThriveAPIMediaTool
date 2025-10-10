@@ -10,4 +10,6 @@ export interface SermonSeries {
     Thumbnail: string;
     ArtUrl: string | undefined;
     Messages: SermonMessage[];
+    Tags: string[]; // API returns enum string names, not numeric values
+    Summary: string | null;
 }
