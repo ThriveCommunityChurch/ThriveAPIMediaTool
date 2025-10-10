@@ -6,6 +6,7 @@ import { SermonSeries } from 'src/app/DTO/SermonSeries';
 import { ApiService } from 'src/app/services/api-service.service';
 import { SeriesDataService } from 'src/app/services/series-data-service';
 import { SkeletonThemeService } from '../../services/skeleton-theme.service';
+import { getMessageTagLabel, getMessageTagFromName } from 'src/app/DTO/MessageTag';
 
 @Component({
     selector: 'app-view-series',
@@ -27,6 +28,9 @@ export class ViewSeriesComponent implements OnInit, OnDestroy {
   messageCount: number = 5;
   errorsOccurred: Boolean = false;
   isContentLoaded: Boolean = false;
+
+  // Tag truncation
+  maxVisibleTags: number = 6;
 
   // Skeleton themes
   imageTheme$: Observable<any>;
@@ -108,6 +112,41 @@ export class ViewSeriesComponent implements OnInit, OnDestroy {
     if (this.summariesSubscription) {
       this.summariesSubscription.unsubscribe();
     }
+  }
+
+  /**
+   * Get the human-readable label for a message tag string name
+   */
+  getTagLabel(tagName: string): string {
+    const tagEnum = getMessageTagFromName(tagName);
+    return getMessageTagLabel(tagEnum);
+  }
+
+  /**
+   * Get the visible tags (first N tags based on maxVisibleTags)
+   */
+  getVisibleTags(): string[] {
+    if (!this.sermonSeries?.Tags) {
+      return [];
+    }
+    return this.sermonSeries.Tags.slice(0, this.maxVisibleTags);
+  }
+
+  /**
+   * Get the count of hidden tags
+   */
+  getHiddenTagsCount(): number {
+    if (!this.sermonSeries?.Tags) {
+      return 0;
+    }
+    return Math.max(0, this.sermonSeries.Tags.length - this.maxVisibleTags);
+  }
+
+  /**
+   * Check if there are more tags than the visible limit
+   */
+  hasMoreTags(): boolean {
+    return this.getHiddenTagsCount() > 0;
   }
 
 }

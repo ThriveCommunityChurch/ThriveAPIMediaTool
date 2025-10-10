@@ -59,6 +59,13 @@
           [theme]="formInputTheme$ | async">
         </ngx-skeleton-loader>
       </div>
+      <!-- Summary field skeleton -->
+      <div class="form-floating mb-3">
+        <ngx-skeleton-loader
+          count="1"
+          [theme]="formInputTheme$ | async">
+        </ngx-skeleton-loader>
+      </div>
       <!-- Buttons skeleton -->
       <div class="mt-4">
         <ngx-skeleton-loader
@@ -141,6 +148,22 @@
                     id="seriesArtUrl">
                     <label for="floatingArtUrl">Art URL</label>
                   </div>
+
+                  <!-- Summary Field -->
+                  <div class="row g-2">
+                    <div class="col-12">
+                      <div class="form-floating mb-3">
+                        <textarea class="form-control"
+                          name="seriesSummary"
+                          [(ngModel)]="seriesSummary"
+                          id="seriesSummaryInput"
+                          placeholder="Brief description of the series"
+                          style="height: 150px"></textarea>
+                        <label for="seriesSummaryInput">Series Summary (Optional)</label>
+                      </div>
+                    </div>
+                  </div>
+
                   <div class="mt-4">
                     <button
                       type="button"

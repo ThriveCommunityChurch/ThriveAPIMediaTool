@@ -2,7 +2,7 @@
   <div
     class="container">
     @if (isContentLoaded && sermonSeries) {
-      <div class="d-flex align-items-stretch"
+      <div class="d-flex align-items-center"
         >
         <img class="series-img"
           src="{{sermonSeries.ArtUrl}}"
@@ -34,6 +34,36 @@
                   </div>
                 </div>
               </div>
+              @if (sermonSeries.Summary) {
+                <div class="series-summary-inline">
+                  <div class="data-title">
+                    Series Summary
+                  </div>
+                  <div class="summary-text">
+                    {{ sermonSeries.Summary }}
+                  </div>
+                </div>
+              }
+              @if (sermonSeries.Tags && sermonSeries.Tags.length > 0) {
+                <div class="series-tags-inline">
+                  <div class="data-title">
+                    Series Tags
+                  </div>
+                  <div class="tags-container">
+                    @for (tag of getVisibleTags(); track tag) {
+                      <span class="badge tag-badge">{{ getTagLabel(tag) }}</span>
+                    }
+                    @if (hasMoreTags()) {
+                      <span class="badge tag-badge more-tags">+{{ getHiddenTagsCount() }} more</span>
+                    }
+                    <div class="tags-hover-overlay">
+                      @for (tag of sermonSeries.Tags; track tag) {
+                        <span class="badge tag-badge">{{ getTagLabel(tag) }}</span>
+                      }
+                    </div>
+                  </div>
+                </div>
+              }
             </div>
           </div>
         </div>

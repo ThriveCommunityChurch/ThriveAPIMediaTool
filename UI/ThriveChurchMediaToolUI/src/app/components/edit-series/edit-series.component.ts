@@ -25,6 +25,7 @@ export class EditSeriesComponent implements OnInit {
   seriesSlug: string;
   seriesThumbnailUrl: string;
   seriesArtUrl: string;
+  seriesSummary: string | null;
 
   // Original series data
   sermonSeries: SermonSeries;
@@ -90,6 +91,7 @@ export class EditSeriesComponent implements OnInit {
           this.seriesSlug = resp.body.Slug;
           this.seriesThumbnailUrl = resp.body.Thumbnail;
           this.seriesArtUrl = resp.body.ArtUrl || '';
+          this.seriesSummary = resp.body.Summary || null;
 
           this.isLoading = false;
         }
@@ -120,7 +122,8 @@ export class EditSeriesComponent implements OnInit {
       EndDate: this.endDate || '',
       Slug: this.seriesSlug,
       Thumbnail: this.seriesThumbnailUrl,
-      ArtUrl: this.seriesArtUrl
+      ArtUrl: this.seriesArtUrl,
+      Summary: this.seriesSummary
     };
 
     // Update the series
