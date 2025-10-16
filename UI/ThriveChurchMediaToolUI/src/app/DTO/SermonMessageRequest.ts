@@ -6,6 +6,8 @@ export interface SermonMessageRequest {
     PassageRef: string | null;
     Speaker: string;
     Title: string;
+    Summary: string | null;
     Date: string;
+    Tags: string[];  // API expects enum string names, not numeric values
     LastInSeries?: boolean;
 }

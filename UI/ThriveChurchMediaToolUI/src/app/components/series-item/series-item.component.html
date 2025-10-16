@@ -1,47 +1,59 @@
 <div class="d-inline-flex p-2 align-items-stretch">
-	<div class="card h-100">
-	<img class="card-img-top"
-		 src="{{summary.ArtUrl}}"
-		 alt="Card image cap"
-		 loading="lazy">
-	<div class="card-img-overlay"
-		*ngIf="summary.StartDate && !summary.EndDate">
-		<p class="card-text"><small>Current Series</small></p>
-	  </div>
-	<div class="card-body">
-		<h5 class="card-title"
-			title="{{summary.Title}}">{{summary.Title}}</h5>
-		<h6 class="card-subtitle mb-2 text-muted">
-			<span *ngIf="!summary.EndDate">
-				<span>Started {{ this.summary.StartDate | date: 'MMMM d, YYYY':'UTC' }}</span>
-			</span>
-			<span *ngIf="summary.EndDate && summary.StartDate === summary.EndDate"
-				class="time-span">{{ this.summary.StartDate | date: 'MMMM d, YYYY':'UTC' }}</span>
-			<span *ngIf="summary.EndDate && summary.StartDate && summary.StartDate !== summary.EndDate"
-			class="time-span">{{ this.summary.StartDate | date: 'MMMM d, YYYY':'UTC' }} - {{ this.summary.EndDate | date: 'MMMM d, YYYY':'UTC' }}</span>
-		</h6>
-		<h6 class="card-text">
-			<span *ngIf="(summary.MessageCount ?? 0) > 0 && (summary.MessageCount ?? 0) !== 1">
-				<span>{{ summary.MessageCount ?? 0 }} messages</span>
-			</span>
-			<span *ngIf="(summary.MessageCount ?? 0) === 1">
-				<span>1 message</span>
-			</span>
-		</h6>
-		<p class="card-text"><small class="text-muted">Updated {{localizedLastUpdated}}</small></p>
-	</div>
-	<div class="card-footer">
-		<a href="add/{{summary.Id}}">
-			<small>ADD</small>
-		</a>
-		&nbsp;
-		<a href="edit/{{summary.Id}}">
-			<small>EDIT</small>
-		</a>
-		&nbsp;
-		<a href="view/{{summary.Id}}"
-		(click)="setSeriesDataForNavigation()">
-			<small>VIEW</small>
-		</a>
-	</div>
+  <div class="card h-100">
+    <img class="card-img-top"
+      src="{{summary.ArtUrl}}"
+      alt="Card image cap"
+      loading="lazy">
+    @if (summary.StartDate && !summary.EndDate) {
+      <div class="card-img-overlay">
+        <p class="card-text"><small>Current Series</small></p>
+      </div>
+    }
+    <div class="card-body">
+        <h5 class="card-title"
+        title="{{summary.Title}}">{{summary.Title}}</h5>
+        <h6 class="card-subtitle mb-2 text-muted">
+          @if (!summary.EndDate) {
+            <span>
+              <span>Started {{ this.summary.StartDate | date: 'MMMM d, yyyy':'UTC' }}</span>
+            </span>
+          }
+          @if (summary.EndDate && summary.StartDate === summary.EndDate) {
+            <span
+            class="time-span">{{ this.summary.StartDate | date: 'MMMM d, yyyy':'UTC' }}</span>
+          }
+          @if (summary.EndDate && summary.StartDate && summary.StartDate !== summary.EndDate) {
+            <span
+            class="time-span">{{ this.summary.StartDate | date: 'MMMM d, yyyy':'UTC' }} - {{ this.summary.EndDate | date: 'MMMM d, yyyy':'UTC' }}</span>
+          }
+        </h6>
+        <h6 class="card-text">
+          @if ((summary.MessageCount ?? 0) > 0 && (summary.MessageCount ?? 0) !== 1) {
+            <span>
+              <span>{{ summary.MessageCount ?? 0 }} messages</span>
+            </span>
+          }
+          @if ((summary.MessageCount ?? 0) === 1) {
+            <span>
+              <span>1 message</span>
+            </span>
+          }
+        </h6>
+      <p class="card-text"><small class="text-muted">Updated {{localizedLastUpdated}}</small></p>
+    </div>
+    <div class="card-footer">
+      <a href="add/{{summary.Id}}">
+        <small>ADD</small>
+      </a>
+      &nbsp;
+      <a href="edit/{{summary.Id}}">
+        <small>EDIT</small>
+      </a>
+      &nbsp;
+      <a href="view/{{summary.Id}}"
+        (click)="setSeriesDataForNavigation()">
+        <small>VIEW</small>
+      </a>
+    </div>
+  </div>
 </div>

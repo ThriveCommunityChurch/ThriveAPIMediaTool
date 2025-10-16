@@ -1,6 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { Router } from '@angular/router';
-import * as moment from 'moment-timezone';
+import moment from 'moment-timezone';
 
 import { SeriesItemComponent } from './series-item.component';
 import { SeriesDataService } from 'src/app/services/series-data-service';

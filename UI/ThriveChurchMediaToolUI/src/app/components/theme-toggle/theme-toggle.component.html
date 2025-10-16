@@ -1,0 +1,8 @@
+<button
+  type="button"
+  class="btn btn-link theme-toggle-btn"
+  (click)="toggleTheme()"
+  [title]="getNextThemeText()"
+  aria-label="Toggle theme">
+  <span [innerHTML]="resolvedTheme === 'dark' ? '☀️' : '🌙'" aria-hidden="true"></span>
+</button>

@@ -8,9 +8,10 @@ import { ToastService } from "src/app/services/toast-service.service";
 declare let $: any;
 
 @Component({
-  selector: 'app-create-series',
-  templateUrl: './create-series.component.html',
-  styleUrls: ['./create-series.component.scss']
+    selector: 'app-create-series',
+    templateUrl: './create-series.component.html',
+    styleUrls: ['./create-series.component.scss'],
+    standalone: false
 })
 export class CreateSeriesComponent implements OnInit {
 

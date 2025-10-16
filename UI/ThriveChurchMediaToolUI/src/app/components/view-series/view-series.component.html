@@ -1,123 +1,152 @@
-<div *ngIf="!errorsOccurred"
-	class="container">
-	<div class="d-flex align-items-stretch"
-		*ngIf="isContentLoaded && sermonSeries">
-		<img class="series-img" 
-		src="{{sermonSeries.ArtUrl}}"
-		alt="Series image">
-		<div class="summary-info">
-			<div class="series-details">
-				<h2>{{sermonSeries.Name}}</h2>
-				<p *ngIf="sermonSeries?.StartDate && !sermonSeries.EndDate"
-					class="time-span">Current Series</p>
-				<p *ngIf="sermonSeries.EndDate && sermonSeries.StartDate === sermonSeries.EndDate"
-					class="time-span">{{ sermonSeries.StartDate | date: 'MMMM d, YYYY':'UTC' }}</p>
-				<p *ngIf="sermonSeries.EndDate && sermonSeries.StartDate !== sermonSeries.EndDate"
-				class="time-span">{{ sermonSeries.StartDate | date: 'MMMM d, YYYY':'UTC' }} - {{ sermonSeries.EndDate | date: 'MMMM d, YYYY':'UTC' }}</p>
-				<div class="row">
-					<div class="col">
-						<div class="detail">
-							<p><strong>Total Duration:</strong> {{ totalDuration | duration: 'h[h] m[m]' }}</p>
-						</div>
-					</div>
-					<div class="col">
-						<div class="detail">
-							<p><strong>Total File Size:</strong> {{ totalFileSize | filesize: 'MB' }}</p>
-						</div>
-					</div>
-				</div>
-			</div>
-		</div>
-	</div>	 
-	<div class="message-list"
-		 *ngIf="isContentLoaded && sermonSeries">
-		<app-message-summary
-			*ngFor="let message of messages"
-			[message]="message"
-			[seriesId]="sermonSeries.Id">
-		</app-message-summary>
-	</div>
-	<div class="d-flex align-items-stretch"
-		*ngIf="!isContentLoaded">
-		<div class="col">
-			<div class="row">
-				<ngx-skeleton-loader
-				count="1"
-				[theme]="{
-					'height': '190px',
-					'width': 'auto',
-					'border-radius': '10px',
-					'aspect-ratio': '16/9',
-					'cursor': 'default',
-					'margin': '0',
-					'display': 'flex'
-				}">
-			</ngx-skeleton-loader>
-			</div>
-		</div>
-		<div class="col">
-			<div class="row">
-				<div class="summary-info">
-					<div class="series-details">
-						<ngx-skeleton-loader 
-							count="1"
-							appearance="line"
-							animation="pulse"
-							[theme]="{
-								'width': '100%',
-								'cursor': 'default',
-								'height': '24px'
-							}">
-						</ngx-skeleton-loader>
-						<ngx-skeleton-loader 
-							count="1"
-							appearance="line"
-							animation="pulse"
-							[theme]="{
-								'width': '75%',
-								'cursor': 'default',
-								'height': '1rem'
-							}">
-						</ngx-skeleton-loader>
-						<div class="row">
-							<div class="col">
-								<div class="detail">
-									<ngx-skeleton-loader 
-										count="1"
-										appearance="line"
-										animation="pulse"
-										[theme]="{
-											'cursor': 'default',
-											'height': '1rem'
-										}">
-									</ngx-skeleton-loader>
-								</div>
-							</div>
-							<div class="col">
-								<div class="detail">
-									<ngx-skeleton-loader 
-										count="1"
-										appearance="line"
-										animation="pulse"
-										[theme]="{
-											'cursor': 'default',
-											'height': '1rem'
-										}">
-									</ngx-skeleton-loader>
-								</div>
-							</div>
-						</div>
-					</div>
-				</div>
-			</div>
-		</div>
-	</div>	 
-	<div class="message-list" 
-		 *ngIf="!isContentLoaded">
-		<app-message-summary-skeleton
-			*ngFor="let item of [].constructor(messageCount)">
-			{{item}}
-		</app-message-summary-skeleton>
-	</div>
-</div>
-<app-page-not-found *ngIf="isContentLoaded && errorsOccurred"></app-page-not-found>
+@if (!errorsOccurred) {
+  <div
+    class="container">
+    @if (isContentLoaded && sermonSeries) {
+      <div class="d-flex align-items-center"
+        >
+        <img class="series-img"
+          src="{{sermonSeries.ArtUrl}}"
+          alt="Series image">
+          <div class="summary-info">
+            <div class="series-details">
+              <h2>{{sermonSeries.Name}}</h2>
+              @if (sermonSeries.StartDate && !sermonSeries.EndDate) {
+                <p
+                class="time-span">Current Series</p>
+              }
+              @if (sermonSeries.EndDate && sermonSeries.StartDate === sermonSeries.EndDate) {
+                <p
+                class="time-span">{{ sermonSeries.StartDate | date: 'MMMM d, yyyy':'UTC' }}</p>
+              }
+              @if (sermonSeries.EndDate && sermonSeries.StartDate !== sermonSeries.EndDate) {
+                <p
+                class="time-span">{{ sermonSeries.StartDate | date: 'MMMM d, yyyy':'UTC' }} - {{ sermonSeries.EndDate | date: 'MMMM d, yyyy':'UTC' }}</p>
+              }
+              <div class="row">
+                <div class="col">
+                  <div class="detail">
+                    <p><strong>Total Duration:</strong> {{ totalDuration | duration: 'h[h] m[m]' }}</p>
+                  </div>
+                </div>
+                <div class="col">
+                  <div class="detail">
+                    <p><strong>Total File Size:</strong> {{ totalFileSize | filesize: 'MB' }}</p>
+                  </div>
+                </div>
+              </div>
+              @if (sermonSeries.Summary) {
+                <div class="series-summary-inline">
+                  <div class="data-title">
+                    Series Summary
+                  </div>
+                  <div class="summary-text">
+                    {{ sermonSeries.Summary }}
+                  </div>
+                </div>
+              }
+              @if (sermonSeries.Tags && sermonSeries.Tags.length > 0) {
+                <div class="series-tags-inline">
+                  <div class="data-title">
+                    Series Tags
+                  </div>
+                  <div class="tags-container">
+                    @for (tag of getVisibleTags(); track tag) {
+                      <span class="badge tag-badge">{{ getTagLabel(tag) }}</span>
+                    }
+                    @if (hasMoreTags()) {
+                      <span class="badge tag-badge more-tags">+{{ getHiddenTagsCount() }} more</span>
+                    }
+                    <div class="tags-hover-overlay">
+                      @for (tag of sermonSeries.Tags; track tag) {
+                        <span class="badge tag-badge">{{ getTagLabel(tag) }}</span>
+                      }
+                    </div>
+                  </div>
+                </div>
+              }
+            </div>
+          </div>
+        </div>
+      }
+      @if (isContentLoaded && sermonSeries) {
+        <div class="message-list"
+          >
+          @for (message of messages; track message) {
+            <app-message-summary
+              [message]="message"
+              [seriesId]="sermonSeries.Id">
+            </app-message-summary>
+          }
+        </div>
+      }
+      @if (!isContentLoaded) {
+        <div class="d-flex align-items-stretch"
+          >
+          <div class="col">
+            <div class="row">
+              <ngx-skeleton-loader
+                count="1"
+                [theme]="imageTheme$ | async">
+              </ngx-skeleton-loader>
+            </div>
+          </div>
+          <div class="col">
+            <div class="row">
+              <div class="summary-info">
+                <div class="series-details">
+                  <ngx-skeleton-loader
+                    count="1"
+                    appearance="line"
+                    animation="pulse"
+                    [theme]="titleTheme$ | async">
+                  </ngx-skeleton-loader>
+                  <ngx-skeleton-loader
+                    count="1"
+                    appearance="line"
+                    animation="pulse"
+                    [theme]="subtitleTheme$ | async">
+                  </ngx-skeleton-loader>
+                  <div class="row">
+                    <div class="col">
+                      <div class="detail">
+                        <ngx-skeleton-loader
+                          count="1"
+                          appearance="line"
+                          animation="pulse"
+                          [theme]="detailTheme$ | async">
+                        </ngx-skeleton-loader>
+                      </div>
+                    </div>
+                    <div class="col">
+                      <div class="detail">
+                        <ngx-skeleton-loader
+                          count="1"
+                          appearance="line"
+                          animation="pulse"
+                          [theme]="detailTheme$ | async">
+                        </ngx-skeleton-loader>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      }
+      @if (!isContentLoaded) {
+        <div class="message-list"
+          >
+          @for (item of [].constructor(messageCount); track item) {
+            <app-message-summary-skeleton
+              >
+              {{item}}
+            </app-message-summary-skeleton>
+          }
+        </div>
+      }
+    </div>
+  }
+  @if (isContentLoaded && errorsOccurred) {
+    <app-page-not-found></app-page-not-found>
+  }

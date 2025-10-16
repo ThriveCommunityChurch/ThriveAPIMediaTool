@@ -1,7 +1,9 @@
-import { HttpClientModule } from '@angular/common/http';
+import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
+import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { FormsModule } from '@angular/forms';
+import { NgSelectModule } from '@ng-select/ng-select';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -27,45 +29,47 @@ import { NgxSkeletonLoaderModule } from 'ngx-skeleton-loader';
 import { SeriesItemSkeletonComponent } from './components/series-item-skeleton/series-item-skeleton.component';
 import { SeriesDataService } from './services/series-data-service';
 import { MessageSummarySkeletonComponent } from './components/message-summary-skeleton/message-summary-skeleton.component';
+import { ThemeToggleComponent } from './components/theme-toggle/theme-toggle.component';
+import { ThemeService } from './services/theme.service';
+import { SkeletonThemeService } from './services/skeleton-theme.service';
 
 
-@NgModule({
-  declarations: [
-    AppComponent,
-    DashboardComponent,
-    SeriesListComponent,
-    CreateSeriesComponent,
-    PageNotFoundComponent,
-    EditSeriesComponent,
-    AddMessageComponent,
-    ViewSeriesComponent,
-    EditMessageComponent,
-    SeriesItemComponent,
-    ItemFormComponent,
-    StatsComponent,
-    DurationPipe,
-    PluralityPipe,
-    FileSizePipe,
-    MessageSummaryComponent,
-    ToastMessageComponent,
-    SeriesItemSkeletonComponent,
-    MessageSummarySkeletonComponent
-  ],
-  imports: [
-    BrowserModule,
-    AppRoutingModule,
-    HttpClientModule,
-    FormsModule,
-    NgxSkeletonLoaderModule
-  ],
-  providers: [
-    ApiService,
-    SeriesListComponent,
-    ToastService,
-    SeriesDataService
-  ],
-  bootstrap: [
-    AppComponent
-  ]
-})
+@NgModule({ declarations: [
+        AppComponent,
+        DashboardComponent,
+        SeriesListComponent,
+        CreateSeriesComponent,
+        PageNotFoundComponent,
+        EditSeriesComponent,
+        AddMessageComponent,
+        ViewSeriesComponent,
+        EditMessageComponent,
+        SeriesItemComponent,
+        ItemFormComponent,
+        StatsComponent,
+        DurationPipe,
+        PluralityPipe,
+        FileSizePipe,
+        MessageSummaryComponent,
+        ToastMessageComponent,
+        SeriesItemSkeletonComponent,
+        MessageSummarySkeletonComponent,
+        ThemeToggleComponent
+    ],
+    bootstrap: [
+        AppComponent
+    ], imports: [BrowserModule,
+        CommonModule,
+        AppRoutingModule,
+        FormsModule,
+        NgxSkeletonLoaderModule,
+        NgSelectModule], providers: [
+        ApiService,
+        SeriesListComponent,
+        ToastService,
+        SeriesDataService,
+        ThemeService,
+        SkeletonThemeService,
+        provideHttpClient(withInterceptorsFromDi())
+    ] })
 export class AppModule { }

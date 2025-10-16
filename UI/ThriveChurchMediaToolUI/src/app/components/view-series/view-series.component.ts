@@ -1,15 +1,18 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { Subscription } from 'rxjs';
+import { Subscription, Observable } from 'rxjs';
 import { SermonMessage } from 'src/app/DTO/SermonMessage';
 import { SermonSeries } from 'src/app/DTO/SermonSeries';
 import { ApiService } from 'src/app/services/api-service.service';
 import { SeriesDataService } from 'src/app/services/series-data-service';
+import { SkeletonThemeService } from '../../services/skeleton-theme.service';
+import { getMessageTagLabel, getMessageTagFromName } from 'src/app/DTO/MessageTag';
 
 @Component({
-  selector: 'app-view-series',
-  templateUrl: './view-series.component.html',
-  styleUrls: ['./view-series.component.scss']
+    selector: 'app-view-series',
+    templateUrl: './view-series.component.html',
+    styleUrls: ['./view-series.component.scss'],
+    standalone: false
 })
 export class ViewSeriesComponent implements OnInit, OnDestroy {
 
@@ -26,14 +29,44 @@ export class ViewSeriesComponent implements OnInit, OnDestroy {
   errorsOccurred: Boolean = false;
   isContentLoaded: Boolean = false;
 
+  // Tag truncation
+  maxVisibleTags: number = 6;
+
+  // Skeleton themes
+  imageTheme$: Observable<any>;
+  titleTheme$: Observable<any>;
+  subtitleTheme$: Observable<any>;
+  detailTheme$: Observable<any>;
+
   constructor(
     private route: ActivatedRoute,
     private _router: Router,
     private apiService: ApiService,
-    private _seriesDataService: SeriesDataService
+    private _seriesDataService: SeriesDataService,
+    private skeletonThemeService: SkeletonThemeService
   ) { }
 
   ngOnInit(): void {
+    // Initialize skeleton themes
+    this.imageTheme$ = this.skeletonThemeService.getBaseTheme({
+      'height': '190px',
+      'width': 'auto',
+      'border-radius': '10px',
+      'aspect-ratio': '16/9',
+      'margin': '0',
+      'display': 'flex'
+    });
+
+    this.titleTheme$ = this.skeletonThemeService.getTitleTheme({
+      'width': '100%'
+    });
+
+    this.subtitleTheme$ = this.skeletonThemeService.getLineTheme({
+      'width': '75%'
+    });
+
+    this.detailTheme$ = this.skeletonThemeService.getLineTheme();
+
     this.seriesId = this.route.snapshot.paramMap.get('id');
       
     if (this.seriesId) {
@@ -79,6 +112,41 @@ export class ViewSeriesComponent implements OnInit, OnDestroy {
     if (this.summariesSubscription) {
       this.summariesSubscription.unsubscribe();
     }
+  }
+
+  /**
+   * Get the human-readable label for a message tag string name
+   */
+  getTagLabel(tagName: string): string {
+    const tagEnum = getMessageTagFromName(tagName);
+    return getMessageTagLabel(tagEnum);
+  }
+
+  /**
+   * Get the visible tags (first N tags based on maxVisibleTags)
+   */
+  getVisibleTags(): string[] {
+    if (!this.sermonSeries?.Tags) {
+      return [];
+    }
+    return this.sermonSeries.Tags.slice(0, this.maxVisibleTags);
+  }
+
+  /**
+   * Get the count of hidden tags
+   */
+  getHiddenTagsCount(): number {
+    if (!this.sermonSeries?.Tags) {
+      return 0;
+    }
+    return Math.max(0, this.sermonSeries.Tags.length - this.maxVisibleTags);
+  }
+
+  /**
+   * Check if there are more tags than the visible limit
+   */
+  hasMoreTags(): boolean {
+    return this.getHiddenTagsCount() > 0;
   }
 
 }

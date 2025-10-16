@@ -1,14 +1,17 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
+import { Observable } from 'rxjs';
 import { SermonSeries } from 'src/app/DTO/SermonSeries';
 import { SermonSeriesUpdateRequest } from 'src/app/DTO/SermonSeriesUpdateRequest';
 import { ApiService } from 'src/app/services/api-service.service';
 import { ToastService } from 'src/app/services/toast-service.service';
+import { SkeletonThemeService } from '../../services/skeleton-theme.service';
 
 @Component({
-  selector: 'app-edit-series',
-  templateUrl: './edit-series.component.html',
-  styleUrls: ['./edit-series.component.scss']
+    selector: 'app-edit-series',
+    templateUrl: './edit-series.component.html',
+    styleUrls: ['./edit-series.component.scss'],
+    standalone: false
 })
 export class EditSeriesComponent implements OnInit {
 
@@ -22,18 +25,40 @@ export class EditSeriesComponent implements OnInit {
   seriesSlug: string;
   seriesThumbnailUrl: string;
   seriesArtUrl: string;
+  seriesSummary: string | null;
 
   // Original series data
   sermonSeries: SermonSeries;
+
+  // Skeleton themes
+  titleTheme$: Observable<any>;
+  formInputTheme$: Observable<any>;
+  buttonTheme$: Observable<any>;
 
   constructor(
     private route: ActivatedRoute,
     private router: Router,
     private apiService: ApiService,
-    private toastService: ToastService
+    private toastService: ToastService,
+    private skeletonThemeService: SkeletonThemeService
   ) { }
 
   ngOnInit(): void {
+    // Initialize skeleton themes
+    this.titleTheme$ = this.skeletonThemeService.getTitleTheme({
+      'width': '60%',
+      'height': '3.5rem',
+      'margin-bottom': '2rem',
+      'margin-top': '1rem'
+    });
+
+    this.formInputTheme$ = this.skeletonThemeService.getFormInputTheme();
+
+    this.buttonTheme$ = this.skeletonThemeService.getButtonTheme({
+      'width': '120px',
+      'margin-right': '0.5rem'
+    });
+
     this.seriesId = this.route.snapshot.paramMap.get('id');
 
     if (this.seriesId) {
@@ -66,6 +91,7 @@ export class EditSeriesComponent implements OnInit {
           this.seriesSlug = resp.body.Slug;
           this.seriesThumbnailUrl = resp.body.Thumbnail;
           this.seriesArtUrl = resp.body.ArtUrl || '';
+          this.seriesSummary = resp.body.Summary || null;
 
           this.isLoading = false;
         }
@@ -96,7 +122,8 @@ export class EditSeriesComponent implements OnInit {
       EndDate: this.endDate || '',
       Slug: this.seriesSlug,
       Thumbnail: this.seriesThumbnailUrl,
-      ArtUrl: this.seriesArtUrl
+      ArtUrl: this.seriesArtUrl,
+      Summary: this.seriesSummary
     };
 
     // Update the series

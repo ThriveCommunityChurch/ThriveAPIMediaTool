@@ -1,5 +1,6 @@
 .stat {
 	font-weight: bold;
+	color: var(--color-text-primary);
 }
 
 .chart {
@@ -15,6 +16,7 @@
 		margin-bottom: 0;
 		text-align: right;
 		padding-right: 5px;
+		color: var(--color-text-primary);
 	}
 }
 
@@ -24,6 +26,7 @@
 
 	div {
 		padding-left: 10px;
+		color: var(--color-text-primary);
 	}
 }
 
@@ -34,41 +37,45 @@
 
 .datum-header {
 	padding-top: 10px;
-	color: gray;
+	color: var(--color-stats-header);
 }
 
 #tot-duration-data {
 	font-size: clamp(2rem, -1rem + 4vw, 3.25rem);
+	color: var(--color-text-primary);
 }
 
 .data {
 	font-weight: bolder;
 	font-size: xxx-large;
 	padding-top: 30px;
+	color: var(--color-text-primary);
 
 	.unit {
 		font-size: small;
 		font-weight: normal;
 		margin-left: -10px;
+		color: var(--color-text-secondary);
 	}
 }
 
 .data-details-header {
 	font-size: smaller;
-	color: #AAA;
+	color: var(--color-stats-details);
 }
 
 .data-details-art {
 	img {
 		height: 50px;
-	} 
+	}
 }
 
 .datum {
 	height: 200px;
-	background-color: whitesmoke;
+	background-color: var(--color-stats-background);
 	border-radius: 10px;
 	min-width: 200px;
+	border: 1px solid var(--color-border);
 }
 
 .col {

@@ -1,11 +1,12 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ActivatedRoute, Router, convertToParamMap } from '@angular/router';
 import { of } from 'rxjs';
-import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { provideHttpClientTesting } from '@angular/common/http/testing';
 
 import { ViewSeriesComponent } from './view-series.component';
 import { ApiService } from 'src/app/services/api-service.service';
 import { SeriesDataService } from 'src/app/services/series-data-service';
+import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 
 describe('ViewSeriesComponent', () => {
   let component: ViewSeriesComponent;
@@ -28,15 +29,17 @@ describe('ViewSeriesComponent', () => {
     };
 
     await TestBed.configureTestingModule({
-      imports: [HttpClientTestingModule],
-      declarations: [ViewSeriesComponent],
-      providers: [
+    declarations: [ViewSeriesComponent],
+    imports: [],
+    providers: [
         { provide: ApiService, useValue: apiServiceMock },
         { provide: SeriesDataService, useValue: seriesDataServiceMock },
         { provide: Router, useValue: routerMock },
-        { provide: ActivatedRoute, useValue: activatedRouteMock }
-      ]
-    })
+        { provide: ActivatedRoute, useValue: activatedRouteMock },
+        provideHttpClient(withInterceptorsFromDi()),
+        provideHttpClientTesting()
+    ]
+})
     .compileComponents();
   });
 

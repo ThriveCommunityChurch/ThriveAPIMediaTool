@@ -10,9 +10,10 @@ import { ToastMessage } from '../../Domain/ToastMessage'
 import { ToastMessageType } from '../../Domain/ToastMessageType'
 
 @Component({
-  selector: 'app-add-message',
-  templateUrl: './add-message.component.html',
-  styleUrls: ['./add-message.component.scss']
+    selector: 'app-add-message',
+    templateUrl: './add-message.component.html',
+    styleUrls: ['./add-message.component.scss'],
+    standalone: false
 })
 export class AddMessageComponent implements OnInit {
 
@@ -72,7 +73,8 @@ export class AddMessageComponent implements OnInit {
           EndDate: item.Date,
           Slug: this.sermonSeries.Slug,
           Thumbnail: this.sermonSeries.Thumbnail,
-          ArtUrl: this.sermonSeries.ArtUrl || ''
+          ArtUrl: this.sermonSeries.ArtUrl || '',
+          Summary: this.sermonSeries.Summary || null
         };
 
         this.apiService.editSeries(this.seriesId, updateRequest)
