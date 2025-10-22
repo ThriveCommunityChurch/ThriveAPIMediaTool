@@ -31,8 +31,41 @@ export class ToastService {
 		  Message: text,
 		  Type: httpCode === 200 ? ToastMessageType.Info : ToastMessageType.Error
 		};
-	
+
 		this.show(newToast);
-	  }
+	}
+
+	// Convenience methods for different toast types
+	showSuccess(message: string): void {
+		const toast: ToastMessage = {
+			Message: message,
+			Type: ToastMessageType.Success
+		};
+		this.show(toast);
+	}
+
+	showError(message: string): void {
+		const toast: ToastMessage = {
+			Message: message,
+			Type: ToastMessageType.Error
+		};
+		this.show(toast);
+	}
+
+	showWarning(message: string): void {
+		const toast: ToastMessage = {
+			Message: message,
+			Type: ToastMessageType.Warning
+		};
+		this.show(toast);
+	}
+
+	showInfo(message: string): void {
+		const toast: ToastMessage = {
+			Message: message,
+			Type: ToastMessageType.Info
+		};
+		this.show(toast);
+	}
   
 }

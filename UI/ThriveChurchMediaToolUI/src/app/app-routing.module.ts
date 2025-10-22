@@ -8,15 +8,18 @@ import { ViewSeriesComponent } from './components/view-series/view-series.compon
 import { EditMessageComponent } from './components/edit-message/edit-message.component';
 import { PageNotFoundComponent } from './components/page-not-found/page-not-found.component';
 import { StatsComponent } from './components/stats/stats.component';
+import { LoginComponent } from './components/login/login.component';
+import { AuthGuard } from './guards/auth.guard';
 
 const routes: Routes = [
-  { path: 'create', component: CreateSeriesComponent },
-  { path: 'stats', component: StatsComponent },
-  { path: 'add/:id', component: AddMessageComponent },
-  { path: 'edit/:id', component: EditSeriesComponent },
-  { path: 'view/:seriesId/edit/:messageId', component: EditMessageComponent },
-  { path: 'view/:id', component: ViewSeriesComponent },
-  { path: '', component: DashboardComponent },
+  { path: 'login', component: LoginComponent },
+  { path: 'create', component: CreateSeriesComponent, canActivate: [AuthGuard] },
+  { path: 'stats', component: StatsComponent }, // Stats remain public
+  { path: 'add/:id', component: AddMessageComponent, canActivate: [AuthGuard] },
+  { path: 'edit/:id', component: EditSeriesComponent, canActivate: [AuthGuard] },
+  { path: 'view/:seriesId/edit/:messageId', component: EditMessageComponent, canActivate: [AuthGuard] },
+  { path: 'view/:id', component: ViewSeriesComponent }, // View remains public
+  { path: '', component: DashboardComponent }, // Home remains public
   { path: '**', component: PageNotFoundComponent }
 ];
 

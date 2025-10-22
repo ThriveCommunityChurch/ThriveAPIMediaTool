@@ -9,7 +9,8 @@
     </a>
     <div class="collapse navbar-collapse" id="navbarText">
       <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-        <li class="nav-item">
+        <!-- Admin-only navigation items -->
+        <li class="nav-item" *ngIf="(authState$ | async)?.isAuthenticated">
           <a class="nav-link" href="create">
             Create
           </a>
@@ -20,9 +21,46 @@
           </a>
         </li>
       </ul>
-      <span class="navbar-text">
+
+      <!-- Right side navigation -->
+      <span class="navbar-text d-flex align-items-center">
+        <!-- Authentication status and controls -->
+        <div class="auth-controls me-3" *ngIf="authState$ | async as authState">
+          <!-- Authenticated user -->
+          <div *ngIf="authState.isAuthenticated" class="d-flex align-items-center">
+            <span class="user-info me-2">
+              <i class="fas fa-user-shield me-1"></i>
+              <small>{{ getUserDisplayName(authState) }}</small>
+            </span>
+            <button
+              type="button"
+              class="btn btn-outline-light btn-sm"
+              (click)="logout()"
+              [disabled]="isLoggingOut"
+              title="Logout">
+              <span *ngIf="isLoggingOut" class="spinner-border spinner-border-sm me-1" role="status" aria-hidden="true"></span>
+              <i *ngIf="!isLoggingOut" class="fas fa-sign-out-alt me-1"></i>
+              <span *ngIf="isLoggingOut">Logging out...</span>
+              <span *ngIf="!isLoggingOut">Logout</span>
+            </button>
+          </div>
+
+          <!-- Unauthenticated user -->
+          <div *ngIf="!authState.isAuthenticated">
+            <button
+              type="button"
+              class="btn btn-outline-light btn-sm"
+              (click)="login()"
+              title="Admin Login">
+              <i class="fas fa-sign-in-alt me-1"></i>
+              Login
+            </button>
+          </div>
+        </div>
+
+        <!-- Theme toggle and GitHub link -->
         <app-theme-toggle></app-theme-toggle>
-        <a href="https://github.com/ThriveCommunityChurch/ThriveAPIMediaTool" target="_blank">
+        <a href="https://github.com/ThriveCommunityChurch/ThriveAPIMediaTool" target="_blank" class="ms-2">
           <i class="fab fa-github fa-2x"></i>
         </a>
       </span>
@@ -30,3 +68,6 @@
   </div>
 </nav>
 <router-outlet></router-outlet>
+
+<!-- Toast notifications -->
+<app-toast-message></app-toast-message>

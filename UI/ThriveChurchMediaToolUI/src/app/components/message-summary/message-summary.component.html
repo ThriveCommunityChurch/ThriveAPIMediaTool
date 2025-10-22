@@ -2,7 +2,10 @@
   <div class="title">
     {{message.Title}}@if (message.VideoUrl) {
     <span><a target="_blank" href="{{message.VideoUrl}}"><i class="fab fa-youtube"></i></a></span>
-    }<span (click)="copyMessageId()"><i class="fa fa-clone" title="{{message.MessageId}}"></i></span><span (click)="editMessage()"><i id="edit-pencil" class="fa fa-pencil" title="Edit Message"></i></span>
+    }<span (click)="copyMessageId()"><i class="fa fa-clone" title="{{message.MessageId}}"></i></span>
+    <span *ngIf="isAuthenticated$ | async" (click)="editMessage()" class="action-icon edit-icon" title="Edit Message">
+        <i id="edit-pencil" class="fa fa-pencil"></i>
+    </span>
   </div>
   <div class="additional-info">
     <div class="row">
