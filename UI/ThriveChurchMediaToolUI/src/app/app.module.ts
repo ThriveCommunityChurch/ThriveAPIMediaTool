@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { provideHttpClient, withInterceptorsFromDi, HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
+import { provideHttpClient, withInterceptorsFromDi, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { FormsModule } from '@angular/forms';
@@ -32,8 +32,6 @@ import { MessageSummarySkeletonComponent } from './components/message-summary-sk
 import { ThemeToggleComponent } from './components/theme-toggle/theme-toggle.component';
 import { ThemeService } from './services/theme.service';
 import { SkeletonThemeService } from './services/skeleton-theme.service';
-import { LoginComponent } from './components/login/login.component';
-import { AuthenticationService } from './services/authentication.service';
 import { AuthInterceptor } from './interceptors/auth.interceptor';
 import { AuthGuard } from './guards/auth.guard';
 
@@ -58,8 +56,7 @@ import { AuthGuard } from './guards/auth.guard';
         ToastMessageComponent,
         SeriesItemSkeletonComponent,
         MessageSummarySkeletonComponent,
-        ThemeToggleComponent,
-        LoginComponent
+        ThemeToggleComponent
     ],
     bootstrap: [
         AppComponent

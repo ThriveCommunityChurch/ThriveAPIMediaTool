@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { Observable } from 'rxjs';
+import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
 
 import { AuthenticationService } from '../../services/authentication.service';
 import { ToastService } from '../../services/toast-service.service';
@@ -10,7 +12,9 @@ import { LoginRequest } from '../../DTO/LoginRequest';
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
-  styleUrls: ['./login.component.scss']
+  styleUrls: ['./login.component.scss'],
+  standalone: true,
+  imports: [CommonModule, FormsModule]
 })
 export class LoginComponent implements OnInit {
   loginRequest: LoginRequest = {
