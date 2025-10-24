@@ -1,0 +1,87 @@
+<div class="container mt-5">
+  <div class="row justify-content-center">
+    <div class="col-md-6 col-lg-4">
+      <div class="card login-card">
+        <div class="card-header text-center">
+          <h4>Admin Login</h4>
+          <p class="text-muted mb-0">Sign in to manage content</p>
+        </div>
+        <div class="card-body">
+          <form (ngSubmit)="onSubmit()" #loginForm="ngForm">
+            <div class="mb-3">
+              <label for="username" class="form-label">Username</label>
+              <input
+                type="text"
+                class="form-control"
+                [class.is-invalid]="usernameField.invalid && usernameField.touched"
+                id="username"
+                name="username"
+                [(ngModel)]="loginRequest.Username"
+                required
+                autocomplete="username"
+                [disabled]="isLoading"
+                placeholder="Enter username"
+                #usernameField="ngModel">
+              <div *ngIf="usernameField.invalid && usernameField.touched" class="text-danger mt-1">
+                <small *ngIf="usernameField.errors?.['required']">Username is required.</small>
+              </div>
+            </div>
+            
+            <div class="mb-3">
+              <label for="password" class="form-label">Password</label>
+              <div class="input-group">
+                <input
+                  [type]="showPassword ? 'text' : 'password'"
+                  class="form-control"
+                  [class.is-invalid]="passwordField.invalid && passwordField.touched"
+                  id="password"
+                  name="password"
+                  [(ngModel)]="loginRequest.Password"
+                  required
+                  minlength="10"
+                  autocomplete="current-password"
+                  [disabled]="isLoading"
+                  placeholder="Enter password"
+                  #passwordField="ngModel">
+                <button
+                  type="button"
+                  class="btn btn-outline-secondary"
+                  (click)="togglePasswordVisibility()"
+                  [disabled]="isLoading"
+                  [attr.aria-label]="showPassword ? 'Hide password' : 'Show password'">
+                  <i [class]="showPassword ? 'fas fa-eye-slash' : 'fas fa-eye'"></i>
+                </button>
+              </div>
+              <!-- Show help text when no error, or error message when there is an error -->
+              <div *ngIf="!(passwordField.invalid && passwordField.touched)" class="form-text">
+                Password must be at least 10 characters long.
+              </div>
+              <div *ngIf="passwordField.invalid && passwordField.touched" class="text-danger mt-1">
+                <small *ngIf="passwordField.errors?.['required']">Password is required.</small>
+                <small *ngIf="passwordField.errors?.['minlength']">Password must be at least 10 characters long.</small>
+              </div>
+            </div>
+
+            <div class="d-grid gap-2">
+              <button
+                type="submit"
+                class="btn btn-primary"
+                [disabled]="isLoading || !loginForm.form.valid">
+                <span *ngIf="isLoading" class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
+                <span *ngIf="isLoading">Signing in...</span>
+                <span *ngIf="!isLoading">Sign In</span>
+              </button>
+            </div>
+          </form>
+        </div>
+        
+        <div class="card-footer text-center text-muted">
+          <small>
+            <i class="fas fa-shield-alt me-1"></i>
+            Secure admin access only
+          </small>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

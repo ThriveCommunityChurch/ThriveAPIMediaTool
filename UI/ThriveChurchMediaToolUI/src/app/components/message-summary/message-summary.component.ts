@@ -1,7 +1,11 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
 import { SermonMessage } from 'src/app/DTO/SermonMessage';
 import { MessageTag, getMessageTagLabel, getMessageTagFromName } from 'src/app/DTO/MessageTag';
+import { AuthenticationService } from 'src/app/services/authentication.service';
+import { ToastService } from 'src/app/services/toast-service.service';
 
 @Component({
     selector: 'app-message-summary',
@@ -14,8 +18,17 @@ export class MessageSummaryComponent implements OnInit {
   @Input() message: SermonMessage;
   @Input() seriesId: string = "";
   encodedPassage: string = "";
+  isAuthenticated$: Observable<boolean>;
 
-  constructor(private router: Router) { }
+  constructor(
+    private router: Router,
+    private authService: AuthenticationService,
+    private toastService: ToastService
+  ) {
+    this.isAuthenticated$ = this.authService.authState$.pipe(
+      map(authState => authState.isAuthenticated)
+    );
+  }
 
   ngOnInit(): void {
     if (this.message.PassageRef) {
@@ -55,6 +68,14 @@ export class MessageSummaryComponent implements OnInit {
   }
 
   editMessage(): void {
+    if (!this.authService.isAuthenticated()) {
+      this.toastService.showError('You must be logged in to edit messages.');
+      this.router.navigate(['/login'], {
+        queryParams: { returnUrl: `/view/${this.seriesId}/edit/${this.message.MessageId}` }
+      });
+      return;
+    }
+
     if (this.seriesId && this.message.MessageId) {
       this.router.navigate(['/view', this.seriesId, 'edit', this.message.MessageId]);
     }
