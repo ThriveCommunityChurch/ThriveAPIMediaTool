@@ -1,7 +1,7 @@
 <div class="container mt-5">
   <div class="row justify-content-center">
     <div class="col-md-6 col-lg-4">
-      <div class="card">
+      <div class="card login-card">
         <div class="card-header text-center">
           <h4>Admin Login</h4>
           <p class="text-muted mb-0">Sign in to manage content</p>
@@ -70,15 +70,6 @@
                 <span *ngIf="isLoading" class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
                 <span *ngIf="isLoading">Signing in...</span>
                 <span *ngIf="!isLoading">Sign In</span>
-              </button>
-              
-              <button
-                type="button"
-                class="btn btn-outline-secondary"
-                (click)="goHome()"
-                [disabled]="isLoading">
-                <i class="fas fa-home me-2"></i>
-                Back to Home
               </button>
             </div>
           </form>

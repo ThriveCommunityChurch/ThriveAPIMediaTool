@@ -62,14 +62,12 @@ export class AppComponent implements OnInit, OnDestroy {
     this.authService.logout().subscribe({
       next: () => {
         this.isLoggingOut = false;
-        this.toastService.showSuccess('Logged out successfully');
         this.router.navigate(['/']);
       },
       error: (error) => {
         this.isLoggingOut = false;
         console.error('Logout error:', error);
         // Even if logout fails on server, we've cleared local data
-        this.toastService.showSuccess('Logged out successfully');
         this.router.navigate(['/']);
       }
     });

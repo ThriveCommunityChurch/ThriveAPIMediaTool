@@ -75,7 +75,7 @@ export class AuthenticationService {
           this.setAuthData(response.body);
           return response.body;
         }
-        throw new Error('Invalid response from server');
+        throw new Error('Invalid username or password. Please try again.');
       }),
       catchError(error => {
         return throwError(error);
@@ -103,7 +103,7 @@ export class AuthenticationService {
     if (!refreshToken) {
       this.clearAuthData();
       this.updateAuthState();
-      return throwError('No refresh token available');
+      return throwError('Invalid username or password. Please try again.');
     }
 
     const request: RefreshTokenRequest = { RefreshToken: refreshToken };
@@ -118,7 +118,7 @@ export class AuthenticationService {
           this.setAuthData(response.body);
           return response.body;
         }
-        throw new Error('Invalid response from server');
+        throw new Error('Invalid username or password. Please try again.');
       }),
       catchError(error => {
         this.clearAuthData();
@@ -129,9 +129,14 @@ export class AuthenticationService {
   }
 
   private setAuthData(loginResponse: LoginResponse): void {
-    // Validate tokens before storing
-    if (!this.isValidTokenFormat(loginResponse.Token) || !this.isValidTokenFormat(loginResponse.RefreshToken)) {
-      throw new Error('Invalid token format received from server');
+    // Validate JWT token format
+    if (!this.isValidTokenFormat(loginResponse.Token)) {
+      throw new Error('Invalid username or password. Please try again.');
+    }
+
+    // Validate refresh token is not empty (it's a base64 string, not a JWT)
+    if (!loginResponse.RefreshToken || typeof loginResponse.RefreshToken !== 'string' || loginResponse.RefreshToken.trim().length === 0) {
+      throw new Error('Invalid username or password. Please try again.');
     }
 
     // Decode JWT to get user information
@@ -169,7 +174,7 @@ export class AuthenticationService {
         Roles: payload.roles || []
       };
     } catch (error) {
-      throw new Error('Invalid token format');
+      throw new Error('Invalid username or password. Please try again.');
     }
   }
 
