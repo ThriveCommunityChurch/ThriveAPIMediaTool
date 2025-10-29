@@ -1,0 +1,73 @@
+<div class="search-message-card">
+  <!-- Header: Title and Actions -->
+  <div class="card-header">
+    <h3 class="card-title">{{ message.Title }}</h3>
+    <div class="card-actions">
+      @if (message.VideoUrl) {
+        <a 
+          class="action-link" 
+          [href]="message.VideoUrl" 
+          target="_blank" 
+          title="Watch on YouTube">
+          <i class="fab fa-youtube"></i>
+        </a>
+      }
+      <button 
+        type="button"
+        class="action-btn"
+        (click)="copyMessageId()"
+        title="Copy Message ID">
+        <i class="fas fa-copy"></i>
+      </button>
+    </div>
+  </div>
+
+  <!-- Main Content -->
+  <div class="card-content">
+    <!-- Top Row: Date, Duration, Speaker -->
+    <div class="info-row">
+      <div class="info-item">
+        <span class="label">Date</span>
+        <span class="value">{{ message.Date | date: 'MMM d, yyyy':'UTC' }}</span>
+      </div>
+      <div class="info-item">
+        <span class="label">Duration</span>
+        <span class="value">{{ formatDuration(message.AudioDuration) }}</span>
+      </div>
+      <div class="info-item">
+        <span class="label">Speaker</span>
+        <span class="value">{{ message.Speaker }}</span>
+      </div>
+    </div>
+
+    <!-- Summary -->
+    @if (message.Summary) {
+      <div class="summary-section">
+        <p class="summary-text">{{ message.Summary }}</p>
+      </div>
+    }
+
+    <!-- Tags -->
+    @if (message.Tags && message.Tags.length > 0) {
+      <div class="tags-section">
+        @for (tag of message.Tags; track tag) {
+          <span class="tag-badge">{{ getTagLabel(tag) }}</span>
+        }
+      </div>
+    }
+  </div>
+
+  <!-- Footer: Audio Link -->
+  @if (message.AudioUrl) {
+    <div class="card-footer">
+      <a 
+        [href]="message.AudioUrl" 
+        target="_blank"
+        class="audio-link">
+        <i class="fas fa-headphones"></i>
+        <span>Listen to Audio</span>
+      </a>
+    </div>
+  }
+</div>
+

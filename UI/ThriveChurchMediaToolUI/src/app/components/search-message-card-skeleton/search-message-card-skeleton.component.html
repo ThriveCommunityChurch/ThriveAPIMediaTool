@@ -1,0 +1,95 @@
+<div class="search-message-card-skeleton">
+  <!-- Header Skeleton -->
+  <div class="card-header">
+    <div class="header-title">
+      <ngx-skeleton-loader
+        count="1"
+        appearance="line"
+        animation="pulse"
+        [theme]="titleTheme$ | async">
+      </ngx-skeleton-loader>
+    </div>
+    <div class="card-actions-skeleton">
+      <span class="action-skeleton"></span>
+      <span class="action-skeleton"></span>
+    </div>
+  </div>
+
+  <!-- Content Skeleton -->
+  <div class="card-content">
+    <!-- Info Row -->
+    <div class="info-row">
+      <div class="info-item">
+        <ngx-skeleton-loader
+          count="1"
+          appearance="line"
+          animation="pulse"
+          [theme]="smallLineTheme$ | async">
+        </ngx-skeleton-loader>
+        <ngx-skeleton-loader
+          count="1"
+          appearance="line"
+          animation="pulse"
+          [theme]="smallLineTheme$ | async">
+        </ngx-skeleton-loader>
+      </div>
+      <div class="info-item">
+        <ngx-skeleton-loader
+          count="1"
+          appearance="line"
+          animation="pulse"
+          [theme]="smallLineTheme$ | async">
+        </ngx-skeleton-loader>
+        <ngx-skeleton-loader
+          count="1"
+          appearance="line"
+          animation="pulse"
+          [theme]="smallLineTheme$ | async">
+        </ngx-skeleton-loader>
+      </div>
+      <div class="info-item">
+        <ngx-skeleton-loader
+          count="1"
+          appearance="line"
+          animation="pulse"
+          [theme]="smallLineTheme$ | async">
+        </ngx-skeleton-loader>
+        <ngx-skeleton-loader
+          count="1"
+          appearance="line"
+          animation="pulse"
+          [theme]="smallLineTheme$ | async">
+        </ngx-skeleton-loader>
+      </div>
+    </div>
+
+    <!-- Summary Lines -->
+    <div class="summary-skeleton">
+      <ngx-skeleton-loader
+        count="1"
+        appearance="line"
+        animation="pulse"
+        [theme]="lineTheme$ | async">
+      </ngx-skeleton-loader>
+      <ngx-skeleton-loader
+        count="1"
+        appearance="line"
+        animation="pulse"
+        [theme]="lineTheme$ | async">
+      </ngx-skeleton-loader>
+    </div>
+
+    <!-- Tags -->
+    <div class="tags-skeleton">
+      <span class="tag-skeleton"></span>
+      <span class="tag-skeleton"></span>
+      <span class="tag-skeleton"></span>
+    </div>
+  </div>
+
+  <!-- Footer Skeleton -->
+  <div class="card-footer">
+    <span class="footer-skeleton"></span>
+  </div>
+</div>
+

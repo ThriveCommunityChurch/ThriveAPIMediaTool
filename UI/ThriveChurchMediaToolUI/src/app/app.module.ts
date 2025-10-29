@@ -19,6 +19,7 @@ import { EditMessageComponent } from './components/edit-message/edit-message.com
 import { SeriesItemComponent } from './components/series-item/series-item.component';
 import { ItemFormComponent } from './components/item-form/item-form.component';
 import { StatsComponent } from './components/stats/stats.component';
+import { SearchComponent } from './components/search/search.component';
 import { DurationPipe } from './pipes/DurationPipe';
 import { PluralityPipe } from './pipes/PluralityPipe';
 import { FileSizePipe } from './pipes/FileSizePipe';
@@ -34,6 +35,13 @@ import { ThemeService } from './services/theme.service';
 import { SkeletonThemeService } from './services/skeleton-theme.service';
 import { AuthInterceptor } from './interceptors/auth.interceptor';
 import { AuthGuard } from './guards/auth.guard';
+import { SearchMessageCardComponent } from './components/search-message-card/search-message-card.component';
+import { SearchSeriesCardComponent } from './components/search-series-card/search-series-card.component';
+import { SearchSeriesCardSkeletonComponent } from './components/search-series-card-skeleton/search-series-card-skeleton.component';
+import { SearchMessageCardSkeletonComponent } from './components/search-message-card-skeleton/search-message-card-skeleton.component';
+import { AdminBackupComponent } from './components/admin-backup/admin-backup.component';
+import { AdminConfigComponent } from './components/admin-config/admin-config.component';
+import { ConfigService } from './services/config.service';
 
 
 @NgModule({ declarations: [
@@ -49,6 +57,7 @@ import { AuthGuard } from './guards/auth.guard';
         SeriesItemComponent,
         ItemFormComponent,
         StatsComponent,
+        SearchComponent,
         DurationPipe,
         PluralityPipe,
         FileSizePipe,
@@ -56,7 +65,13 @@ import { AuthGuard } from './guards/auth.guard';
         ToastMessageComponent,
         SeriesItemSkeletonComponent,
         MessageSummarySkeletonComponent,
-        ThemeToggleComponent
+        ThemeToggleComponent,
+        SearchMessageCardComponent,
+        SearchSeriesCardComponent,
+        SearchSeriesCardSkeletonComponent,
+        SearchMessageCardSkeletonComponent,
+        AdminBackupComponent,
+        AdminConfigComponent
     ],
     bootstrap: [
         AppComponent
@@ -71,6 +86,7 @@ import { AuthGuard } from './guards/auth.guard';
     ], 
     providers: [
         ApiService,
+        ConfigService,
         SeriesListComponent,
         ToastService,
         SeriesDataService,

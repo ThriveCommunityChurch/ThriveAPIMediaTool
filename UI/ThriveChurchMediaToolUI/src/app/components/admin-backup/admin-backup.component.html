@@ -1,0 +1,188 @@
+<div class="backup-container">
+  <!-- Header -->
+  <div class="backup-header">
+    <div class="header-content">
+      <div class="header-icon">
+        <i class="fas fa-database"></i>
+      </div>
+      <div class="header-text">
+        <h1>Data Backup & Restore</h1>
+        <p>Manage your sermon data backups and restore operations</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Main Content Grid -->
+  <div class="backup-grid">
+    <!-- Export Section -->
+    <div class="backup-card">
+      <div class="card-title">
+        <i class="fas fa-download"></i>
+        <h2>Export Data</h2>
+      </div>
+
+      <p class="card-description">
+        Create a complete backup of all sermon series and messages as a JSON file for safekeeping or migration.
+      </p>
+
+      <div class="info-badge">
+        <i class="fas fa-info-circle"></i>
+        <span>Audio files are referenced by URL and not included in the export</span>
+      </div>
+
+      <div class="action-section">
+        <button
+          type="button"
+          class="btn btn-primary"
+          (click)="exportData_Click()"
+          [disabled]="isExporting">
+          <span *ngIf="!isExporting">
+            <i class="fas fa-download"></i>
+            Export All Data
+          </span>
+          <span *ngIf="isExporting">
+            <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+            Exporting...
+          </span>
+        </button>
+      </div>
+
+      <!-- Export Success Message -->
+      <div *ngIf="exportData && exportDate" class="success-message">
+        <div class="success-icon">
+          <i class="fas fa-check-circle"></i>
+        </div>
+        <div class="success-content">
+          <strong>Export Successful</strong>
+          <p>{{exportData.TotalSeries}} series with {{exportData.TotalMessages}} messages</p>
+          <small>{{exportDate | date:'medium'}}</small>
+        </div>
+      </div>
+    </div>
+
+    <!-- Import Section -->
+    <div class="backup-card">
+      <div class="card-title">
+        <i class="fas fa-upload"></i>
+        <h2>Import Data</h2>
+      </div>
+
+      <p class="card-description">
+        Restore sermon data from a previously exported JSON file. Updates existing series and messages by ID.
+      </p>
+
+      <div class="warning-badge">
+        <i class="fas fa-exclamation-triangle"></i>
+        <span>This updates existing data only. Create a backup before importing.</span>
+      </div>
+
+      <!-- File Input -->
+      <div class="file-input-wrapper">
+        <input
+          type="file"
+          class="file-input-hidden"
+          [class.is-invalid]="fileError"
+          id="importFileInput"
+          accept=".json"
+          (change)="onFileSelected($event)"
+          [disabled]="isImporting">
+
+        <label for="importFileInput" class="file-input-label" [class.disabled]="isImporting">
+          <i class="fas fa-file-upload"></i>
+          <span *ngIf="!importFileName">Choose backup file...</span>
+          <span *ngIf="importFileName && !fileError" class="file-name">{{importFileName}}</span>
+        </label>
+
+        <div *ngIf="fileError" class="error-message">
+          <i class="fas fa-exclamation-circle"></i>
+          {{fileError}}
+        </div>
+      </div>
+
+      <!-- Import Buttons -->
+      <div class="action-section button-group">
+        <button
+          type="button"
+          class="btn btn-success"
+          (click)="importData_Click()"
+          [disabled]="isImporting || !importFile || fileError">
+          <span *ngIf="!isImporting">
+            <i class="fas fa-upload"></i>
+            Import Data
+          </span>
+          <span *ngIf="isImporting">
+            <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+            Importing...
+          </span>
+        </button>
+
+        <button
+          type="button"
+          class="btn btn-outline-secondary"
+          (click)="clearImportFile()"
+          [disabled]="isImporting || !importFile">
+          <i class="fas fa-times"></i>
+          Clear
+        </button>
+      </div>
+
+      <!-- Import Results -->
+      <div *ngIf="importResult" class="import-results">
+        <div class="results-header">
+          <i class="fas fa-check-circle"></i>
+          <strong>Import Completed</strong>
+        </div>
+
+        <div class="results-stats">
+          <div class="stat-group">
+            <h6>Series</h6>
+            <div class="stat-items">
+              <span class="stat-item">
+                <i class="fas fa-check"></i> {{importResult.TotalSeriesUpdated}} updated
+              </span>
+              <span class="stat-item" *ngIf="importResult.TotalSeriesSkipped > 0">
+                <i class="fas fa-minus-circle"></i> {{importResult.TotalSeriesSkipped}} skipped
+              </span>
+            </div>
+          </div>
+
+          <div class="stat-group">
+            <h6>Messages</h6>
+            <div class="stat-items">
+              <span class="stat-item">
+                <i class="fas fa-check"></i> {{importResult.TotalMessagesUpdated}} updated
+              </span>
+              <span class="stat-item" *ngIf="importResult.TotalMessagesSkipped > 0">
+                <i class="fas fa-minus-circle"></i> {{importResult.TotalMessagesSkipped}} skipped
+              </span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Skipped Items Details -->
+        <div *ngIf="importResult.SkippedItems && importResult.SkippedItems.length > 0" class="skipped-items">
+          <h6>Skipped Items</h6>
+          <div class="skipped-table-wrapper">
+            <table class="skipped-table">
+              <thead>
+                <tr>
+                  <th>Type</th>
+                  <th>ID</th>
+                  <th>Reason</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let item of importResult.SkippedItems">
+                  <td>{{item.Type}}</td>
+                  <td><code>{{item.Id}}</code></td>
+                  <td>{{item.Reason}}</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+

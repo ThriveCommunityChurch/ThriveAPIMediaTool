@@ -1,0 +1,50 @@
+<div class="search-series-card">
+  <!-- Image Container -->
+  <div class="card-image-container">
+    <img
+      [src]="series.ArtUrl || series.Thumbnail"
+      [alt]="series.Name"
+      class="card-image">
+    <div class="card-overlay">
+      <button
+        type="button"
+        class="view-btn"
+        (click)="viewSeries()">
+        VIEW
+      </button>
+    </div>
+  </div>
+
+  <!-- Content Container -->
+  <div class="card-content" (click)="viewSeries()" style="cursor: pointer;">
+    <!-- Title -->
+    <h3 class="card-title">{{ series.Name }}</h3>
+
+    <!-- Date Range -->
+    <p class="card-date">{{ getDateRange() }}</p>
+
+    <!-- Message Count -->
+    <div class="message-count">
+      <i class="fas fa-book"></i>
+      <span>{{ series.Messages.length || 0 }} messages</span>
+    </div>
+
+    <!-- Summary -->
+    @if (series.Summary) {
+      <p class="card-summary">{{ series.Summary }}</p>
+    }
+
+    <!-- Tags -->
+    @if (series.Tags && series.Tags.length > 0) {
+      <div class="tags-section">
+        @for (tag of series.Tags.slice(0, 3); track tag) {
+          <span class="tag-badge">{{ tag }}</span>
+        }
+        @if (series.Tags.length > 3) {
+          <span class="tag-badge tag-more">+{{ series.Tags.length - 3 }}</span>
+        }
+      </div>
+    }
+  </div>
+</div>
+
