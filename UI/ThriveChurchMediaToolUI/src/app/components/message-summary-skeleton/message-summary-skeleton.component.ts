@@ -16,6 +16,7 @@ export class MessageSummarySkeletonComponent implements OnInit, OnDestroy {
   fullWidthTheme$: Observable<any>;
   mediumTheme$: Observable<any>;
   largeTheme$: Observable<any>;
+  waveformTheme$: Observable<any>;
 
   constructor(private skeletonThemeService: SkeletonThemeService) {}
 
@@ -39,6 +40,12 @@ export class MessageSummarySkeletonComponent implements OnInit, OnDestroy {
 
     this.largeTheme$ = this.skeletonThemeService.getLineTheme({
       'width': '60%'
+    });
+
+    this.waveformTheme$ = this.skeletonThemeService.getBaseTheme({
+      'width': '100%',
+      'height': '50px',
+      'margin-top': '8px'
     });
   }
 

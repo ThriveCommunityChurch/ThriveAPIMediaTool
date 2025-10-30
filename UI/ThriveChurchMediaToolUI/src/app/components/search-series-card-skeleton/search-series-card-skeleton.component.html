@@ -1,0 +1,62 @@
+<div class="search-series-card-skeleton">
+  <!-- Image Container Skeleton -->
+  <div class="card-image-container">
+    <ngx-skeleton-loader
+      count="1"
+      appearance="line"
+      animation="pulse"
+      [theme]="imageTheme$ | async">
+    </ngx-skeleton-loader>
+  </div>
+
+  <!-- Content Container Skeleton -->
+  <div class="card-content">
+    <!-- Title -->
+    <ngx-skeleton-loader
+      count="1"
+      appearance="line"
+      animation="pulse"
+      [theme]="titleTheme$ | async">
+    </ngx-skeleton-loader>
+
+    <!-- Date Range -->
+    <ngx-skeleton-loader
+      count="1"
+      appearance="line"
+      animation="pulse"
+      [theme]="smallLineTheme$ | async">
+    </ngx-skeleton-loader>
+
+    <!-- Message Count -->
+    <ngx-skeleton-loader
+      count="1"
+      appearance="line"
+      animation="pulse"
+      [theme]="smallLineTheme$ | async">
+    </ngx-skeleton-loader>
+
+    <!-- Summary Lines -->
+    <div class="summary-skeleton">
+      <ngx-skeleton-loader
+        count="1"
+        appearance="line"
+        animation="pulse"
+        [theme]="lineTheme$ | async">
+      </ngx-skeleton-loader>
+      <ngx-skeleton-loader
+        count="1"
+        appearance="line"
+        animation="pulse"
+        [theme]="lineTheme$ | async">
+      </ngx-skeleton-loader>
+    </div>
+
+    <!-- Tags -->
+    <div class="tags-skeleton">
+      <span class="tag-skeleton"></span>
+      <span class="tag-skeleton"></span>
+      <span class="tag-skeleton"></span>
+    </div>
+  </div>
+</div>
+

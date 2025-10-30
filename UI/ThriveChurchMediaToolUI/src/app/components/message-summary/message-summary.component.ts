@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnInit, AfterViewInit, OnDestroy } from '@angular/core';
 import { Router } from '@angular/router';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
@@ -6,6 +6,7 @@ import { SermonMessage } from 'src/app/DTO/SermonMessage';
 import { MessageTag, getMessageTagLabel, getMessageTagFromName } from 'src/app/DTO/MessageTag';
 import { AuthenticationService } from 'src/app/services/authentication.service';
 import { ToastService } from 'src/app/services/toast-service.service';
+import WaveSurfer from 'wavesurfer.js';
 
 @Component({
     selector: 'app-message-summary',
@@ -13,12 +14,14 @@ import { ToastService } from 'src/app/services/toast-service.service';
     styleUrls: ['./message-summary.component.scss'],
     standalone: false
 })
-export class MessageSummaryComponent implements OnInit {
+export class MessageSummaryComponent implements OnInit, AfterViewInit, OnDestroy {
 
   @Input() message: SermonMessage;
   @Input() seriesId: string = "";
   encodedPassage: string = "";
   isAuthenticated$: Observable<boolean>;
+  waveformId: string = '';
+  private wavesurfer: WaveSurfer | null = null;
 
   constructor(
     private router: Router,
@@ -33,6 +36,75 @@ export class MessageSummaryComponent implements OnInit {
   ngOnInit(): void {
     if (this.message.PassageRef) {
       this.encodedPassage = this.message.PassageRef.replace(/ /g, '+').replace(/:/g, '%3A');
+    }
+
+    // Generate unique ID for waveform container
+    this.waveformId = `waveform-${this.message.MessageId}`;
+  }
+
+  ngAfterViewInit(): void {
+    // Initialize waveform if data exists
+    // Use setTimeout to ensure DOM is fully rendered
+    if (this.hasWaveformData()) {
+      setTimeout(() => {
+        this.initializeWaveform();
+      }, 0);
+    }
+  }
+
+  ngOnDestroy(): void {
+    // Clean up wavesurfer instance
+    if (this.wavesurfer) {
+      this.wavesurfer.destroy();
+      this.wavesurfer = null;
+    }
+  }
+
+  /**
+   * Check if message has waveform data
+   */
+  hasWaveformData(): boolean {
+    return !!(this.message.WaveformData && this.message.WaveformData.length > 0);
+  }
+
+  /**
+   * Initialize WaveSurfer with pre-computed peaks data
+   */
+  private initializeWaveform(): void {
+    try {
+      const container = document.getElementById(this.waveformId);
+      if (!container) {
+        console.warn(`Waveform container not found: ${this.waveformId}`);
+        return;
+      }
+
+      if (!this.message.WaveformData || this.message.WaveformData.length === 0) {
+        console.warn('No waveform data available');
+        return;
+      }
+
+      // Get computed styles to access CSS variables
+      const computedStyles = getComputedStyle(document.documentElement);
+      const waveColor = computedStyles.getPropertyValue('--color-waveform-wave').trim() || '#4a90e2';
+      const progressColor = computedStyles.getPropertyValue('--color-waveform-progress').trim() || '#1e3a8a';
+
+      this.wavesurfer = WaveSurfer.create({
+        container: `#${this.waveformId}`,
+        height: 50,
+        waveColor: waveColor,
+        progressColor: progressColor,
+        cursorWidth: 0,
+        barWidth: 2,
+        barGap: 1,
+        barRadius: 2,
+        interact: false, // Non-interactive, purely for visualization
+        hideScrollbar: true,
+        normalize: true,
+        peaks: [this.message.WaveformData], // Pre-computed waveform data
+        duration: this.message.AudioDuration || 0
+      });
+    } catch (error) {
+      console.error('Error initializing waveform:', error);
     }
   }
 

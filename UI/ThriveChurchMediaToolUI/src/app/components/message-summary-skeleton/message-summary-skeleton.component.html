@@ -5,6 +5,7 @@
 		animation="pulse"
 		[theme]="titleTheme$ | async">
 	</ngx-skeleton-loader>
+
 	<div class="additional-info">
 		<div class="row">
 			<div class="col">
@@ -97,6 +98,30 @@
 					appearance="line"
 					animation="pulse"
 					[theme]="fullWidthTheme$ | async">
+				</ngx-skeleton-loader>
+			</div>
+		</div>
+		<!-- Audio URL Row with Waveform Skeleton -->
+		<div class="row">
+			<ngx-skeleton-loader
+				count="1"
+				appearance="line"
+				animation="pulse"
+				[theme]="mediumTheme$ | async">
+			</ngx-skeleton-loader>
+			<br>
+			<ngx-skeleton-loader
+				count="1"
+				appearance="line"
+				animation="pulse"
+				[theme]="fullWidthTheme$ | async">
+			</ngx-skeleton-loader>
+			<div class="waveform-container">
+				<ngx-skeleton-loader
+					count="1"
+					appearance="line"
+					animation="pulse"
+					[theme]="waveformTheme$ | async">
 				</ngx-skeleton-loader>
 			</div>
 		</div>

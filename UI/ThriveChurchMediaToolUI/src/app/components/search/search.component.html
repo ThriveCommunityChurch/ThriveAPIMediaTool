@@ -1,0 +1,287 @@
+<div class="search-container">
+  <div class="search-header">
+    <h1>Search</h1>
+  </div>
+
+  <!-- Search Toolbar -->
+  <div class="search-toolbar">
+    <!-- Filter Icons -->
+    <div class="toolbar-filters">
+      <button
+        class="filter-icon-btn"
+        [class.active]="searchTarget === SearchTarget.Series"
+        (click)="searchTarget = SearchTarget.Series"
+        title="Series">
+        <i class="fas fa-book"></i>
+      </button>
+      <button
+        class="filter-icon-btn"
+        [class.active]="searchTarget === SearchTarget.Messages"
+        (click)="searchTarget = SearchTarget.Messages"
+        title="Messages">
+        <i class="fas fa-bible"></i>
+      </button>
+      <button
+        class="filter-icon-btn"
+        [class.active]="searchTarget === SearchTarget.Speaker"
+        (click)="searchTarget = SearchTarget.Speaker"
+        title="Speaker"
+        [disabled]="speakersLoading">
+        <i class="fas fa-microphone"></i>
+      </button>
+
+      <div class="toolbar-divider"></div>
+
+      <button
+        class="filter-icon-btn"
+        [class.active]="sortDirection === SortDirection.Descending"
+        (click)="sortDirection = SortDirection.Descending"
+        title="Newest First">
+        <i class="fas fa-arrow-down"></i>
+      </button>
+      <button
+        class="filter-icon-btn"
+        [class.active]="sortDirection === SortDirection.Ascending"
+        (click)="sortDirection = SortDirection.Ascending"
+        title="Oldest First">
+        <i class="fas fa-arrow-up"></i>
+      </button>
+    </div>
+
+    <!-- Main Content -->
+    <main class="search-main">
+      <!-- Tag Selection - Intelligent Multiselect (shown for Messages/Series) -->
+      @if (searchTarget !== SearchTarget.Speaker) {
+        <div class="tag-multiselect-wrapper" #tagMultiselectWrapper>
+          <!-- Multiselect Dropdown -->
+          <div class="multiselect-container" [class.open]="showTagDropdown">
+            <div class="multiselect-input" (click)="toggleTagDropdown()">
+              <div class="multiselect-content">
+                @if (selectedTags.length === 0) {
+                  <span class="tags-placeholder">Select tags...</span>
+                } @else {
+                  <div class="selected-tags-list">
+                    @for (tag of selectedTags; track tag) {
+                      <span class="tag-chip">
+                        {{ getMessageTagLabel(tag) }}
+                        <button
+                          type="button"
+                          class="tag-remove"
+                          (click)="toggleTag(tag); $event.stopPropagation()">
+                          ×
+                        </button>
+                      </span>
+                    }
+                  </div>
+                }
+              </div>
+              <div class="multiselect-arrow">
+                <i class="fas" [class.fa-chevron-up]="showTagDropdown" [class.fa-chevron-down]="!showTagDropdown"></i>
+              </div>
+            </div>
+
+            <!-- Dropdown Menu with Search -->
+            @if (showTagDropdown) {
+              <div class="multiselect-menu">
+                <div class="multiselect-search">
+                  <i class="fas fa-search"></i>
+                  <input
+                    type="text"
+                    placeholder="Search..."
+                    [(ngModel)]="tagSearchInput"
+                    (input)="filterTags(tagSearchInput)"
+                    (keydown.escape)="closeTagDropdown()"
+                    autofocus>
+                </div>
+
+                <!-- Selected Items Section (shown first) -->
+                @if (selectedTags.length > 0) {
+                  <div class="multiselect-section">
+                    <div class="multiselect-items">
+                      @for (tag of getSelectedFilteredTags(); track tag) {
+                        <label class="multiselect-item selected">
+                          <input
+                            type="checkbox"
+                            [checked]="true"
+                            (change)="toggleTag(tag)">
+                          <span>{{ getMessageTagLabel(tag) }}</span>
+                          <i class="fas fa-check"></i>
+                        </label>
+                      }
+                    </div>
+                  </div>
+                }
+
+                <!-- Available Items Section -->
+                <div class="multiselect-section">
+                  <div class="multiselect-items">
+                    @if (getAvailableFilteredTags().length === 0) {
+                      <div class="no-items">No tags found</div>
+                    } @else {
+                      @for (tagItem of getAvailableFilteredTags(); track tagItem.tag) {
+                        <label class="multiselect-item">
+                          <input
+                            type="checkbox"
+                            [checked]="false"
+                            (change)="toggleTag(tagItem.tag)">
+                          <span>{{ tagItem.label }}</span>
+                        </label>
+                      }
+                    }
+                  </div>
+                </div>
+              </div>
+            }
+          </div>
+        </div>
+      }
+
+      <!-- Speaker Selection - Multiselect (shown for Speaker search) -->
+      @if (searchTarget === SearchTarget.Speaker) {
+        @if (speakersLoading) {
+          <div class="speaker-loading">
+            <div class="spinner-border spinner-border-sm" role="status">
+              <span class="visually-hidden">Loading speakers...</span>
+            </div>
+            <span>Loading speakers...</span>
+          </div>
+        } @else if (speakersLoadError) {
+          <div class="speaker-error">
+            <i class="fas fa-exclamation-circle"></i>
+            <span>Failed to load speakers</span>
+          </div>
+        } @else {
+          <div class="speaker-multiselect-wrapper" #speakerMultiselectWrapper>
+            <!-- Multiselect Dropdown -->
+            <div class="multiselect-container" [class.open]="showSpeakerDropdown">
+              <div class="multiselect-input" (click)="toggleSpeakerDropdown()">
+                <div class="multiselect-content">
+                  @if (!selectedSpeaker) {
+                    <span class="tags-placeholder">Select a speaker...</span>
+                  } @else {
+                    <span class="tag-chip">
+                      {{ selectedSpeaker }}
+                      <button
+                        type="button"
+                        class="tag-remove"
+                        (click)="clearSpeaker(); $event.stopPropagation()">
+                        ×
+                      </button>
+                    </span>
+                  }
+                </div>
+                <div class="multiselect-arrow">
+                  <i class="fas" [class.fa-chevron-up]="showSpeakerDropdown" [class.fa-chevron-down]="!showSpeakerDropdown"></i>
+                </div>
+              </div>
+
+              <!-- Dropdown Menu with Search -->
+              @if (showSpeakerDropdown) {
+                <div class="multiselect-menu">
+                  <div class="multiselect-search">
+                    <i class="fas fa-search"></i>
+                    <input
+                      type="text"
+                      placeholder="Search speakers..."
+                      [(ngModel)]="speakerSearchInput"
+                      (input)="filterSpeakers(speakerSearchInput)"
+                      (keydown.escape)="closeSpeakerDropdown()"
+                      autofocus>
+                  </div>
+
+                  <!-- Available Speakers Section -->
+                  <div class="multiselect-section">
+                    <div class="multiselect-items">
+                      @if (filteredSpeakers.length === 0) {
+                        <div class="no-items">No speakers found</div>
+                      } @else {
+                        @for (speaker of filteredSpeakers; track speaker) {
+                          <label class="multiselect-item" [class.selected]="selectedSpeaker === speaker">
+                            <input
+                              type="radio"
+                              [checked]="selectedSpeaker === speaker"
+                              (change)="selectSpeaker(speaker)">
+                            <span>{{ speaker }}</span>
+                            @if (selectedSpeaker === speaker) {
+                              <i class="fas fa-check"></i>
+                            }
+                          </label>
+                        }
+                      }
+                    </div>
+                  </div>
+                </div>
+              }
+            </div>
+          </div>
+        }
+      }
+
+      <!-- Search Actions -->
+      <div class="toolbar-actions">
+        <button
+          type="button"
+          class="toolbar-btn search-btn"
+          (click)="performSearch()"
+          [disabled]="isLoading || (searchTarget === SearchTarget.Speaker ? !selectedSpeaker : selectedTags.length === 0)"
+          title="Search">
+          <i class="fas fa-search"></i>
+        </button>
+        @if (selectedTags.length > 0 || selectedSpeaker || hasSearched) {
+          <button
+            type="button"
+            class="toolbar-btn clear-btn"
+            (click)="clearSearch()"
+            title="Clear filters">
+            <i class="fas fa-times"></i>
+          </button>
+        }
+      </div>
+    </main>
+  </div>
+
+  <!-- Results Section -->
+  @if (hasSearched) {
+    <div class="results-section">
+      <!-- Loading State -->
+      @if (isLoading) {
+        <div class="card-group">
+          @if (searchTarget === SearchTarget.Series) {
+            @for (item of [].constructor(getSkeletonCount()); track item) {
+              <app-search-series-card-skeleton></app-search-series-card-skeleton>
+            }
+          } @else if (searchTarget === SearchTarget.Messages || searchTarget === SearchTarget.Speaker) {
+            @for (item of [].constructor(getSkeletonCount()); track item) {
+              <app-search-message-card-skeleton></app-search-message-card-skeleton>
+            }
+          }
+        </div>
+      }
+
+      <!-- Results Display -->
+      @if (!isLoading && searchResults) {
+        @if (noResults) {
+          <div class="no-results">
+            <p>No results found matching your search criteria.</p>
+          </div>
+        } @else {
+          <div class="results-header">
+            <h3>Results ({{ getResultCount() }})</h3>
+          </div>
+          <div class="card-group">
+            @if (searchTarget === SearchTarget.Series) {
+              @for (series of getSeriesResults(); track series.Id) {
+                <app-search-series-card [series]="series"></app-search-series-card>
+              }
+            } @else if (searchTarget === SearchTarget.Messages || searchTarget === SearchTarget.Speaker) {
+              @for (message of getMessageResults(); track message.MessageId) {
+                <app-search-message-card [message]="message"></app-search-message-card>
+              }
+            }
+          </div>
+        }
+      }
+    </div>
+  }
+</div>
+

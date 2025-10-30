@@ -14,6 +14,8 @@ import { AddMessagesToSeriesRequest } from '../DTO/AddMessagesToSeriesRequest';
 import { SermonStatsResponse } from '../DTO/SermonStatsResponse';
 import { UpdateMessagesInSermonSeriesRequest } from '../DTO/UpdateMessagesInSermonSeriesRequest';
 import { SermonMessage } from '../DTO/SermonMessage';
+import { SearchRequest } from '../DTO/SearchRequest';
+import { SearchResponse } from '../DTO/SearchResponse';
 
 @Injectable()
 export class ApiService {
@@ -117,6 +119,45 @@ export class ApiService {
     return this.http.post<string>(
       this.apiUrl.concat("/api/sermons/audio/upload"),
       formData,
+      {
+        observe: 'response'
+      }
+    )
+  }
+
+  search(request: SearchRequest): Observable<HttpResponse<SearchResponse>> {
+    return this.http.post<SearchResponse>(
+      this.apiUrl.concat("/api/sermons/search"),
+      request,
+      {
+        observe: 'response'
+      }
+    )
+  }
+
+  getSpeakers(): Observable<HttpResponse<string[]>> {
+    return this.http.get<string[]>(
+      this.apiUrl.concat("/api/sermons/speakers"),
+      {
+        observe: 'response'
+      }
+    )
+  }
+
+  exportSermonData(): Observable<HttpResponse<any>> {
+    return this.http.post<any>(
+      this.apiUrl.concat("/api/sermons/export"),
+      {},
+      {
+        observe: 'response'
+      }
+    )
+  }
+
+  importSermonData(data: any): Observable<HttpResponse<any>> {
+    return this.http.post<any>(
+      this.apiUrl.concat("/api/sermons/import"),
+      data,
       {
         observe: 'response'
       }

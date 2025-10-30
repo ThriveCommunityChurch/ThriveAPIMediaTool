@@ -57,29 +57,46 @@ export class AuthInterceptor implements HttpInterceptor {
       '/api/sermons/series/',
       '/api/sermons/live',
       '/api/sermons/stats',
-      '/api/config',
+      '/api/sermons/search',
       '/api/passages'
     ];
 
     // Check if this is a GET request to a public endpoint
     if (request.method === 'GET') {
-      return !publicEndpoints.some(endpoint => 
-        request.url.includes(endpoint) && 
-        (endpoint === '/api/sermons' || 
-         endpoint === '/api/sermons/paged' || 
-         endpoint === '/api/sermons/live' || 
-         endpoint === '/api/sermons/stats' || 
-         endpoint === '/api/config' || 
+      // Special handling for /api/config endpoints
+      // Only /api/config?setting= and /api/config/list are public
+      // /api/config/all requires authentication
+      if (request.url.includes('/api/config')) {
+        return !this.isPublicConfigEndpoint(request.url);
+      }
+
+      return !publicEndpoints.some(endpoint =>
+        request.url.includes(endpoint) &&
+        (endpoint === '/api/sermons' ||
+         endpoint === '/api/sermons/paged' ||
+         endpoint === '/api/sermons/live' ||
+         endpoint === '/api/sermons/stats' ||
          endpoint === '/api/passages' ||
          (endpoint === '/api/sermons/series/' && this.isGetSeriesRequest(request.url)))
       );
     }
 
-    // For non-GET requests, add auth header unless it's a login/refresh request
-    return !publicEndpoints.some(endpoint => 
-      request.url.includes(endpoint) && 
-      (endpoint === '/api/authentication/login' || endpoint === '/api/authentication/refresh')
+    // For non-GET requests, add auth header unless it's a login/refresh/search request
+    return !publicEndpoints.some(endpoint =>
+      request.url.includes(endpoint) &&
+      (endpoint === '/api/authentication/login' ||
+       endpoint === '/api/authentication/refresh' ||
+       endpoint === '/api/sermons/search')
     );
+  }
+
+  private isPublicConfigEndpoint(url: string): boolean {
+    // Only these config endpoints are public for GET requests:
+    // - /api/config?setting={key} - Get single config
+    // - /api/config/list?Keys={keys} - Get multiple configs
+    // All others (like /api/config/all) require authentication
+    return url.match(/\/api\/config\?setting=/) !== null ||
+           url.includes('/api/config/list');
   }
 
   private isGetSeriesRequest(url: string): boolean {

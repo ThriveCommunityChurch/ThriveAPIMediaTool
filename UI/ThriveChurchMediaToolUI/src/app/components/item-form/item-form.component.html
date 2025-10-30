@@ -129,6 +129,28 @@
                 </div>
               </div>
 
+              <!-- Waveform Data Field -->
+              <div class="row g-2">
+                <div class="col-12">
+                  <div class="form-floating mb-3">
+                    <textarea class="form-control"
+                      name="itemWaveformData"
+                      [(ngModel)]="itemWaveformData"
+                      id="itemWaveformDataInput"
+                      placeholder="Paste waveform array here"
+                      [class.is-invalid]="waveformValidationMessage"
+                      style="height: 150px; font-family: monospace; font-size: 0.9rem;"></textarea>
+                    <label for="itemWaveformDataInput">Waveform Data (Optional)</label>
+                  </div>
+                  <small class="form-text text-muted">Paste a JSON array of numbers between 0 and 1, e.g., [0.391, 0.563, 0.493, ...]</small>
+                  @if (waveformValidationMessage) {
+                    <div class="alert alert-danger mt-2" role="alert">
+                      <i class="fas fa-exclamation-triangle"></i> {{ waveformValidationMessage }}
+                    </div>
+                  }
+                </div>
+              </div>
+
               <input type="file"
                 class="form-control mt-3"
                 id="audioFile"
