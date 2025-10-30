@@ -118,4 +118,15 @@
 			}
 		}
 	}
+
+	.waveform-container {
+		margin-top: 8px;
+		margin: 10px 0 0 0;
+		overflow: hidden;
+
+		.waveform {
+			width: 100%;
+			height: 50px;
+		}
+	}
 }

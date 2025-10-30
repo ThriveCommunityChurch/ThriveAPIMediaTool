@@ -79,6 +79,14 @@ textarea.form-control {
 	}
 }
 
+.form-floating:has(#itemWaveformDataInput) {
+	margin-bottom: 0 !important;
+}
+
+#itemWaveformDataInput {
+	margin-top: 1rem;
+}
+
 // Selected tags container styling
 .selected-tags-container {
 	display: flex;

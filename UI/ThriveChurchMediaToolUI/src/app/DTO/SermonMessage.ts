@@ -13,4 +13,5 @@ export interface SermonMessage {
 	MessageId: string;
 	PlayCount: number;
 	Tags: string[];  // API returns enum string names, not numeric values
+	WaveformData: number[] | null;
 }
