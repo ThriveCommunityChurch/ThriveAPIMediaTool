@@ -3,25 +3,125 @@
  </p>
 
 # Thrive API Media Tool
-A CLI tool used to upload new media items to the Thrive Church Official API.
+A web-based UI tool used to upload and manage media items for the Thrive Church Official API.
 
 ## Purpose
 The idea behind this tool is to make it easier for the tech team to be able to upload new media items / series' to the [Thrive Church Official API](https://github.com/ThriveCommunityChurch/ThriveChurchOfficialAPI/). For the context of this application, that API is a "[black box](https://en.wikipedia.org/wiki/Black_box)". So we'll need to interface with that API but we don't need to be able to do anything other than call those routes with the correct information.
 
-### Usage
-In order to use this tool you will need to install Angular on your system. This is the framework we've chosen to buld the UI. Whether you wish to run this on your own servers or deploy this via the cloud provider of your choice, Angluar will allow you to package your UI into something easy to use. Take a look at their latest documentation on their website. We also use Bootstrap as the design library to make building the application much easier.
+## Stack
+- Angular 20
+- Node.js 20+
+- Bootstrap 5.3.2
+- TypeScript 5.8.3
+- Docker (for production deployment)
+- nginx (for serving production builds)
 
-## UI Requirements
-  This tool requires that you have node and the angluar CLI installed so that you can build and deploy this tool where you wish. However there is another required configuration file that you will need before you can use this app in a production deployment.
-  
-  You must create the following file located at this location `ThriveChurchMediaToolUI\src\environments\environment.prod.ts`.
-  
-  ```
+## Development Setup
+
+### Prerequisites
+- Node.js 20 or higher
+- Angular CLI (`npm install -g @angular/cli`)
+- Docker Desktop (for production deployment)
+
+### Quick Start - Development
+
+1. **Navigate to the UI directory:**
+   ```bash
+   cd UI/ThriveChurchMediaToolUI
+   ```
+
+2. **Install dependencies:**
+   ```bash
+   npm install
+   ```
+
+3. **Start the development server:**
+   ```bash
+   ng serve
+   ```
+
+4. **Open your browser:**
+   - Navigate to `http://localhost:4200`
+   - The app will automatically reload when you make changes
+
+### Environment Configuration
+
+The application uses different environment files for different deployment scenarios:
+
+#### Development (`environment.ts`)
+Used when running `ng serve` locally:
+```typescript
 export const environment = {
-    production: true,
-    apiURL: "http://hostname:port"
+  production: false,
+  apiURL: "http://localhost:8080"
 };
-  ```
+```
+
+#### Docker Deployment (`environment.docker.ts`)
+Used for local "production" deployment via Docker:
+```typescript
+export const environment = {
+  production: true,
+  apiURL: "http://your-production-api-url:port"
+};
+```
+
+#### Alternate Production (`environment.prod.ts`)
+Used for cloud deployments:
+```typescript
+export const environment = {
+  production: true,
+  apiURL: "http://your-production-api-url:port"
+};
+```
+
+## Docker Production Deployment
+
+The UI can be deployed as a Docker container for production use, replacing the previous IIS deployment.
+
+### Building the Docker Image
+
+```bash
+# From the repository root
+cd UI/ThriveChurchMediaToolUI
+
+# Build the Docker image
+docker build -t thrive-ui:local .
+```
+
+### Running the Container
+
+```bash
+# Run on port 8081 (or any available port)
+docker run -d -p 8081:80 --name thrive-ui thrive-ui:local
+
+# Access the UI at http://localhost:8081
+```
+
+### Docker Configuration
+
+- **Dockerfile:** `UI/ThriveChurchMediaToolUI/Dockerfile`
+- **nginx config:** `UI/ThriveChurchMediaToolUI/nginx.conf`
+- **Build configuration:** Uses `environment.docker.ts` for API URL
+- **Port mapping:** Host port (8081) → Container port (80)
+
+### Useful Docker Commands
+
+```bash
+# View logs
+docker logs thrive-ui
+
+# Stop the container
+docker stop thrive-ui
+
+# Start the container
+docker start thrive-ui
+
+# Rebuild after changes
+docker stop thrive-ui && docker rm thrive-ui && \
+docker build -t thrive-ui:local . && \
+docker run -d -p 8081:80 --name thrive-ui thrive-ui:local
+```
   
 ## Screenshots
 <img src="https://github.com/ThriveCommunityChurch/ThriveAPIMediaTool/assets/22202975/c8d24d38-528a-4d4e-a914-c38f90f18d10" width="100%">
