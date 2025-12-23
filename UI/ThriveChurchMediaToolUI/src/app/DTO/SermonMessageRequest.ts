@@ -10,5 +10,7 @@ export interface SermonMessageRequest {
     Date: string;
     Tags: string[];  // API expects enum string names, not numeric values
     WaveformData: number[] | null;
+    PodcastImageUrl: string | null;
+    PodcastTitle: string | null;
     LastInSeries?: boolean;
 }

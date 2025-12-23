@@ -39,6 +39,8 @@ export class ItemFormComponent implements OnInit {
   itemTitle: string;
   itemDate: string;
   itemVideoURL: string | null = null;
+  itemPodcastImageUrl: string | null = null;
+  itemPodcastTitle: string | null = null;
   itemSummary: string | null = null;
   itemTags: MessageTag[] = [];
   itemWaveformData: string = '';  // Store as string for textarea input
@@ -73,6 +75,8 @@ export class ItemFormComponent implements OnInit {
     this.itemAudioDuration = this.existingMessage.AudioDuration;
     this.itemAudioMB = this.existingMessage.AudioFileSize;
     this.itemVideoURL = this.existingMessage.VideoUrl;
+    this.itemPodcastImageUrl = this.existingMessage.PodcastImageUrl;
+    this.itemPodcastTitle = this.existingMessage.PodcastTitle;
     this.itemPassageRef = this.existingMessage.PassageRef;
     this.itemSummary = this.existingMessage.Summary;
     // Convert tag string names from API to enum values for ng-select
@@ -108,6 +112,8 @@ export class ItemFormComponent implements OnInit {
       AudioFileSize: this.itemAudioMB,
       Date: this.itemDate,
       VideoUrl: this.itemVideoURL,
+      PodcastImageUrl: this.itemPodcastImageUrl,
+      PodcastTitle: this.itemPodcastTitle,
       Tags: this.itemTags.map(tag => getMessageTagName(tag)),
       WaveformData: parsedWaveformData,
       LastInSeries: this._checked
@@ -131,6 +137,8 @@ export class ItemFormComponent implements OnInit {
     this.itemTitle = "";
     this.itemDate = "";
     this.itemVideoURL = null;
+    this.itemPodcastImageUrl = null;
+    this.itemPodcastTitle = null;
     this.itemSummary = null;
     this.itemTags = [];
     this.itemWaveformData = '';

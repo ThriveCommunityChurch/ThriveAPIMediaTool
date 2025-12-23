@@ -1,0 +1,323 @@
+<div class="rss-container">
+  <!-- Header -->
+  <div class="rss-header">
+    <div class="header-content">
+      <div class="header-icon">
+        <i class="fas fa-rss"></i>
+      </div>
+      <div class="header-text">
+        <h1>Podcast RSS Feed</h1>
+        <p>Manage and view the podcast RSS feed</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Feed URL Section -->
+  <div class="feed-section">
+    <div class="section-header">
+      <h2><i class="fas fa-link me-2"></i>Feed URL</h2>
+    </div>
+    <div class="feed-url-container">
+      <div class="feed-url-display">
+        <code>{{ rssFeedUrl }}</code>
+      </div>
+      <div class="feed-url-actions">
+        <button
+          type="button"
+          class="btn-action btn-copy"
+          (click)="copyFeedUrl()"
+          title="Copy URL">
+          <i class="fas fa-copy"></i>
+          Copy
+        </button>
+        <button
+          type="button"
+          class="btn-action btn-view"
+          (click)="viewFeed()"
+          title="View Feed in New Tab">
+          <i class="fas fa-external-link-alt"></i>
+          Open
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Rebuild Section -->
+  <div class="feed-section">
+    <div class="section-header">
+      <h2><i class="fas fa-sync-alt me-2"></i>Rebuild Feed</h2>
+    </div>
+    <div class="rebuild-container">
+      <div class="rebuild-info">
+        <p>
+          <strong>Use this to regenerate the entire podcast RSS feed.</strong>
+        </p>
+        <p class="text-muted">
+          This will clear the cache and trigger a full rebuild of the RSS feed from the database.
+          The rebuild process runs asynchronously and may take a few moments to complete.
+        </p>
+        <ul class="rebuild-notes">
+          <li>All cached sermon data will be cleared</li>
+          <li>The RSS XML will be regenerated from the PodcastMessages collection</li>
+          <li>Podcast directories will pick up changes on their next sync</li>
+        </ul>
+      </div>
+      <div class="rebuild-action">
+        <button
+          type="button"
+          class="btn-rebuild"
+          (click)="rebuildFeed()"
+          [disabled]="isRebuilding">
+          <span *ngIf="!isRebuilding">
+            <i class="fas fa-sync-alt"></i>
+            Rebuild RSS Feed
+          </span>
+          <span *ngIf="isRebuilding">
+            <span class="spinner-border spinner-border-sm"></span>
+            Rebuilding...
+          </span>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Podcast Messages Section -->
+  <div class="feed-section messages-section">
+    <div class="section-header">
+      <h2><i class="fas fa-list-alt me-2"></i>Podcast Episodes</h2>
+      <button
+        type="button"
+        class="btn-action btn-refresh-messages"
+        (click)="loadPodcastMessages()"
+        [disabled]="isLoadingMessages"
+        title="Refresh Messages">
+        <i class="fas fa-sync-alt" [ngClass]="{'fa-spin': isLoadingMessages}"></i>
+      </button>
+    </div>
+
+    <!-- Search Box -->
+    <div class="search-container" *ngIf="!isLoadingMessages && podcastMessages.length > 0">
+      <div class="search-input-wrapper">
+        <i class="fas fa-search search-icon"></i>
+        <input
+          type="text"
+          class="search-input"
+          placeholder="Search by title..."
+          [(ngModel)]="searchTerm"
+          (ngModelChange)="onSearchChange()">
+        <button
+          *ngIf="searchTerm"
+          type="button"
+          class="btn-clear-search"
+          (click)="clearSearch()"
+          title="Clear search">
+          <i class="fas fa-times"></i>
+        </button>
+      </div>
+      <div class="search-results-count" *ngIf="searchTerm">
+        {{ filteredMessages.length }} result{{ filteredMessages.length !== 1 ? 's' : '' }} found
+      </div>
+    </div>
+
+    <!-- Loading Skeleton -->
+    <div *ngIf="isLoadingMessages" class="messages-loading">
+      <div class="message-skeleton" *ngFor="let i of [1,2,3,4,5]">
+        <div class="skeleton-title"></div>
+        <div class="skeleton-meta"></div>
+      </div>
+    </div>
+
+    <!-- Messages List -->
+    <div *ngIf="!isLoadingMessages" class="messages-list">
+      <div
+        *ngFor="let message of paginatedMessages"
+        class="message-item"
+        (click)="editMessage(message)">
+        <div class="message-info">
+          <h3 class="message-title">{{ message.podcastTitle || message.title }}</h3>
+          <div class="message-meta">
+            <span class="meta-item">
+              <i class="fas fa-user"></i>
+              {{ message.speaker }}
+            </span>
+            <span class="meta-item">
+              <i class="fas fa-calendar"></i>
+              {{ formatDate(message.pubDate) }}
+            </span>
+            <span class="meta-item">
+              <i class="fas fa-clock"></i>
+              {{ formatDuration(message.audioDuration) }}
+            </span>
+            <span class="meta-item">
+              <i class="fas fa-file-audio"></i>
+              {{ formatFileSize(message.audioFileSize) }}
+            </span>
+          </div>
+        </div>
+        <div class="message-actions">
+          <i class="fas fa-chevron-right"></i>
+        </div>
+      </div>
+
+      <div *ngIf="podcastMessages.length === 0" class="no-messages">
+        <i class="fas fa-inbox"></i>
+        <p>No podcast messages found.</p>
+      </div>
+    </div>
+
+    <!-- Pagination Controls -->
+    <div *ngIf="!isLoadingMessages && filteredMessages.length > 0" class="pagination-controls">
+      <div class="pagination-info">
+        Showing {{ (currentPage - 1) * pageSize + 1 }} - {{ currentPage * pageSize > filteredMessages.length ? filteredMessages.length : currentPage * pageSize }} of {{ filteredMessages.length }} episodes
+      </div>
+      <div class="pagination-buttons">
+        <button
+          type="button"
+          class="btn-page"
+          (click)="previousPage()"
+          [disabled]="currentPage === 1"
+          title="Previous Page">
+          <i class="fas fa-chevron-left"></i>
+        </button>
+        <span class="page-indicator">Page {{ currentPage }} of {{ totalPages }}</span>
+        <button
+          type="button"
+          class="btn-page"
+          (click)="nextPage()"
+          [disabled]="currentPage === totalPages"
+          title="Next Page">
+          <i class="fas fa-chevron-right"></i>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Podcast Directories Section -->
+  <div class="feed-section directories-section">
+    <div class="section-header">
+      <h2><i class="fas fa-podcast me-2"></i>Podcast Directories</h2>
+    </div>
+    <p class="section-description">
+      Thrive Community Church podcast is available on these platforms. Click to visit each listing.
+    </p>
+    <div class="directories-grid">
+      <button
+        *ngFor="let directory of podcastDirectories"
+        type="button"
+        class="directory-item"
+        (click)="openDirectory(directory.url)"
+        [style.--directory-color]="directory.color">
+        <div class="directory-icon">
+          <i [class]="directory.iconClass"></i>
+        </div>
+        <span class="directory-name">{{ directory.name }}</span>
+        <i class="fas fa-external-link-alt directory-link-icon"></i>
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- Edit Modal -->
+<div class="modal-overlay" *ngIf="showEditModal" (click)="closeEditModal()">
+  <div class="edit-modal" (click)="$event.stopPropagation()">
+    <div class="modal-header">
+      <h2><i class="fas fa-edit me-2"></i>Edit Podcast Episode</h2>
+      <button type="button" class="btn-close-modal" (click)="closeEditModal()">
+        <i class="fas fa-times"></i>
+      </button>
+    </div>
+
+    <div class="modal-body" *ngIf="editingMessage">
+      <div class="form-group">
+        <label for="podcastTitle">Podcast Title</label>
+        <input
+          type="text"
+          id="podcastTitle"
+          [(ngModel)]="editingMessage.podcastTitle"
+          placeholder="Series Name – Week # | Episode Title">
+      </div>
+
+      <div class="form-group">
+        <label for="title">Episode Title</label>
+        <input
+          type="text"
+          id="title"
+          [(ngModel)]="editingMessage.title">
+      </div>
+
+      <div class="form-group">
+        <label for="speaker">Speaker</label>
+        <input
+          type="text"
+          id="speaker"
+          [(ngModel)]="editingMessage.speaker">
+      </div>
+
+      <div class="form-row">
+        <div class="form-group">
+          <label for="pubDate">Publish Date</label>
+          <input
+            type="date"
+            id="pubDate"
+            [ngModel]="editingMessage.pubDate | date:'yyyy-MM-dd'"
+            (ngModelChange)="editingMessage.pubDate = $event">
+        </div>
+        <div class="form-group">
+          <label for="audioDuration">Duration (seconds)</label>
+          <input
+            type="number"
+            id="audioDuration"
+            [(ngModel)]="editingMessage.audioDuration"
+            step="0.01">
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="audioUrl">Audio URL</label>
+        <input
+          type="url"
+          id="audioUrl"
+          [(ngModel)]="editingMessage.audioUrl"
+          readonly>
+      </div>
+
+      <div class="form-group">
+        <label for="artworkUrl">Artwork URL</label>
+        <input
+          type="url"
+          id="artworkUrl"
+          [(ngModel)]="editingMessage.artworkUrl"
+          placeholder="https://...">
+      </div>
+
+      <div class="form-group">
+        <label for="description">Description</label>
+        <textarea
+          id="description"
+          [(ngModel)]="editingMessage.description"
+          rows="5"></textarea>
+      </div>
+    </div>
+
+    <div class="modal-footer">
+      <button type="button" class="btn-cancel" (click)="closeEditModal()">
+        Cancel
+      </button>
+      <button
+        type="button"
+        class="btn-save"
+        (click)="saveMessage()"
+        [disabled]="isSavingMessage">
+        <span *ngIf="!isSavingMessage">
+          <i class="fas fa-save"></i>
+          Save Changes
+        </span>
+        <span *ngIf="isSavingMessage">
+          <span class="spinner-border spinner-border-sm"></span>
+          Saving...
+        </span>
+      </button>
+    </div>
+  </div>
+</div>
+

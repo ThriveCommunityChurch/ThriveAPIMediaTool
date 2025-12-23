@@ -76,6 +76,38 @@
                 </div>
               </div>
 
+              <!-- Podcast Image URL Field -->
+              <div class="row g-2">
+                <div class="col-12">
+                  <div class="form-floating mb-3">
+                    <input type="text"
+                      class="form-control"
+                      name="itemPodcastImageUrl"
+                      [(ngModel)]="itemPodcastImageUrl"
+                      id="itemPodcastImageUrlInput"
+                      placeholder="https://example.com/podcast-image.jpg">
+                      <label for="itemPodcastImageUrlInput">Podcast Image URL (Optional)</label>
+                    </div>
+                    <small class="form-text text-muted">Square image (1400x1400 to 3000x3000 pixels) for podcast directories</small>
+                  </div>
+                </div>
+
+              <!-- Podcast Title Field -->
+              <div class="row g-2">
+                <div class="col-12">
+                  <div class="form-floating mb-3">
+                    <input type="text"
+                      class="form-control"
+                      name="itemPodcastTitle"
+                      [(ngModel)]="itemPodcastTitle"
+                      id="itemPodcastTitleInput"
+                      placeholder="Series Name – Week # | Episode Title">
+                      <label for="itemPodcastTitleInput">Podcast Title (Optional)</label>
+                    </div>
+                    <small class="form-text text-muted">Format: "Series Name – Week # | Episode Title" (e.g., "Embodied – Week 4 | Fully Embodied Gospel")</small>
+                  </div>
+                </div>
+
               <!-- Summary Field -->
               <div class="row g-2">
                 <div class="col-12">
