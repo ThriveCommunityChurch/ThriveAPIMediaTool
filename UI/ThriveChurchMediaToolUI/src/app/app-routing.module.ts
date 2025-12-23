@@ -12,6 +12,7 @@ import { LoginComponent } from './components/login/login.component';
 import { SearchComponent } from './components/search/search.component';
 import { AdminBackupComponent } from './components/admin-backup/admin-backup.component';
 import { AdminConfigComponent } from './components/admin-config/admin-config.component';
+import { AdminRssFeedComponent } from './components/admin-rss-feed/admin-rss-feed.component';
 import { AuthGuard } from './guards/auth.guard';
 
 const routes: Routes = [
@@ -19,6 +20,7 @@ const routes: Routes = [
   { path: 'create', component: CreateSeriesComponent, canActivate: [AuthGuard] },
   { path: 'admin/backup', component: AdminBackupComponent, canActivate: [AuthGuard] },
   { path: 'admin/config', component: AdminConfigComponent, canActivate: [AuthGuard] },
+  { path: 'admin/rss-feed', component: AdminRssFeedComponent, canActivate: [AuthGuard] },
   { path: 'stats', component: StatsComponent }, // Stats remain public
   { path: 'search', component: SearchComponent }, // Search remains public
   { path: 'add/:id', component: AddMessageComponent, canActivate: [AuthGuard] },

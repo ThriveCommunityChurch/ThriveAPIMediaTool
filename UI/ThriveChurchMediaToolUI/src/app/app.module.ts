@@ -41,6 +41,7 @@ import { SearchSeriesCardSkeletonComponent } from './components/search-series-ca
 import { SearchMessageCardSkeletonComponent } from './components/search-message-card-skeleton/search-message-card-skeleton.component';
 import { AdminBackupComponent } from './components/admin-backup/admin-backup.component';
 import { AdminConfigComponent } from './components/admin-config/admin-config.component';
+import { AdminRssFeedComponent } from './components/admin-rss-feed/admin-rss-feed.component';
 import { ConfigService } from './services/config.service';
 
 
@@ -71,7 +72,8 @@ import { ConfigService } from './services/config.service';
         SearchSeriesCardSkeletonComponent,
         SearchMessageCardSkeletonComponent,
         AdminBackupComponent,
-        AdminConfigComponent
+        AdminConfigComponent,
+        AdminRssFeedComponent
     ],
     bootstrap: [
         AppComponent

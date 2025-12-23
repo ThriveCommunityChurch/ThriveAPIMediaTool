@@ -16,6 +16,8 @@ import { UpdateMessagesInSermonSeriesRequest } from '../DTO/UpdateMessagesInSerm
 import { SermonMessage } from '../DTO/SermonMessage';
 import { SearchRequest } from '../DTO/SearchRequest';
 import { SearchResponse } from '../DTO/SearchResponse';
+import { PodcastMessage } from '../DTO/PodcastMessage';
+import { PodcastMessageRequest } from '../DTO/PodcastMessageRequest';
 
 @Injectable()
 export class ApiService {
@@ -158,6 +160,39 @@ export class ApiService {
     return this.http.post<any>(
       this.apiUrl.concat("/api/sermons/import"),
       data,
+      {
+        observe: 'response'
+      }
+    )
+  }
+
+  rebuildRssFeed(): Observable<HttpResponse<string>> {
+    return this.http.post<string>(
+      this.apiUrl.concat("/api/sermons/feed/rebuild"),
+      {},
+      {
+        observe: 'response'
+      }
+    )
+  }
+
+  getRssFeedUrl(): string {
+    return environment.rssFeedURL;
+  }
+
+  getPodcastMessages(): Observable<HttpResponse<PodcastMessage[]>> {
+    return this.http.get<PodcastMessage[]>(
+      this.apiUrl.concat("/api/sermons/feed/messages"),
+      {
+        observe: 'response'
+      }
+    )
+  }
+
+  updatePodcastMessage(messageId: string, request: PodcastMessageRequest): Observable<HttpResponse<PodcastMessage>> {
+    return this.http.post<PodcastMessage>(
+      this.apiUrl.concat(`/api/sermons/feed/message/${messageId}`),
+      request,
       {
         observe: 'response'
       }

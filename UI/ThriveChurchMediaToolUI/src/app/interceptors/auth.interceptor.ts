@@ -52,7 +52,6 @@ export class AuthInterceptor implements HttpInterceptor {
     const publicEndpoints = [
       '/api/authentication/login',
       '/api/authentication/refresh',
-      '/api/sermons',
       '/api/sermons/paged',
       '/api/sermons/series/',
       '/api/sermons/live',
@@ -70,10 +69,19 @@ export class AuthInterceptor implements HttpInterceptor {
         return !this.isPublicConfigEndpoint(request.url);
       }
 
+      // Feed endpoints require authentication
+      if (request.url.includes('/api/sermons/feed/')) {
+        return true;
+      }
+
+      // Check exact match for /api/sermons (the summary endpoint)
+      if (this.isExactSermonsEndpoint(request.url)) {
+        return false; // Public endpoint, no auth needed
+      }
+
       return !publicEndpoints.some(endpoint =>
         request.url.includes(endpoint) &&
-        (endpoint === '/api/sermons' ||
-         endpoint === '/api/sermons/paged' ||
+        (endpoint === '/api/sermons/paged' ||
          endpoint === '/api/sermons/live' ||
          endpoint === '/api/sermons/stats' ||
          endpoint === '/api/passages' ||
@@ -88,6 +96,12 @@ export class AuthInterceptor implements HttpInterceptor {
        endpoint === '/api/authentication/refresh' ||
        endpoint === '/api/sermons/search')
     );
+  }
+
+  private isExactSermonsEndpoint(url: string): boolean {
+    // Match /api/sermons or /api/sermons?... but NOT /api/sermons/feed/...
+    const sermonsPattern = /\/api\/sermons(\?|$)/;
+    return sermonsPattern.test(url);
   }
 
   private isPublicConfigEndpoint(url: string): boolean {
