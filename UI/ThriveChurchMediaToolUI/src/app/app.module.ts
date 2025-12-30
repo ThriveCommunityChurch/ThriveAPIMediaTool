@@ -43,6 +43,8 @@ import { AdminBackupComponent } from './components/admin-backup/admin-backup.com
 import { AdminConfigComponent } from './components/admin-config/admin-config.component';
 import { AdminRssFeedComponent } from './components/admin-rss-feed/admin-rss-feed.component';
 import { ConfigService } from './services/config.service';
+import { EventsListComponent } from './components/events-list/events-list.component';
+import { EventFormComponent } from './components/event-form/event-form.component';
 
 
 @NgModule({ declarations: [
@@ -73,7 +75,9 @@ import { ConfigService } from './services/config.service';
         SearchMessageCardSkeletonComponent,
         AdminBackupComponent,
         AdminConfigComponent,
-        AdminRssFeedComponent
+        AdminRssFeedComponent,
+        EventsListComponent,
+        EventFormComponent
     ],
     bootstrap: [
         AppComponent

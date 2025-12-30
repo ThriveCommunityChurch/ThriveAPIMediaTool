@@ -14,6 +14,8 @@ import { AdminBackupComponent } from './components/admin-backup/admin-backup.com
 import { AdminConfigComponent } from './components/admin-config/admin-config.component';
 import { AdminRssFeedComponent } from './components/admin-rss-feed/admin-rss-feed.component';
 import { AuthGuard } from './guards/auth.guard';
+import { EventsListComponent } from './components/events-list/events-list.component';
+import { EventFormComponent } from './components/event-form/event-form.component';
 
 const routes: Routes = [
   { path: 'login', component: LoginComponent },
@@ -21,6 +23,10 @@ const routes: Routes = [
   { path: 'admin/backup', component: AdminBackupComponent, canActivate: [AuthGuard] },
   { path: 'admin/config', component: AdminConfigComponent, canActivate: [AuthGuard] },
   { path: 'admin/rss-feed', component: AdminRssFeedComponent, canActivate: [AuthGuard] },
+  // Events routes
+  { path: 'events', component: EventsListComponent, canActivate: [AuthGuard] },
+  { path: 'events/new', component: EventFormComponent, canActivate: [AuthGuard] },
+  { path: 'events/:id/edit', component: EventFormComponent, canActivate: [AuthGuard] },
   { path: 'stats', component: StatsComponent }, // Stats remain public
   { path: 'search', component: SearchComponent }, // Search remains public
   { path: 'add/:id', component: AddMessageComponent, canActivate: [AuthGuard] },

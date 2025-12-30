@@ -1,0 +1,301 @@
+<div class="event-form-container">
+  <!-- Header -->
+  <div class="form-header">
+    <div class="header-content">
+      <div class="header-icon">
+        <i class="fas" [class.fa-plus-circle]="!isEditMode" [class.fa-edit]="isEditMode"></i>
+      </div>
+      <div class="header-text">
+        <h1>{{ isEditMode ? 'Edit Event' : 'Create New Event' }}</h1>
+        <p>{{ isEditMode ? 'Update the event details below' : 'Fill in the details to create a new event' }}</p>
+      </div>
+    </div>
+  </div>
+
+  @if (loading) {
+    <div class="form-card">
+      <ngx-skeleton-loader
+        count="8"
+        [theme]="{
+          'height': '50px',
+          'margin-bottom': '15px',
+          'border-radius': '8px'
+        }">
+      </ngx-skeleton-loader>
+    </div>
+  } @else {
+    <form (ngSubmit)="submitForm()">
+      <!-- Basic Info Section -->
+      <div class="form-card">
+        <div class="card-title">
+          <i class="fas fa-info-circle"></i>
+          <h2>Basic Information</h2>
+        </div>
+        <div class="card-content">
+          <div class="form-floating mb-3">
+            <input type="text" class="form-control" id="title" [(ngModel)]="title" name="title" required placeholder="Event Title">
+            <label for="title">Title *</label>
+          </div>
+
+          <div class="form-floating mb-3">
+            <input type="text" class="form-control" id="summary" [(ngModel)]="summary" name="summary" required placeholder="Brief summary">
+            <label for="summary">Summary *</label>
+          </div>
+
+          <div class="form-floating mb-3">
+            <textarea class="form-control" id="description" [(ngModel)]="description" name="description" placeholder="Full description" style="height: 120px"></textarea>
+            <label for="description">Description</label>
+          </div>
+
+          <div class="row">
+            <div class="col-md-6">
+              <div class="form-floating mb-3">
+                <input type="text" class="form-control" id="imageUrl" [(ngModel)]="imageUrl" name="imageUrl" placeholder="Image URL">
+                <label for="imageUrl">Image URL</label>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="form-floating mb-3">
+                <input type="text" class="form-control" id="thumbnailUrl" [(ngModel)]="thumbnailUrl" name="thumbnailUrl" placeholder="Thumbnail URL">
+                <label for="thumbnailUrl">Thumbnail URL</label>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Date/Time Section -->
+      <div class="form-card">
+        <div class="card-title">
+          <i class="fas fa-calendar"></i>
+          <h2>Date & Time</h2>
+        </div>
+        <div class="card-content">
+          <div class="row">
+            <div class="col-md-6">
+              <div class="form-floating mb-3">
+                <input type="datetime-local" class="form-control" id="startTime" [(ngModel)]="startTime" name="startTime" required>
+                <label for="startTime">Start Time *</label>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="form-floating mb-3">
+                <input type="datetime-local" class="form-control" id="endTime" [(ngModel)]="endTime" name="endTime">
+                <label for="endTime">End Time</label>
+              </div>
+            </div>
+          </div>
+
+          <div class="form-check mb-3">
+            <input class="form-check-input" type="checkbox" id="isAllDay" [(ngModel)]="isAllDay" name="isAllDay">
+            <label class="form-check-label" for="isAllDay">All Day Event</label>
+          </div>
+
+          <div class="form-check mb-3">
+            <input class="form-check-input" type="checkbox" id="isRecurring" [(ngModel)]="isRecurring" name="isRecurring">
+            <label class="form-check-label" for="isRecurring">Recurring Event</label>
+          </div>
+
+          @if (isRecurring) {
+            <div class="border rounded p-3 mt-3">
+              <h6>Recurrence Settings</h6>
+              <div class="row">
+                <div class="col-md-4">
+                  <div class="form-floating mb-3">
+                    <select class="form-select" id="recurrencePattern" [(ngModel)]="recurrencePattern" name="recurrencePattern">
+                      @for (pattern of recurrencePatterns; track pattern.value) {
+                        <option [value]="pattern.value">{{ pattern.label }}</option>
+                      }
+                    </select>
+                    <label for="recurrencePattern">Pattern</label>
+                  </div>
+                </div>
+                <div class="col-md-4">
+                  <div class="form-floating mb-3">
+                    <input type="number" class="form-control" id="recurrenceInterval" [(ngModel)]="recurrenceInterval" name="recurrenceInterval" min="1">
+                    <label for="recurrenceInterval">Interval</label>
+                  </div>
+                </div>
+                <div class="col-md-4">
+                  <div class="form-floating mb-3">
+                    <input type="datetime-local" class="form-control" id="recurrenceEndDate" [(ngModel)]="recurrenceEndDate" name="recurrenceEndDate">
+                    <label for="recurrenceEndDate">End Date</label>
+                  </div>
+                </div>
+              </div>
+
+              @if (recurrencePattern == 2 || recurrencePattern == 3) {
+                <div class="form-floating mb-3">
+                  <select class="form-select" id="recurrenceDayOfWeek" [(ngModel)]="recurrenceDayOfWeek" name="recurrenceDayOfWeek">
+                    <option [ngValue]="null">Use event start day</option>
+                    @for (day of daysOfWeek; track day.value) {
+                      <option [value]="day.value">{{ day.label }}</option>
+                    }
+                  </select>
+                  <label for="recurrenceDayOfWeek">Day of Week</label>
+                </div>
+              }
+
+              @if (recurrencePattern == 4) {
+                <div class="form-floating mb-3">
+                  <input type="number" class="form-control" id="recurrenceDayOfMonth" [(ngModel)]="recurrenceDayOfMonth" name="recurrenceDayOfMonth" min="1" max="31">
+                  <label for="recurrenceDayOfMonth">Day of Month (1-31)</label>
+                </div>
+              }
+            </div>
+          }
+        </div>
+      </div>
+
+      <!-- Location Section -->
+      <div class="form-card">
+        <div class="card-title">
+          <i class="fas fa-map-marker-alt"></i>
+          <h2>Location</h2>
+        </div>
+        <div class="card-content">
+          <div class="form-check mb-3">
+            <input class="form-check-input" type="checkbox" id="isOnline" [(ngModel)]="isOnline" name="isOnline">
+            <label class="form-check-label" for="isOnline">Online Event</label>
+          </div>
+
+          @if (isOnline) {
+            <div class="row">
+              <div class="col-md-6">
+                <div class="form-floating mb-3">
+                  <input type="url" class="form-control" id="onlineLink" [(ngModel)]="onlineLink" name="onlineLink" placeholder="Meeting link">
+                  <label for="onlineLink">Online Link</label>
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="form-floating mb-3">
+                  <input type="text" class="form-control" id="onlinePlatform" [(ngModel)]="onlinePlatform" name="onlinePlatform" placeholder="e.g., Zoom, Teams">
+                  <label for="onlinePlatform">Platform</label>
+                </div>
+              </div>
+            </div>
+          } @else {
+            <div class="form-floating mb-3">
+              <input type="text" class="form-control" id="locationName" [(ngModel)]="locationName" name="locationName" placeholder="Venue name">
+              <label for="locationName">Venue Name</label>
+            </div>
+            <div class="form-floating mb-3">
+              <input type="text" class="form-control" id="locationAddress" [(ngModel)]="locationAddress" name="locationAddress" placeholder="Street address">
+              <label for="locationAddress">Address</label>
+            </div>
+            <div class="row">
+              <div class="col-md-6">
+                <div class="form-floating mb-3">
+                  <input type="text" class="form-control" id="locationCity" [(ngModel)]="locationCity" name="locationCity" placeholder="City">
+                  <label for="locationCity">City</label>
+                </div>
+              </div>
+              <div class="col-md-3">
+                <div class="form-floating mb-3">
+                  <input type="text" class="form-control" id="locationState" [(ngModel)]="locationState" name="locationState" placeholder="State">
+                  <label for="locationState">State</label>
+                </div>
+              </div>
+              <div class="col-md-3">
+                <div class="form-floating mb-3">
+                  <input type="text" class="form-control" id="locationZipCode" [(ngModel)]="locationZipCode" name="locationZipCode" placeholder="ZIP">
+                  <label for="locationZipCode">ZIP Code</label>
+                </div>
+              </div>
+            </div>
+          }
+        </div>
+      </div>
+
+      <!-- Contact & Registration Section -->
+      <div class="form-card">
+        <div class="card-title">
+          <i class="fas fa-address-card"></i>
+          <h2>Contact & Registration</h2>
+        </div>
+        <div class="card-content">
+          <div class="row">
+            <div class="col-md-6">
+              <div class="form-floating mb-3">
+                <input type="email" class="form-control" id="contactEmail" [(ngModel)]="contactEmail" name="contactEmail" placeholder="Email">
+                <label for="contactEmail">Contact Email</label>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="form-floating mb-3">
+                <input type="tel" class="form-control" id="contactPhone" [(ngModel)]="contactPhone" name="contactPhone" placeholder="Phone">
+                <label for="contactPhone">Contact Phone</label>
+              </div>
+            </div>
+          </div>
+          <div class="form-floating mb-3">
+            <input type="url" class="form-control" id="registrationUrl" [(ngModel)]="registrationUrl" name="registrationUrl" placeholder="Registration URL">
+            <label for="registrationUrl">Registration URL</label>
+          </div>
+        </div>
+      </div>
+
+      <!-- Tags & Options Section -->
+      <div class="form-card">
+        <div class="card-title">
+          <i class="fas fa-tags"></i>
+          <h2>Tags & Options</h2>
+        </div>
+        <div class="card-content">
+          <div class="mb-3">
+            <label class="form-label">Tags</label>
+            <div class="input-group mb-2">
+              <input type="text" class="form-control" [(ngModel)]="tagInput" name="tagInput" placeholder="Add a tag" (keydown)="onTagKeydown($event)">
+              <button type="button" class="btn btn-outline-secondary" (click)="addTag()">Add</button>
+            </div>
+            <div class="tags-container">
+              @for (tag of tags; track tag; let i = $index) {
+                <span class="tag-badge">
+                  {{ tag }}
+                  <button type="button" class="tag-remove" (click)="removeTag(i)">
+                    <i class="fas fa-times"></i>
+                  </button>
+                </span>
+              }
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col-md-6">
+              <div class="form-check mb-3">
+                <input class="form-check-input" type="checkbox" id="isFeatured" [(ngModel)]="isFeatured" name="isFeatured">
+                <label class="form-check-label" for="isFeatured">
+                  <i class="fas fa-star text-warning me-1"></i> Featured Event
+                </label>
+              </div>
+            </div>
+            @if (isEditMode) {
+              <div class="col-md-6">
+                <div class="form-check mb-3">
+                  <input class="form-check-input" type="checkbox" id="isActive" [(ngModel)]="isActive" name="isActive">
+                  <label class="form-check-label" for="isActive">Active</label>
+                </div>
+              </div>
+            }
+          </div>
+        </div>
+      </div>
+
+      <!-- Form Actions -->
+      <div class="form-actions">
+        <button type="button" class="btn btn-secondary" (click)="cancel()">
+          <i class="fas fa-times me-2"></i>Cancel
+        </button>
+        <button type="submit" class="btn btn-primary" [disabled]="saving">
+          @if (saving) {
+            <span class="spinner-border spinner-border-sm me-2" role="status"></span>
+            Saving...
+          } @else {
+            <i class="fas fa-save me-2"></i>{{ isEditMode ? 'Update Event' : 'Create Event' }}
+          }
+        </button>
+      </div>
+    </form>
+  }
+</div>
+
