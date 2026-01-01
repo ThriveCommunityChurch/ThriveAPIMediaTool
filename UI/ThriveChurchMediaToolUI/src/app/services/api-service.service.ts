@@ -19,6 +19,7 @@ import { SearchResponse } from '../DTO/SearchResponse';
 import { PodcastMessage } from '../DTO/PodcastMessage';
 import { PodcastMessageRequest } from '../DTO/PodcastMessageRequest';
 import { AllEventsResponse, CreateEventRequest, EventResponse, SystemResponse, UpdateEventRequest } from '../DTO/events';
+import { TranscriptResponse, SermonNotesResponse, StudyGuideResponse } from '../DTO/TranscriptResponse';
 
 @Injectable()
 export class ApiService {
@@ -194,6 +195,48 @@ export class ApiService {
     return this.http.post<PodcastMessage>(
       this.apiUrl.concat(`/api/sermons/feed/message/${messageId}`),
       request,
+      {
+        observe: 'response'
+      }
+    )
+  }
+
+  /**
+   * Get the full transcript for a sermon message
+   * @param messageId The unique identifier of the message
+   * @returns TranscriptResponse containing full text and metadata
+   */
+  getMessageTranscript(messageId: string): Observable<HttpResponse<TranscriptResponse>> {
+    return this.http.get<TranscriptResponse>(
+      this.apiUrl.concat(`/api/sermons/series/message/${messageId}/transcript`),
+      {
+        observe: 'response'
+      }
+    )
+  }
+
+  /**
+   * Get sermon notes for a message
+   * @param messageId The unique identifier of the message
+   * @returns SermonNotesResponse containing key points, quotes, and application points
+   */
+  getSermonNotes(messageId: string): Observable<HttpResponse<SermonNotesResponse>> {
+    return this.http.get<SermonNotesResponse>(
+      this.apiUrl.concat(`/api/sermons/series/message/${messageId}/notes`),
+      {
+        observe: 'response'
+      }
+    )
+  }
+
+  /**
+   * Get study guide for a message
+   * @param messageId The unique identifier of the message
+   * @returns StudyGuideResponse containing discussion questions, scriptures, and more
+   */
+  getStudyGuide(messageId: string): Observable<HttpResponse<StudyGuideResponse>> {
+    return this.http.get<StudyGuideResponse>(
+      this.apiUrl.concat(`/api/sermons/series/message/${messageId}/study-guide`),
       {
         observe: 'response'
       }
