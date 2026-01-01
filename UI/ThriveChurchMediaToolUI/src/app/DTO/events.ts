@@ -25,6 +25,7 @@ export interface EventLocation {
 
 /**
  * Event recurrence configuration
+ * Note: Uses camelCase for request DTOs, API returns PascalCase
  */
 export interface EventRecurrence {
   pattern: RecurrencePattern;
@@ -33,56 +34,64 @@ export interface EventRecurrence {
   monthOfYear?: number;
   interval: number;
   endDate?: string;
+  // PascalCase variants for API response parsing
+  Pattern?: RecurrencePattern;
+  DayOfWeek?: number;
+  DayOfMonth?: number;
+  MonthOfYear?: number;
+  Interval?: number;
+  EndDate?: string;
 }
 
 /**
- * Full Event model
+ * Full Event model (PascalCase to match API response)
  */
 export interface Event {
-  id: string;
-  title: string;
-  summary: string;
-  description?: string;
-  imageUrl?: string;
-  thumbnailUrl?: string;
-  iconName?: string;
-  startTime: string;
-  endTime?: string;
-  isAllDay: boolean;
-  isRecurring: boolean;
-  recurrence?: EventRecurrence;
-  isOnline: boolean;
-  onlineLink?: string;
-  onlinePlatform?: string;
-  location?: EventLocation;
-  contactEmail?: string;
-  contactPhone?: string;
-  registrationUrl?: string;
-  tags: string[];
-  isActive: boolean;
-  isFeatured: boolean;
-  createDate: string;
-  lastUpdated: string;
+  Id: string;
+  Title: string;
+  Summary: string;
+  Description?: string;
+  ImageUrl?: string;
+  ThumbnailUrl?: string;
+  IconName?: string;
+  StartTime: string;
+  EndTime?: string;
+  IsAllDay: boolean;
+  IsRecurring: boolean;
+  Recurrence?: EventRecurrence;
+  IsOnline: boolean;
+  OnlineLink?: string;
+  OnlinePlatform?: string;
+  Location?: EventLocation;
+  ContactEmail?: string;
+  ContactPhone?: string;
+  RegistrationUrl?: string;
+  Tags: string[];
+  IsActive: boolean;
+  IsFeatured: boolean;
+  CreateDate: string;
+  LastUpdated: string;
 }
 
 /**
- * Event summary for list views
+ * Event summary for list views (PascalCase to match API response)
  */
 export interface EventSummary {
-  id: string;
-  title: string;
-  summary: string;
-  thumbnailUrl?: string;
-  iconName?: string;
-  startTime: string;
-  endTime?: string;
-  isRecurring: boolean;
-  recurrencePattern?: RecurrencePattern;
-  isOnline: boolean;
-  locationName?: string;
-  isFeatured: boolean;
-  isActive: boolean;
-  tags: string[];
+  Id: string;
+  Title: string;
+  Summary: string;
+  ThumbnailUrl?: string;
+  IconName?: string;
+  StartTime: string;
+  EndTime?: string;
+  IsRecurring: boolean;
+  RecurrencePattern?: string;
+  RecurrenceDayOfWeek?: number;  // 0=Sunday, 6=Saturday
+  IsOnline: boolean;
+  LocationName?: string;
+  IsFeatured: boolean;
+  IsActive: boolean;
+  Tags: string[];
 }
 
 /**
@@ -119,18 +128,18 @@ export interface UpdateEventRequest extends Partial<CreateEventRequest> {
 }
 
 /**
- * Response containing a list of events
+ * Response containing a list of events (PascalCase to match API response)
  */
 export interface AllEventsResponse {
-  events: EventSummary[];
-  totalCount: number;
+  Events: EventSummary[];
+  TotalCount: number;
 }
 
 /**
- * Response containing a single event
+ * Response containing a single event (PascalCase to match API response)
  */
 export interface EventResponse {
-  event: Event;
+  Event: Event;
 }
 
 /**

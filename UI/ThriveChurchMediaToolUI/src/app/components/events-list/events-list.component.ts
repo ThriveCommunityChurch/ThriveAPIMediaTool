@@ -36,15 +36,8 @@ export class EventsListComponent implements OnInit {
           return;
         }
 
-        if (!response.body.hasErrors) {
-          this.events = response.body.result?.events || [];
-        } else {
-          this.toastService.showStandardToast(
-            response.body?.errorMessage || 'Failed to load events',
-            400
-          );
-          this.events = [];
-        }
+        // API returns AllEventsResponse directly with PascalCase properties
+        this.events = response.body.Events || [];
         this.loading = false;
       },
       error: (err) => {
@@ -68,8 +61,8 @@ export class EventsListComponent implements OnInit {
   }
 
   deleteEvent(event: EventSummary): void {
-    if (confirm(`Are you sure you want to delete "${event.title}"?`)) {
-      this.apiService.deleteEvent(event.id, false).subscribe({
+    if (confirm(`Are you sure you want to delete "${event.Title}"?`)) {
+      this.apiService.deleteEvent(event.Id, false).subscribe({
         next: (response) => {
           if (response.body && !response.body.hasErrors) {
             this.toastService.showStandardToast('Event deleted successfully', 200);
@@ -89,9 +82,9 @@ export class EventsListComponent implements OnInit {
   }
 
   toggleEventStatus(event: EventSummary): void {
-    if (event.isActive) {
+    if (event.IsActive) {
       // Deactivate
-      this.apiService.deactivateEvent(event.id).subscribe({
+      this.apiService.deactivateEvent(event.Id).subscribe({
         next: (response) => {
           if (response.body && !response.body.hasErrors) {
             this.toastService.showStandardToast('Event deactivated', 200);
@@ -106,7 +99,7 @@ export class EventsListComponent implements OnInit {
       });
     } else {
       // Reactivate
-      this.apiService.updateEvent(event.id, { isActive: true }).subscribe({
+      this.apiService.updateEvent(event.Id, { isActive: true }).subscribe({
         next: (response) => {
           if (response.body && !response.body.hasErrors) {
             this.toastService.showStandardToast('Event activated', 200);
@@ -134,16 +127,40 @@ export class EventsListComponent implements OnInit {
     });
   }
 
-  getRecurrenceLabel(pattern?: RecurrencePattern): string {
-    if (pattern === undefined || pattern === null) return '';
-    const labels: { [key: number]: string } = {
-      [RecurrencePattern.Daily]: 'Daily',
-      [RecurrencePattern.Weekly]: 'Weekly',
-      [RecurrencePattern.BiWeekly]: 'Bi-weekly',
-      [RecurrencePattern.Monthly]: 'Monthly',
-      [RecurrencePattern.Yearly]: 'Yearly'
-    };
-    return labels[pattern] || '';
+  formatTime(dateString: string): string {
+    const date = new Date(dateString);
+    return date.toLocaleTimeString('en-US', {
+      hour: 'numeric',
+      minute: '2-digit'
+    });
+  }
+
+  getDayName(dayOfWeek?: number): string {
+    if (dayOfWeek === undefined || dayOfWeek === null) return '';
+    const days = ['Sundays', 'Mondays', 'Tuesdays', 'Wednesdays', 'Thursdays', 'Fridays', 'Saturdays'];
+    return days[dayOfWeek] || '';
+  }
+
+  getRecurrenceDescription(event: EventSummary): string {
+    if (!event.IsRecurring || !event.RecurrencePattern) return '';
+
+    const dayName = this.getDayName(event.RecurrenceDayOfWeek);
+    const time = this.formatTime(event.StartTime);
+
+    switch (event.RecurrencePattern) {
+      case 'Daily':
+        return `Daily at ${time}`;
+      case 'Weekly':
+        return dayName ? `${dayName} at ${time}` : `Weekly at ${time}`;
+      case 'BiWeekly':
+        return dayName ? `Every other ${dayName.slice(0, -1)} at ${time}` : `Bi-weekly at ${time}`;
+      case 'Monthly':
+        return `Monthly at ${time}`;
+      case 'Yearly':
+        return `Yearly at ${time}`;
+      default:
+        return event.RecurrencePattern;
+    }
   }
 }
 

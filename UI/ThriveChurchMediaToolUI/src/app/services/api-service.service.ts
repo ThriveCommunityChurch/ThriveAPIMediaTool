@@ -206,9 +206,10 @@ export class ApiService {
 
   /**
    * Get all events with optional inactive filter
+   * Note: API returns AllEventsResponse directly (not wrapped in SystemResponse)
    */
-  getAllEvents(includeInactive: boolean = false): Observable<HttpResponse<SystemResponse<AllEventsResponse>>> {
-    return this.http.get<SystemResponse<AllEventsResponse>>(
+  getAllEvents(includeInactive: boolean = false): Observable<HttpResponse<AllEventsResponse>> {
+    return this.http.get<AllEventsResponse>(
       this.apiUrl.concat(`/api/events?includeInactive=${includeInactive}`),
       {
         observe: 'response'
@@ -218,9 +219,10 @@ export class ApiService {
 
   /**
    * Get a single event by ID
+   * Note: API returns EventResponse directly (not wrapped in SystemResponse)
    */
-  getEventById(id: string): Observable<HttpResponse<SystemResponse<EventResponse>>> {
-    return this.http.get<SystemResponse<EventResponse>>(
+  getEventById(id: string): Observable<HttpResponse<EventResponse>> {
+    return this.http.get<EventResponse>(
       this.apiUrl.concat(`/api/events/${id}`),
       {
         observe: 'response'
