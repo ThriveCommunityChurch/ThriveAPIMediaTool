@@ -18,6 +18,7 @@ import { SearchRequest } from '../DTO/SearchRequest';
 import { SearchResponse } from '../DTO/SearchResponse';
 import { PodcastMessage } from '../DTO/PodcastMessage';
 import { PodcastMessageRequest } from '../DTO/PodcastMessageRequest';
+import { AllEventsResponse, CreateEventRequest, EventResponse, SystemResponse, UpdateEventRequest } from '../DTO/events';
 
 @Injectable()
 export class ApiService {
@@ -193,6 +194,85 @@ export class ApiService {
     return this.http.post<PodcastMessage>(
       this.apiUrl.concat(`/api/sermons/feed/message/${messageId}`),
       request,
+      {
+        observe: 'response'
+      }
+    )
+  }
+
+  // ============================================
+  // Events API Methods
+  // ============================================
+
+  /**
+   * Get all events with optional inactive filter
+   */
+  getAllEvents(includeInactive: boolean = false): Observable<HttpResponse<SystemResponse<AllEventsResponse>>> {
+    return this.http.get<SystemResponse<AllEventsResponse>>(
+      this.apiUrl.concat(`/api/events?includeInactive=${includeInactive}`),
+      {
+        observe: 'response'
+      }
+    )
+  }
+
+  /**
+   * Get a single event by ID
+   */
+  getEventById(id: string): Observable<HttpResponse<SystemResponse<EventResponse>>> {
+    return this.http.get<SystemResponse<EventResponse>>(
+      this.apiUrl.concat(`/api/events/${id}`),
+      {
+        observe: 'response'
+      }
+    )
+  }
+
+  /**
+   * Create a new event
+   */
+  createEvent(request: CreateEventRequest): Observable<HttpResponse<SystemResponse<EventResponse>>> {
+    return this.http.post<SystemResponse<EventResponse>>(
+      this.apiUrl.concat("/api/events"),
+      request,
+      {
+        observe: 'response'
+      }
+    )
+  }
+
+  /**
+   * Update an existing event
+   */
+  updateEvent(id: string, request: UpdateEventRequest): Observable<HttpResponse<SystemResponse<EventResponse>>> {
+    return this.http.put<SystemResponse<EventResponse>>(
+      this.apiUrl.concat(`/api/events/${id}`),
+      request,
+      {
+        observe: 'response'
+      }
+    )
+  }
+
+  /**
+   * Delete an event (soft delete by default, hard delete if specified)
+   */
+  deleteEvent(id: string, hardDelete: boolean = false): Observable<HttpResponse<SystemResponse<string>>> {
+    return this.http.delete<SystemResponse<string>>(
+      this.apiUrl.concat(`/api/events/${id}?hardDelete=${hardDelete}`),
+      {
+        observe: 'response'
+      }
+    )
+  }
+
+  /**
+   * Deactivate (cancel) an event (soft delete)
+   */
+  deactivateEvent(id: string): Observable<HttpResponse<SystemResponse<EventResponse>>> {
+    return this.http.put<SystemResponse<EventResponse>>(
+      this.apiUrl.concat(`/api/events/${id}/deactivate`),
+      {},
       {
         observe: 'response'
       }
