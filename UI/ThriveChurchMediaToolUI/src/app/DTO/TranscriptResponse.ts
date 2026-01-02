@@ -89,6 +89,7 @@ export interface StudyGuideResponse {
   Illustrations: IllustrationResponse[];
   PrayerPrompts: string[];
   TakeHomeChallenges: string[];
+  Devotional?: string;
   AdditionalStudy: AdditionalStudyResponse[];
   EstimatedStudyTime: string;
   GeneratedAt: string;

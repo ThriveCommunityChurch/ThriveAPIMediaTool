@@ -401,6 +401,14 @@
                   </div>
                 }
 
+                <!-- Devotional -->
+                @if (studyGuide.Devotional) {
+                  <div class="guide-section">
+                    <h4 class="section-title"><i class="fas fa-heart"></i> Devotional</h4>
+                    <p class="devotional-text">{{ studyGuide.Devotional }}</p>
+                  </div>
+                }
+
                 <!-- Additional Study -->
                 @if (studyGuide.AdditionalStudy && studyGuide.AdditionalStudy.length > 0) {
                   <div class="guide-section">
