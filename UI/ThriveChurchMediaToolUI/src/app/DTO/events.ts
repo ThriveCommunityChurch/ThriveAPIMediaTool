@@ -55,7 +55,9 @@ export interface Event {
   ThumbnailUrl?: string;
   IconName?: string;
   StartTime: string;
+  StartTimeLocal?: string;
   EndTime?: string;
+  EndTimeLocal?: string;
   IsAllDay: boolean;
   IsRecurring: boolean;
   Recurrence?: EventRecurrence;
@@ -83,7 +85,9 @@ export interface EventSummary {
   ThumbnailUrl?: string;
   IconName?: string;
   StartTime: string;
+  StartTimeLocal?: string;
   EndTime?: string;
+  EndTimeLocal?: string;
   IsRecurring: boolean;
   RecurrencePattern?: string;
   RecurrenceDayOfWeek?: number;  // 0=Sunday, 6=Saturday
