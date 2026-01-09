@@ -19,6 +19,7 @@ import { SearchResponse } from '../DTO/SearchResponse';
 import { PodcastMessage } from '../DTO/PodcastMessage';
 import { PodcastMessageRequest } from '../DTO/PodcastMessageRequest';
 import { AllEventsResponse, CreateEventRequest, EventResponse, SystemResponse, UpdateEventRequest } from '../DTO/events';
+import { TranscriptResponse, SermonNotesResponse, StudyGuideResponse } from '../DTO/TranscriptResponse';
 
 @Injectable()
 export class ApiService {
@@ -200,15 +201,58 @@ export class ApiService {
     )
   }
 
+  /**
+   * Get the full transcript for a sermon message
+   * @param messageId The unique identifier of the message
+   * @returns TranscriptResponse containing full text and metadata
+   */
+  getMessageTranscript(messageId: string): Observable<HttpResponse<TranscriptResponse>> {
+    return this.http.get<TranscriptResponse>(
+      this.apiUrl.concat(`/api/sermons/series/message/${messageId}/transcript`),
+      {
+        observe: 'response'
+      }
+    )
+  }
+
+  /**
+   * Get sermon notes for a message
+   * @param messageId The unique identifier of the message
+   * @returns SermonNotesResponse containing key points, quotes, and application points
+   */
+  getSermonNotes(messageId: string): Observable<HttpResponse<SermonNotesResponse>> {
+    return this.http.get<SermonNotesResponse>(
+      this.apiUrl.concat(`/api/sermons/series/message/${messageId}/notes`),
+      {
+        observe: 'response'
+      }
+    )
+  }
+
+  /**
+   * Get study guide for a message
+   * @param messageId The unique identifier of the message
+   * @returns StudyGuideResponse containing discussion questions, scriptures, and more
+   */
+  getStudyGuide(messageId: string): Observable<HttpResponse<StudyGuideResponse>> {
+    return this.http.get<StudyGuideResponse>(
+      this.apiUrl.concat(`/api/sermons/series/message/${messageId}/study-guide`),
+      {
+        observe: 'response'
+      }
+    )
+  }
+
   // ============================================
   // Events API Methods
   // ============================================
 
   /**
    * Get all events with optional inactive filter
+   * Note: API returns AllEventsResponse directly (not wrapped in SystemResponse)
    */
-  getAllEvents(includeInactive: boolean = false): Observable<HttpResponse<SystemResponse<AllEventsResponse>>> {
-    return this.http.get<SystemResponse<AllEventsResponse>>(
+  getAllEvents(includeInactive: boolean = false): Observable<HttpResponse<AllEventsResponse>> {
+    return this.http.get<AllEventsResponse>(
       this.apiUrl.concat(`/api/events?includeInactive=${includeInactive}`),
       {
         observe: 'response'
@@ -218,9 +262,10 @@ export class ApiService {
 
   /**
    * Get a single event by ID
+   * Note: API returns EventResponse directly (not wrapped in SystemResponse)
    */
-  getEventById(id: string): Observable<HttpResponse<SystemResponse<EventResponse>>> {
-    return this.http.get<SystemResponse<EventResponse>>(
+  getEventById(id: string): Observable<HttpResponse<EventResponse>> {
+    return this.http.get<EventResponse>(
       this.apiUrl.concat(`/api/events/${id}`),
       {
         observe: 'response'

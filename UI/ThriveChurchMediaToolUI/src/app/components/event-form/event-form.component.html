@@ -104,7 +104,7 @@
                   <div class="form-floating mb-3">
                     <select class="form-select" id="recurrencePattern" [(ngModel)]="recurrencePattern" name="recurrencePattern">
                       @for (pattern of recurrencePatterns; track pattern.value) {
-                        <option [value]="pattern.value">{{ pattern.label }}</option>
+                        <option [ngValue]="pattern.value">{{ pattern.label }}</option>
                       }
                     </select>
                     <label for="recurrencePattern">Pattern</label>
@@ -124,19 +124,19 @@
                 </div>
               </div>
 
-              @if (recurrencePattern == 2 || recurrencePattern == 3) {
+              @if (recurrencePattern === 2 || recurrencePattern === 3) {
                 <div class="form-floating mb-3">
                   <select class="form-select" id="recurrenceDayOfWeek" [(ngModel)]="recurrenceDayOfWeek" name="recurrenceDayOfWeek">
                     <option [ngValue]="null">Use event start day</option>
                     @for (day of daysOfWeek; track day.value) {
-                      <option [value]="day.value">{{ day.label }}</option>
+                      <option [ngValue]="day.value">{{ day.label }}</option>
                     }
                   </select>
                   <label for="recurrenceDayOfWeek">Day of Week</label>
                 </div>
               }
 
-              @if (recurrencePattern == 4) {
+              @if (recurrencePattern === 4) {
                 <div class="form-floating mb-3">
                   <input type="number" class="form-control" id="recurrenceDayOfMonth" [(ngModel)]="recurrenceDayOfMonth" name="recurrenceDayOfMonth" min="1" max="31">
                   <label for="recurrenceDayOfMonth">Day of Month (1-31)</label>

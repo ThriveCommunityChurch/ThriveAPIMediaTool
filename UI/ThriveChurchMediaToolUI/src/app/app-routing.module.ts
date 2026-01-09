@@ -26,6 +26,7 @@ const routes: Routes = [
   // Events routes
   { path: 'events', component: EventsListComponent, canActivate: [AuthGuard] },
   { path: 'events/new', component: EventFormComponent, canActivate: [AuthGuard] },
+  { path: 'events/:id', component: EventFormComponent, canActivate: [AuthGuard] },
   { path: 'events/:id/edit', component: EventFormComponent, canActivate: [AuthGuard] },
   { path: 'stats', component: StatsComponent }, // Stats remain public
   { path: 'search', component: SearchComponent }, // Search remains public

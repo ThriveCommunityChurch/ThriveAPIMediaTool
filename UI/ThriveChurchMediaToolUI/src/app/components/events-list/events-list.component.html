@@ -69,79 +69,68 @@
             </tr>
           </thead>
           <tbody>
-            @for (event of events; track event.id) {
-              <tr [class.inactive-row]="!event.isActive">
-                <td>
-                  <div class="event-title-cell">
-                    <strong>{{ event.title }}</strong>
-                    @if (event.isFeatured) {
-                      <span class="event-badge featured">
-                        <i class="fas fa-star"></i> Featured
-                      </span>
-                    }
+            @for (event of events; track event.Id) {
+              <tr [class.inactive-row]="!event.IsActive">
+                <td class="title-cell">
+                  <div class="event-info">
+                    <div class="event-title">
+                      <strong>{{ event.Title }}</strong>
+                      @if (event.IsFeatured) {
+                        <span class="event-badge featured">
+                          <i class="fas fa-star"></i>
+                        </span>
+                      }
+                    </div>
+                    <span class="event-summary">{{ event.Summary }}</span>
                   </div>
-                  <span class="event-summary">{{ event.summary }}</span>
                 </td>
-                <td>
-                  <div class="event-date">{{ formatDate(event.startTime) }}</div>
-                  @if (event.isRecurring) {
-                    <span class="event-badge recurring">
-                      <i class="fas fa-redo me-1"></i>{{ getRecurrenceLabel(event.recurrencePattern) }}
-                    </span>
+                <td class="date-cell">
+                  @if (event.IsRecurring) {
+                    <div class="event-schedule">
+                      <i class="fas fa-sync-alt text-muted me-1"></i>
+                      <span class="event-recurrence">{{ getRecurrenceDescription(event) }}</span>
+                    </div>
+                  } @else {
+                    <div class="event-date">{{ formatDate(event.StartTime) }}</div>
                   }
                 </td>
-                <td>
-                  @if (event.isOnline) {
+                <td class="type-cell">
+                  @if (event.IsOnline) {
                     <span class="event-badge online">
-                      <i class="fas fa-video me-1"></i>Online
+                      <i class="fas fa-video"></i> Online
                     </span>
-                  } @else if (event.locationName) {
+                  } @else if (event.LocationName) {
                     <span class="event-badge location">
-                      <i class="fas fa-map-marker-alt me-1"></i>{{ event.locationName }}
+                      <i class="fas fa-map-marker-alt"></i> {{ event.LocationName }}
                     </span>
                   } @else {
                     <span class="event-badge in-person">
-                      <i class="fas fa-map-marker-alt me-1"></i>In-Person
+                      <i class="fas fa-map-marker-alt"></i> In-Person
                     </span>
                   }
                 </td>
-                <td>
-                  @if (event.isActive) {
-                    <span class="event-badge active">Active</span>
+                <td class="status-cell">
+                  @if (event.IsActive) {
+                    <span class="status-badge active">Active</span>
                   } @else {
-                    <span class="event-badge inactive">Inactive</span>
+                    <span class="status-badge inactive">Cancelled</span>
                   }
                 </td>
-                <td class="text-center">
+                <td class="actions-cell">
                   <div class="action-buttons">
-                    <button
-                      type="button"
-                      class="action-btn view"
-                      (click)="viewEvent(event.id)"
-                      title="View">
-                      <i class="fas fa-eye"></i>
-                    </button>
-                    <button
-                      type="button"
-                      class="action-btn edit"
-                      (click)="editEvent(event.id)"
-                      title="Edit">
+                    <button type="button" class="action-btn edit" (click)="editEvent(event.Id)" title="Edit">
                       <i class="fas fa-edit"></i>
                     </button>
                     <button
                       type="button"
                       class="action-btn"
-                      [class.deactivate]="event.isActive"
-                      [class.activate]="!event.isActive"
+                      [class.deactivate]="event.IsActive"
+                      [class.activate]="!event.IsActive"
                       (click)="toggleEventStatus(event)"
-                      [title]="event.isActive ? 'Deactivate' : 'Activate'">
-                      <i [class.fa-eye-slash]="event.isActive" [class.fa-eye]="!event.isActive" class="fas"></i>
+                      [title]="event.IsActive ? 'Cancel event' : 'Reactivate event'">
+                      <i [class.fa-ban]="event.IsActive" [class.fa-check]="!event.IsActive" class="fas"></i>
                     </button>
-                    <button
-                      type="button"
-                      class="action-btn delete"
-                      (click)="deleteEvent(event)"
-                      title="Delete">
+                    <button type="button" class="action-btn delete" (click)="deleteEvent(event)" title="Delete">
                       <i class="fas fa-trash-alt"></i>
                     </button>
                   </div>

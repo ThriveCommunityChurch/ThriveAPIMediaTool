@@ -129,4 +129,536 @@
 			height: 50px;
 		}
 	}
+
+	// Content Section (Transcript, Notes, Study Guide)
+	.content-section {
+		margin-top: 1.25rem;
+		padding-top: 1rem;
+
+		.content-header {
+			display: flex;
+			align-items: center;
+			gap: 1rem;
+			flex-wrap: wrap;
+		}
+
+		.content-toggle-btn {
+			display: inline-flex;
+			align-items: center;
+			gap: 0.5rem;
+			background: transparent;
+			border: 1px solid var(--color-primary);
+			border-radius: 6px;
+			padding: 0.6rem 1.25rem;
+			font-size: 0.875rem;
+			font-weight: 500;
+			color: var(--color-primary);
+			cursor: pointer;
+			transition: all 0.2s ease;
+
+			i {
+				font-size: 0.9rem;
+			}
+
+			&:hover:not(:disabled) {
+				background-color: var(--color-primary);
+				color: white;
+			}
+
+			&:disabled {
+				opacity: 0.6;
+				cursor: not-allowed;
+			}
+		}
+
+		.content-meta {
+			font-size: 0.8rem;
+			color: var(--color-text-secondary);
+			display: inline-flex;
+			align-items: center;
+			gap: 0.35rem;
+
+			i {
+				font-size: 0.75rem;
+			}
+		}
+
+		// Tab Navigation
+		.content-tabs {
+			display: flex;
+			gap: 0.5rem;
+			margin-top: 1rem;
+			border-bottom: 1px solid var(--color-message-border);
+			padding-bottom: 0;
+
+			.tab-btn {
+				display: inline-flex;
+				align-items: center;
+				gap: 0.4rem;
+				background: transparent;
+				border: none;
+				border-bottom: 2px solid transparent;
+				padding: 0.75rem 1rem;
+				font-size: 0.875rem;
+				font-weight: 500;
+				color: var(--color-text-secondary);
+				cursor: pointer;
+				transition: all 0.2s ease;
+				margin-bottom: -1px;
+
+				i {
+					font-size: 0.85rem;
+				}
+
+				&:hover {
+					color: var(--color-primary);
+				}
+
+				&.active {
+					color: var(--color-primary);
+					border-bottom-color: var(--color-primary);
+				}
+			}
+		}
+
+		// Tab Content
+		.tab-content {
+			margin-top: 1rem;
+
+			.content-loading {
+				padding: 1.5rem;
+
+				.loading-skeleton {
+					height: 1rem;
+					background: linear-gradient(90deg, var(--color-bg-secondary) 25%, var(--color-message-border) 50%, var(--color-bg-secondary) 75%);
+					background-size: 200% 100%;
+					animation: shimmer 1.5s infinite;
+					border-radius: 4px;
+					margin-bottom: 0.75rem;
+
+					&.short {
+						width: 60%;
+					}
+				}
+			}
+
+			.content-error {
+				padding: 1rem;
+				color: var(--color-text-secondary);
+				font-size: 0.85rem;
+				font-style: italic;
+
+				i {
+					margin-right: 0.35rem;
+				}
+			}
+		}
+
+		// Transcript content
+		.transcript-content {
+			background-color: var(--color-card-bg, var(--color-bg-secondary));
+			border: 1px solid var(--color-message-border);
+			border-radius: 8px;
+			padding: 1.5rem;
+			max-height: 500px;
+			overflow-y: auto;
+
+			// Custom scrollbar
+			&::-webkit-scrollbar {
+				width: 8px;
+			}
+
+			&::-webkit-scrollbar-track {
+				background: transparent;
+				border-radius: 4px;
+			}
+
+			&::-webkit-scrollbar-thumb {
+				background-color: var(--color-text-secondary);
+				border-radius: 4px;
+				opacity: 0.5;
+
+				&:hover {
+					opacity: 0.8;
+				}
+			}
+
+			.transcript-text {
+				font-size: 0.95rem;
+				line-height: 1.8;
+				color: var(--color-text-primary);
+				white-space: pre-wrap;
+				word-wrap: break-word;
+				text-align: justify;
+
+				span {
+					display: contents;
+				}
+			}
+
+			.transcript-loading-more {
+				display: flex;
+				align-items: center;
+				justify-content: center;
+				gap: 0.5rem;
+				padding: 1rem 0 0.5rem;
+				color: var(--color-text-secondary);
+				font-size: 0.85rem;
+
+				.loading-indicator {
+					width: 16px;
+					height: 16px;
+					border: 2px solid var(--color-text-secondary);
+					border-top-color: transparent;
+					border-radius: 50%;
+					animation: spin 0.8s linear infinite;
+				}
+			}
+		}
+
+		// Notes content
+		.notes-content,
+		.study-guide-content {
+			background-color: var(--color-card-bg, var(--color-bg-secondary));
+			border: 1px solid var(--color-message-border);
+			border-radius: 8px;
+			padding: 1.5rem;
+			max-height: 600px;
+			overflow-y: auto;
+
+			// Custom scrollbar
+			&::-webkit-scrollbar {
+				width: 8px;
+			}
+
+			&::-webkit-scrollbar-track {
+				background: transparent;
+				border-radius: 4px;
+			}
+
+			&::-webkit-scrollbar-thumb {
+				background-color: var(--color-text-secondary);
+				border-radius: 4px;
+				opacity: 0.5;
+			}
+
+			.notes-section,
+			.guide-section {
+				margin-bottom: 1.5rem;
+				padding-bottom: 1.25rem;
+				border-bottom: 1px solid var(--color-message-border);
+
+				&:last-child {
+					margin-bottom: 0;
+					padding-bottom: 0;
+					border-bottom: none;
+				}
+			}
+
+			.section-title {
+				font-size: 1rem;
+				font-weight: 600;
+				color: var(--color-primary);
+				margin: 0 0 0.75rem 0;
+				display: flex;
+				align-items: center;
+				gap: 0.5rem;
+
+				i {
+					font-size: 0.9rem;
+				}
+			}
+
+			.summary-text {
+				font-size: 0.95rem;
+				line-height: 1.7;
+				color: var(--color-text-primary);
+				margin: 0;
+			}
+
+			.scripture-ref {
+				font-size: 0.95rem;
+				color: var(--color-text-primary);
+				font-weight: 500;
+
+				a {
+					margin-left: 0.5rem;
+					color: var(--color-action-icon);
+
+					&:hover {
+						color: var(--color-action-icon-hover);
+					}
+				}
+			}
+
+			// Key points
+			.key-points-list {
+				list-style: none;
+				padding: 0;
+				margin: 0;
+
+				.key-point {
+					margin-bottom: 1rem;
+					padding-left: 1rem;
+					border-left: 3px solid var(--color-primary);
+
+					strong {
+						display: block;
+						color: var(--color-text-primary);
+						font-size: 0.95rem;
+						margin-bottom: 0.25rem;
+					}
+
+					.point-scripture {
+						display: inline-flex;
+						align-items: center;
+						gap: 0.3rem;
+						font-size: 0.8rem;
+						color: var(--color-text-secondary);
+
+						i {
+							font-size: 0.75rem;
+						}
+					}
+
+					.point-detail {
+						font-size: 0.9rem;
+						color: var(--color-text-secondary);
+						margin: 0.5rem 0 0 0;
+						line-height: 1.5;
+					}
+
+					&:last-child {
+						margin-bottom: 0;
+					}
+				}
+			}
+
+			// Quotes
+			.quotes-list {
+				display: flex;
+				flex-direction: column;
+				gap: 1rem;
+
+				.quote-item {
+					margin: 0;
+					padding: 1rem 1.25rem;
+					background-color: var(--color-bg-secondary);
+					border-left: 4px solid var(--color-primary);
+					border-radius: 0 8px 8px 0;
+
+					p {
+						margin: 0;
+						font-size: 0.95rem;
+						font-style: italic;
+						color: var(--color-text-primary);
+						line-height: 1.6;
+					}
+
+					cite {
+						display: block;
+						margin-top: 0.5rem;
+						font-size: 0.85rem;
+						color: var(--color-text-secondary);
+						font-style: normal;
+					}
+				}
+			}
+
+			// Application list
+			.application-list,
+			.prayer-list,
+			.challenges-list {
+				list-style: none;
+				padding: 0;
+				margin: 0;
+
+				li {
+					position: relative;
+					padding-left: 1.5rem;
+					margin-bottom: 0.75rem;
+					font-size: 0.9rem;
+					color: var(--color-text-primary);
+					line-height: 1.5;
+
+					&:before {
+						content: "→";
+						position: absolute;
+						left: 0;
+						color: var(--color-primary);
+						font-weight: bold;
+					}
+
+					&:last-child {
+						margin-bottom: 0;
+					}
+				}
+			}
+
+			// Scripture list
+			.scripture-list {
+				list-style: none;
+				padding: 0;
+				margin: 0;
+
+				li {
+					margin-bottom: 1rem;
+					padding-bottom: 0.75rem;
+					border-bottom: 1px dashed var(--color-message-border);
+
+					strong {
+						color: var(--color-text-primary);
+						font-size: 0.95rem;
+					}
+
+					.directly-quoted-badge {
+						display: inline-block;
+						font-size: 0.7rem;
+						padding: 0.15rem 0.5rem;
+						background-color: var(--color-primary);
+						color: white;
+						border-radius: 10px;
+						margin-left: 0.5rem;
+						vertical-align: middle;
+					}
+
+					a {
+						margin-left: 0.5rem;
+						color: var(--color-action-icon);
+						font-size: 0.85rem;
+
+						&:hover {
+							color: var(--color-action-icon-hover);
+						}
+					}
+
+					.scripture-context {
+						margin: 0.5rem 0 0 0;
+						font-size: 0.85rem;
+						color: var(--color-text-secondary);
+						line-height: 1.5;
+					}
+
+					&:last-child {
+						margin-bottom: 0;
+						padding-bottom: 0;
+						border-bottom: none;
+					}
+				}
+			}
+
+			// Discussion questions
+			.question-category {
+				margin-bottom: 1.25rem;
+
+				h5 {
+					font-size: 0.9rem;
+					font-weight: 600;
+					color: var(--color-text-primary);
+					margin: 0 0 0.5rem 0;
+					display: flex;
+					align-items: center;
+					gap: 0.4rem;
+
+					i {
+						font-size: 0.8rem;
+						color: var(--color-primary);
+					}
+				}
+
+				ul {
+					list-style: decimal;
+					padding-left: 1.5rem;
+					margin: 0;
+
+					li {
+						margin-bottom: 0.5rem;
+						font-size: 0.9rem;
+						color: var(--color-text-primary);
+						line-height: 1.5;
+
+						&:last-child {
+							margin-bottom: 0;
+						}
+					}
+				}
+
+				&.leaders {
+					background-color: var(--color-bg-secondary);
+					padding: 1rem;
+					border-radius: 8px;
+					border: 1px dashed var(--color-message-border);
+				}
+
+				&:last-child {
+					margin-bottom: 0;
+				}
+			}
+
+			// Additional study
+			.additional-study-list {
+				display: flex;
+				flex-direction: column;
+				gap: 1rem;
+
+				.study-item {
+					padding: 0.75rem 1rem;
+					background-color: var(--color-bg-secondary);
+					border-radius: 8px;
+
+					strong {
+						display: block;
+						color: var(--color-text-primary);
+						font-size: 0.95rem;
+						margin-bottom: 0.25rem;
+					}
+
+					.study-scriptures {
+						font-size: 0.85rem;
+						color: var(--color-text-secondary);
+						margin: 0.25rem 0;
+
+						i {
+							margin-right: 0.25rem;
+						}
+					}
+
+					.study-note {
+						font-size: 0.85rem;
+						color: var(--color-text-secondary);
+						margin: 0.25rem 0 0 0;
+						font-style: italic;
+					}
+				}
+			}
+
+			// Guide meta
+			.guide-meta {
+				font-size: 0.85rem;
+				color: var(--color-text-secondary);
+				margin-top: 1rem;
+				padding-top: 1rem;
+				border-top: 1px solid var(--color-message-border);
+
+				i {
+					margin-right: 0.35rem;
+				}
+			}
+		}
+	}
+}
+
+@keyframes spin {
+	to {
+		transform: rotate(360deg);
+	}
+}
+
+@keyframes shimmer {
+	0% {
+		background-position: -200% 0;
+	}
+	100% {
+		background-position: 200% 0;
+	}
 }

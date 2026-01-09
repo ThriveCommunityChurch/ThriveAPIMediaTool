@@ -100,12 +100,350 @@
       </div>
     </div>
   }
-  <!-- Maybe we can eventually do this but not now. -->
-  <!-- <div *ngIf="message.AudioUrl" class="row">
-  <audio controls>
-    <source src="{{message.AudioUrl}}" type="audio/mp3">
-    Your browser does not support the audio element.
-  </audio>
-</div> -->
+
+  <!-- Content Section (Transcript, Notes, Study Guide) -->
+  @if (hasAnyFeatures()) {
+    <div class="content-section">
+      <div class="content-header">
+        <button
+          type="button"
+          class="content-toggle-btn"
+          (click)="toggleContent()"
+          [disabled]="isLoading()">
+          <i class="fas" [ngClass]="{'fa-book-open': !isContentExpanded, 'fa-chevron-up': isContentExpanded}"></i>
+          @if (isLoading()) {
+            <span>Loading...</span>
+          } @else if (isContentExpanded) {
+            <span>Hide Content</span>
+          } @else {
+            <span>View Content</span>
+          }
+        </button>
+        @if (transcript) {
+          <span class="content-meta">
+            <i class="fas fa-align-left"></i> {{ transcript.WordCount | number }} words
+          </span>
+        }
+      </div>
+
+      @if (isContentExpanded) {
+        <!-- Tab Navigation -->
+        <div class="content-tabs">
+          @if (hasFeature('Transcript')) {
+            <button
+              type="button"
+              class="tab-btn"
+              [class.active]="activeTab === 'transcript'"
+              (click)="selectTab('transcript')">
+              <i class="fas fa-file-alt"></i> Transcript
+            </button>
+          }
+          @if (hasFeature('Notes')) {
+            <button
+              type="button"
+              class="tab-btn"
+              [class.active]="activeTab === 'notes'"
+              (click)="selectTab('notes')">
+              <i class="fas fa-sticky-note"></i> Notes
+            </button>
+          }
+          @if (hasFeature('StudyGuide')) {
+            <button
+              type="button"
+              class="tab-btn"
+              [class.active]="activeTab === 'studyGuide'"
+              (click)="selectTab('studyGuide')">
+              <i class="fas fa-book"></i> Study Guide
+            </button>
+          }
+        </div>
+
+        <!-- Tab Content -->
+        <div class="tab-content">
+          <!-- Transcript Tab -->
+          @if (activeTab === 'transcript') {
+            @if (isTranscriptLoading) {
+              <div class="content-loading">
+                <div class="loading-skeleton"></div>
+                <div class="loading-skeleton"></div>
+                <div class="loading-skeleton short"></div>
+              </div>
+            } @else if (transcriptError) {
+              <div class="content-error">
+                <i class="fas fa-info-circle"></i> {{ transcriptError }}
+              </div>
+            } @else if (transcript) {
+              <div
+                class="transcript-content"
+                #transcriptContainer
+                (scroll)="onTranscriptScroll($event)">
+                <div class="transcript-text">
+                  @for (chunk of displayedTranscriptChunks; track $index) {
+                    <span>{{ chunk }}</span>
+                  }
+                </div>
+                @if (hasMoreChunks()) {
+                  <div class="transcript-loading-more">
+                    <div class="loading-indicator"></div>
+                    <span>Loading more...</span>
+                  </div>
+                }
+              </div>
+            }
+          }
+
+          <!-- Notes Tab -->
+          @if (activeTab === 'notes') {
+            @if (isNotesLoading) {
+              <div class="content-loading">
+                <div class="loading-skeleton"></div>
+                <div class="loading-skeleton"></div>
+                <div class="loading-skeleton short"></div>
+              </div>
+            } @else if (notesError) {
+              <div class="content-error">
+                <i class="fas fa-info-circle"></i> {{ notesError }}
+              </div>
+            } @else if (notes) {
+              <div class="notes-content">
+                <!-- Summary -->
+                @if (notes.Summary) {
+                  <div class="notes-section">
+                    <h4 class="section-title">Summary</h4>
+                    <p class="summary-text">{{ notes.Summary }}</p>
+                  </div>
+                }
+
+                <!-- Main Scripture -->
+                @if (notes.MainScripture) {
+                  <div class="notes-section">
+                    <h4 class="section-title">Main Scripture</h4>
+                    <p class="scripture-ref">
+                      {{ notes.MainScripture }}
+                      <a target="_blank" href="https://www.biblegateway.com/passage/?search={{notes.MainScripture}}&version=ESV">
+                        <i class="fas fa-external-link-alt"></i>
+                      </a>
+                    </p>
+                  </div>
+                }
+
+                <!-- Key Points -->
+                @if (notes.KeyPoints && notes.KeyPoints.length > 0) {
+                  <div class="notes-section">
+                    <h4 class="section-title">Key Points</h4>
+                    <ul class="key-points-list">
+                      @for (point of notes.KeyPoints; track $index) {
+                        <li class="key-point">
+                          <strong>{{ point.Point }}</strong>
+                          @if (point.Scripture) {
+                            <span class="point-scripture">
+                              <i class="fas fa-bible"></i> {{ point.Scripture }}
+                            </span>
+                          }
+                          @if (point.Detail) {
+                            <p class="point-detail">{{ point.Detail }}</p>
+                          }
+                        </li>
+                      }
+                    </ul>
+                  </div>
+                }
+
+                <!-- Quotes -->
+                @if (notes.Quotes && notes.Quotes.length > 0) {
+                  <div class="notes-section">
+                    <h4 class="section-title">Notable Quotes</h4>
+                    <div class="quotes-list">
+                      @for (quote of notes.Quotes; track $index) {
+                        <blockquote class="quote-item">
+                          <p>"{{ quote.Text }}"</p>
+                          @if (quote.Context) {
+                            <cite>— {{ quote.Context }}</cite>
+                          }
+                        </blockquote>
+                      }
+                    </div>
+                  </div>
+                }
+
+                <!-- Application Points -->
+                @if (notes.ApplicationPoints && notes.ApplicationPoints.length > 0) {
+                  <div class="notes-section">
+                    <h4 class="section-title">Application Points</h4>
+                    <ul class="application-list">
+                      @for (point of notes.ApplicationPoints; track $index) {
+                        <li>{{ point }}</li>
+                      }
+                    </ul>
+                  </div>
+                }
+              </div>
+            }
+          }
+
+          <!-- Study Guide Tab -->
+          @if (activeTab === 'studyGuide') {
+            @if (isStudyGuideLoading) {
+              <div class="content-loading">
+                <div class="loading-skeleton"></div>
+                <div class="loading-skeleton"></div>
+                <div class="loading-skeleton short"></div>
+              </div>
+            } @else if (studyGuideError) {
+              <div class="content-error">
+                <i class="fas fa-info-circle"></i> {{ studyGuideError }}
+              </div>
+            } @else if (studyGuide) {
+              <div class="study-guide-content">
+                <!-- Summary -->
+                @if (studyGuide.Summary) {
+                  <div class="guide-section">
+                    <h4 class="section-title">Summary</h4>
+                    <p class="summary-text">{{ studyGuide.Summary }}</p>
+                  </div>
+                }
+
+                <!-- Scripture References -->
+                @if (studyGuide.ScriptureReferences && studyGuide.ScriptureReferences.length > 0) {
+                  <div class="guide-section">
+                    <h4 class="section-title">Scripture References</h4>
+                    <ul class="scripture-list">
+                      @for (ref of studyGuide.ScriptureReferences; track $index) {
+                        <li>
+                          <strong>{{ ref.Reference }}</strong>
+                          @if (ref.DirectlyQuoted) {
+                            <span class="directly-quoted-badge">Directly Quoted</span>
+                          }
+                          <a target="_blank" href="https://www.biblegateway.com/passage/?search={{ref.Reference}}&version=ESV">
+                            <i class="fas fa-external-link-alt"></i>
+                          </a>
+                          @if (ref.Context) {
+                            <p class="scripture-context">{{ ref.Context }}</p>
+                          }
+                        </li>
+                      }
+                    </ul>
+                  </div>
+                }
+
+                <!-- Discussion Questions -->
+                @if (studyGuide.DiscussionQuestions) {
+                  <div class="guide-section">
+                    <h4 class="section-title">Discussion Questions</h4>
+
+                    @if (studyGuide.DiscussionQuestions.Icebreaker && studyGuide.DiscussionQuestions.Icebreaker.length > 0) {
+                      <div class="question-category">
+                        <h5><i class="fas fa-snowflake"></i> Icebreakers</h5>
+                        <ul>
+                          @for (q of studyGuide.DiscussionQuestions.Icebreaker; track $index) {
+                            <li>{{ q }}</li>
+                          }
+                        </ul>
+                      </div>
+                    }
+
+                    @if (studyGuide.DiscussionQuestions.Reflection && studyGuide.DiscussionQuestions.Reflection.length > 0) {
+                      <div class="question-category">
+                        <h5><i class="fas fa-brain"></i> Reflection</h5>
+                        <ul>
+                          @for (q of studyGuide.DiscussionQuestions.Reflection; track $index) {
+                            <li>{{ q }}</li>
+                          }
+                        </ul>
+                      </div>
+                    }
+
+                    @if (studyGuide.DiscussionQuestions.Application && studyGuide.DiscussionQuestions.Application.length > 0) {
+                      <div class="question-category">
+                        <h5><i class="fas fa-hands-helping"></i> Application</h5>
+                        <ul>
+                          @for (q of studyGuide.DiscussionQuestions.Application; track $index) {
+                            <li>{{ q }}</li>
+                          }
+                        </ul>
+                      </div>
+                    }
+
+                    @if (studyGuide.DiscussionQuestions.ForLeaders && studyGuide.DiscussionQuestions.ForLeaders.length > 0) {
+                      <div class="question-category leaders">
+                        <h5><i class="fas fa-user-tie"></i> For Leaders</h5>
+                        <ul>
+                          @for (q of studyGuide.DiscussionQuestions.ForLeaders; track $index) {
+                            <li>{{ q }}</li>
+                          }
+                        </ul>
+                      </div>
+                    }
+                  </div>
+                }
+
+                <!-- Prayer Prompts -->
+                @if (studyGuide.PrayerPrompts && studyGuide.PrayerPrompts.length > 0) {
+                  <div class="guide-section">
+                    <h4 class="section-title"><i class="fas fa-pray"></i> Prayer Prompts</h4>
+                    <ul class="prayer-list">
+                      @for (prompt of studyGuide.PrayerPrompts; track $index) {
+                        <li>{{ prompt }}</li>
+                      }
+                    </ul>
+                  </div>
+                }
+
+                <!-- Take Home Challenges -->
+                @if (studyGuide.TakeHomeChallenges && studyGuide.TakeHomeChallenges.length > 0) {
+                  <div class="guide-section">
+                    <h4 class="section-title"><i class="fas fa-tasks"></i> Take Home Challenges</h4>
+                    <ul class="challenges-list">
+                      @for (challenge of studyGuide.TakeHomeChallenges; track $index) {
+                        <li>{{ challenge }}</li>
+                      }
+                    </ul>
+                  </div>
+                }
+
+                <!-- Devotional -->
+                @if (studyGuide.Devotional) {
+                  <div class="guide-section">
+                    <h4 class="section-title"><i class="fas fa-heart"></i> Devotional</h4>
+                    <p class="devotional-text">{{ studyGuide.Devotional }}</p>
+                  </div>
+                }
+
+                <!-- Additional Study -->
+                @if (studyGuide.AdditionalStudy && studyGuide.AdditionalStudy.length > 0) {
+                  <div class="guide-section">
+                    <h4 class="section-title"><i class="fas fa-book-reader"></i> Additional Study</h4>
+                    <div class="additional-study-list">
+                      @for (study of studyGuide.AdditionalStudy; track $index) {
+                        <div class="study-item">
+                          <strong>{{ study.Topic }}</strong>
+                          @if (study.Scriptures && study.Scriptures.length > 0) {
+                            <p class="study-scriptures">
+                              <i class="fas fa-bible"></i>
+                              {{ study.Scriptures.join(', ') }}
+                            </p>
+                          }
+                          @if (study.Note) {
+                            <p class="study-note">{{ study.Note }}</p>
+                          }
+                        </div>
+                      }
+                    </div>
+                  </div>
+                }
+
+                <!-- Estimated Study Time -->
+                @if (studyGuide.EstimatedStudyTime) {
+                  <div class="guide-meta">
+                    <i class="fas fa-clock"></i> Estimated Study Time: {{ studyGuide.EstimatedStudyTime }}
+                  </div>
+                }
+              </div>
+            }
+          }
+        </div>
+      }
+    </div>
+  }
 </div>
 </div>

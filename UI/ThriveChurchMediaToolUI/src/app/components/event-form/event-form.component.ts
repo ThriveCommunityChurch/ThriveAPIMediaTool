@@ -100,8 +100,9 @@ export class EventFormComponent implements OnInit {
 
     this.apiService.getEventById(this.eventId).subscribe({
       next: (response) => {
-        if (response.body && !response.body.hasErrors) {
-          this.populateForm(response.body.result.event);
+        // API returns EventResponse directly (not wrapped in SystemResponse)
+        if (response.body && response.body.Event) {
+          this.populateForm(response.body.Event);
         } else {
           this.toastService.showStandardToast('Failed to load event', 400);
           this.router.navigate(['/events']);
@@ -117,42 +118,43 @@ export class EventFormComponent implements OnInit {
   }
 
   populateForm(event: Event): void {
-    this.title = event.title;
-    this.summary = event.summary;
-    this.description = event.description || '';
-    this.imageUrl = event.imageUrl || '';
-    this.thumbnailUrl = event.thumbnailUrl || '';
-    this.iconName = event.iconName || '';
-    this.startTime = this.formatDateTimeLocal(event.startTime);
-    this.endTime = event.endTime ? this.formatDateTimeLocal(event.endTime) : '';
-    this.isAllDay = event.isAllDay;
-    this.isRecurring = event.isRecurring;
-    this.isOnline = event.isOnline;
-    this.onlineLink = event.onlineLink || '';
-    this.onlinePlatform = event.onlinePlatform || '';
-    this.contactEmail = event.contactEmail || '';
-    this.contactPhone = event.contactPhone || '';
-    this.registrationUrl = event.registrationUrl || '';
-    this.tags = event.tags || [];
-    this.isFeatured = event.isFeatured;
-    this.isActive = event.isActive;
+    // API returns PascalCase properties
+    this.title = event.Title;
+    this.summary = event.Summary;
+    this.description = event.Description || '';
+    this.imageUrl = event.ImageUrl || '';
+    this.thumbnailUrl = event.ThumbnailUrl || '';
+    this.iconName = event.IconName || '';
+    this.startTime = this.formatDateTimeLocal(event.StartTime);
+    this.endTime = event.EndTime ? this.formatDateTimeLocal(event.EndTime) : '';
+    this.isAllDay = event.IsAllDay;
+    this.isRecurring = event.IsRecurring;
+    this.isOnline = event.IsOnline;
+    this.onlineLink = event.OnlineLink || '';
+    this.onlinePlatform = event.OnlinePlatform || '';
+    this.contactEmail = event.ContactEmail || '';
+    this.contactPhone = event.ContactPhone || '';
+    this.registrationUrl = event.RegistrationUrl || '';
+    this.tags = event.Tags || [];
+    this.isFeatured = event.IsFeatured;
+    this.isActive = event.IsActive;
 
-    if (event.location) {
-      this.locationName = event.location.name || '';
-      this.locationAddress = event.location.address || '';
-      this.locationCity = event.location.city || '';
-      this.locationState = event.location.state || '';
-      this.locationZipCode = event.location.zipCode || '';
+    if (event.Location) {
+      this.locationName = event.Location.name || '';
+      this.locationAddress = event.Location.address || '';
+      this.locationCity = event.Location.city || '';
+      this.locationState = event.Location.state || '';
+      this.locationZipCode = event.Location.zipCode || '';
     }
 
-    if (event.recurrence) {
-      this.recurrencePattern = event.recurrence.pattern;
-      this.recurrenceInterval = event.recurrence.interval;
-      this.recurrenceDayOfWeek = event.recurrence.dayOfWeek ?? null;
-      this.recurrenceDayOfMonth = event.recurrence.dayOfMonth ?? null;
-      this.recurrenceEndDate = event.recurrence.endDate
-        ? this.formatDateTimeLocal(event.recurrence.endDate)
-        : '';
+    if (event.Recurrence) {
+      // API returns PascalCase properties
+      this.recurrencePattern = event.Recurrence.Pattern ?? event.Recurrence.pattern;
+      this.recurrenceInterval = event.Recurrence.Interval ?? event.Recurrence.interval;
+      this.recurrenceDayOfWeek = event.Recurrence.DayOfWeek ?? event.Recurrence.dayOfWeek ?? null;
+      this.recurrenceDayOfMonth = event.Recurrence.DayOfMonth ?? event.Recurrence.dayOfMonth ?? null;
+      const endDate = event.Recurrence.EndDate ?? event.Recurrence.endDate;
+      this.recurrenceEndDate = endDate ? this.formatDateTimeLocal(endDate) : '';
     }
   }
 
@@ -215,11 +217,25 @@ export class EventFormComponent implements OnInit {
 
     // Add recurrence if recurring
     if (this.isRecurring && this.recurrencePattern !== RecurrencePattern.None) {
+      // For weekly/bi-weekly patterns, derive dayOfWeek from startTime if not explicitly set
+      let dayOfWeek = this.recurrenceDayOfWeek;
+      if ((this.recurrencePattern === RecurrencePattern.Weekly ||
+           this.recurrencePattern === RecurrencePattern.BiWeekly) &&
+          dayOfWeek === null) {
+        dayOfWeek = new Date(this.startTime).getDay();
+      }
+
+      // For monthly patterns, derive dayOfMonth from startTime if not explicitly set
+      let dayOfMonth = this.recurrenceDayOfMonth;
+      if (this.recurrencePattern === RecurrencePattern.Monthly && dayOfMonth === null) {
+        dayOfMonth = new Date(this.startTime).getDate();
+      }
+
       request.recurrence = {
         pattern: this.recurrencePattern,
         interval: this.recurrenceInterval,
-        dayOfWeek: this.recurrenceDayOfWeek ?? undefined,
-        dayOfMonth: this.recurrenceDayOfMonth ?? undefined,
+        dayOfWeek: dayOfWeek ?? undefined,
+        dayOfMonth: dayOfMonth ?? undefined,
         endDate: this.recurrenceEndDate ? new Date(this.recurrenceEndDate).toISOString() : undefined
       };
     }

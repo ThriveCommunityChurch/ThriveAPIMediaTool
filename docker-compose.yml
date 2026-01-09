@@ -1,11 +1,10 @@
-version: '3.8'
-
 services:
   # Thrive UI
-  ui:
+  thrive-ui:
     build:
       context: ./UI/ThriveChurchMediaToolUI
       dockerfile: Dockerfile
+    image: thrive-media-tool-ui:latest
     container_name: thrive-ui
     ports:
       - "8081:80"
