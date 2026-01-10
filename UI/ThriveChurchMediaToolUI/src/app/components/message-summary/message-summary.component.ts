@@ -410,6 +410,37 @@ export class MessageSummaryComponent implements OnInit, AfterViewInit, OnDestroy
   }
 
   /**
+   * Get devotional text split into paragraphs for proper rendering
+   */
+  getDevotionalParagraphs(): string[] {
+    if (!this.studyGuide?.Devotional) return [];
+    return this.splitIntoParagraphs(this.studyGuide.Devotional);
+  }
+
+  /**
+   * Get notes summary split into paragraphs for proper rendering
+   */
+  getNotesSummaryParagraphs(): string[] {
+    if (!this.notes?.Summary) return [];
+    return this.splitIntoParagraphs(this.notes.Summary);
+  }
+
+  /**
+   * Get study guide summary split into paragraphs for proper rendering
+   */
+  getStudyGuideSummaryParagraphs(): string[] {
+    if (!this.studyGuide?.Summary) return [];
+    return this.splitIntoParagraphs(this.studyGuide.Summary);
+  }
+
+  /**
+   * Split text into paragraphs by double newlines
+   */
+  private splitIntoParagraphs(text: string): string[] {
+    return text.split(/\n\n+/).filter(p => p.trim().length > 0);
+  }
+
+  /**
    * Split transcript into chunks for progressive rendering
    */
   private initializeTranscriptChunks(): void {

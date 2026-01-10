@@ -369,11 +369,19 @@
 				}
 			}
 
-			.summary-text {
+			.summary-text,
+			.devotional-text {
 				font-size: 0.95rem;
 				line-height: 1.7;
 				color: var(--color-text-primary);
-				margin: 0;
+
+				p {
+					margin: 0 0 1rem 0;
+
+					&:last-child {
+						margin-bottom: 0;
+					}
+				}
 			}
 
 			.scripture-ref {
@@ -628,6 +636,34 @@
 						color: var(--color-text-secondary);
 						margin: 0.25rem 0 0 0;
 						font-style: italic;
+					}
+				}
+			}
+
+			// Illustrations
+			.illustrations-list {
+				display: flex;
+				flex-direction: column;
+				gap: 1rem;
+
+				.illustration-item {
+					padding: 1rem 1.25rem;
+					background-color: var(--color-bg-secondary);
+					border-left: 4px solid var(--color-text-secondary);
+					border-radius: 0 8px 8px 0;
+
+					.illustration-summary {
+						margin: 0;
+						font-size: 0.95rem;
+						color: var(--color-text-primary);
+						line-height: 1.6;
+					}
+
+					.illustration-point {
+						margin: 0.75rem 0 0 0;
+						font-size: 0.85rem;
+						color: var(--color-text-secondary);
+						line-height: 1.5;
 					}
 				}
 			}
