@@ -2,7 +2,7 @@
   <div class="title">
     {{message.Title}}@if (message.VideoUrl) {
     <span><a target="_blank" href="{{message.VideoUrl}}"><i class="fab fa-youtube"></i></a></span>
-    }<span (click)="copyMessageId()"><i class="fa fa-clone" title="{{message.MessageId}}"></i></span>
+    }<span (click)="copyMessageId()" class="action-icon"><i class="fa fa-clone" title="{{message.MessageId}}"></i></span>
     <span *ngIf="isAuthenticated$ | async" (click)="editMessage()" class="action-icon edit-icon" title="Edit Message">
         <i id="edit-pencil" class="fa fa-pencil"></i>
     </span>
@@ -210,7 +210,11 @@
                 @if (notes.Summary) {
                   <div class="notes-section">
                     <h4 class="section-title">Summary</h4>
-                    <p class="summary-text">{{ notes.Summary }}</p>
+                    <div class="summary-text">
+                      @for (paragraph of getNotesSummaryParagraphs(); track $index) {
+                        <p>{{ paragraph }}</p>
+                      }
+                    </div>
                   </div>
                 }
 
@@ -295,18 +299,24 @@
               </div>
             } @else if (studyGuide) {
               <div class="study-guide-content">
-                <!-- Summary -->
+                <!-- INTRODUCTION SECTION -->
+
+                <!-- Summary - Sets the stage for the study -->
                 @if (studyGuide.Summary) {
                   <div class="guide-section">
-                    <h4 class="section-title">Summary</h4>
-                    <p class="summary-text">{{ studyGuide.Summary }}</p>
+                    <h4 class="section-title">Overview</h4>
+                    <div class="summary-text">
+                      @for (paragraph of getStudyGuideSummaryParagraphs(); track $index) {
+                        <p>{{ paragraph }}</p>
+                      }
+                    </div>
                   </div>
                 }
 
-                <!-- Scripture References -->
+                <!-- Scripture References - Foundation for the study -->
                 @if (studyGuide.ScriptureReferences && studyGuide.ScriptureReferences.length > 0) {
                   <div class="guide-section">
-                    <h4 class="section-title">Scripture References</h4>
+                    <h4 class="section-title"><i class="fas fa-bible"></i> Scripture References</h4>
                     <ul class="scripture-list">
                       @for (ref of studyGuide.ScriptureReferences; track $index) {
                         <li>
@@ -326,10 +336,65 @@
                   </div>
                 }
 
-                <!-- Discussion Questions -->
+                <!-- CORE CONTENT SECTION -->
+
+                <!-- Devotional - Main teaching/reflection content -->
+                @if (studyGuide.Devotional) {
+                  <div class="guide-section">
+                    <h4 class="section-title"><i class="fas fa-heart"></i> Devotional</h4>
+                    <div class="devotional-text">
+                      @for (paragraph of getDevotionalParagraphs(); track $index) {
+                        <p>{{ paragraph }}</p>
+                      }
+                    </div>
+                  </div>
+                }
+
+                <!-- Key Points - Core takeaways from the message -->
+                @if (studyGuide.KeyPoints && studyGuide.KeyPoints.length > 0) {
+                  <div class="guide-section">
+                    <h4 class="section-title"><i class="fas fa-lightbulb"></i> Key Points</h4>
+                    <ul class="key-points-list">
+                      @for (point of studyGuide.KeyPoints; track $index) {
+                        <li class="key-point">
+                          <strong>{{ point.Point }}</strong>
+                          @if (point.Scripture) {
+                            <span class="point-scripture">
+                              <i class="fas fa-bible"></i> {{ point.Scripture }}
+                            </span>
+                          }
+                          @if (point.TheologicalContext) {
+                            <p class="point-detail">{{ point.TheologicalContext }}</p>
+                          }
+                        </li>
+                      }
+                    </ul>
+                  </div>
+                }
+
+                <!-- Illustrations - Stories/examples that bring points to life -->
+                @if (studyGuide.Illustrations && studyGuide.Illustrations.length > 0) {
+                  <div class="guide-section">
+                    <h4 class="section-title"><i class="fas fa-image"></i> Illustrations</h4>
+                    <div class="illustrations-list">
+                      @for (illustration of studyGuide.Illustrations; track $index) {
+                        <div class="illustration-item">
+                          <p class="illustration-summary">{{ illustration.Summary }}</p>
+                          @if (illustration.Point) {
+                            <p class="illustration-point"><em>{{ illustration.Point }}</em></p>
+                          }
+                        </div>
+                      }
+                    </div>
+                  </div>
+                }
+
+                <!-- ENGAGEMENT SECTION -->
+
+                <!-- Discussion Questions - Group conversation prompts -->
                 @if (studyGuide.DiscussionQuestions) {
                   <div class="guide-section">
-                    <h4 class="section-title">Discussion Questions</h4>
+                    <h4 class="section-title"><i class="fas fa-comments"></i> Discussion Questions</h4>
 
                     @if (studyGuide.DiscussionQuestions.Icebreaker && studyGuide.DiscussionQuestions.Icebreaker.length > 0) {
                       <div class="question-category">
@@ -377,7 +442,9 @@
                   </div>
                 }
 
-                <!-- Prayer Prompts -->
+                <!-- CLOSING/ACTION SECTION -->
+
+                <!-- Prayer Prompts - Spiritual response -->
                 @if (studyGuide.PrayerPrompts && studyGuide.PrayerPrompts.length > 0) {
                   <div class="guide-section">
                     <h4 class="section-title"><i class="fas fa-pray"></i> Prayer Prompts</h4>
@@ -389,7 +456,7 @@
                   </div>
                 }
 
-                <!-- Take Home Challenges -->
+                <!-- Take Home Challenges - Action items for the week -->
                 @if (studyGuide.TakeHomeChallenges && studyGuide.TakeHomeChallenges.length > 0) {
                   <div class="guide-section">
                     <h4 class="section-title"><i class="fas fa-tasks"></i> Take Home Challenges</h4>
@@ -401,15 +468,9 @@
                   </div>
                 }
 
-                <!-- Devotional -->
-                @if (studyGuide.Devotional) {
-                  <div class="guide-section">
-                    <h4 class="section-title"><i class="fas fa-heart"></i> Devotional</h4>
-                    <p class="devotional-text">{{ studyGuide.Devotional }}</p>
-                  </div>
-                }
+                <!-- OPTIONAL DEEPER STUDY SECTION -->
 
-                <!-- Additional Study -->
+                <!-- Additional Study - Resources for going deeper -->
                 @if (studyGuide.AdditionalStudy && studyGuide.AdditionalStudy.length > 0) {
                   <div class="guide-section">
                     <h4 class="section-title"><i class="fas fa-book-reader"></i> Additional Study</h4>
