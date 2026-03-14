@@ -16,7 +16,7 @@
     "@angular/animations": "^20.3.16",
     "@angular/cdk": "^20.2.14",
     "@angular/common": "^20.3.16",
-    "@angular/compiler": "^20.3.16",
+    "@angular/compiler": "^20.3.18",
     "@angular/core": "^20.3.18",
     "@angular/forms": "^20.3.16",
     "@angular/platform-browser": "^20.3.16",
@@ -38,7 +38,7 @@
   "devDependencies": {
     "@angular/build": "^20.3.16",
     "@angular/cli": "^20.3.16",
-    "@angular/compiler-cli": "^20.3.16",
+    "@angular/compiler-cli": "^20.3.18",
     "@types/jasmine": "~3.10.0",
     "@types/jest": "^29.5.14",
     "@types/moment-duration-format": "^2.2.4",
