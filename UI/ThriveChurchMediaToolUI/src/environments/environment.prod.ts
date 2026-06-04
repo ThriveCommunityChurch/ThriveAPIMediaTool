@@ -4,7 +4,7 @@
 
 export const environment = {
   production: true,
-  apiURL: "http://localhost:8080",
+  apiURL: "https://api.thrive-fl.org",
   rssFeedURL: "https://thrive-audio.s3.us-east-2.amazonaws.com/feed/rss.xml"
 };
 
