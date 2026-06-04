@@ -1,0 +1,18 @@
+version: 1
+applications:
+  - appRoot: UI/ThriveChurchMediaToolUI
+    frontend:
+      phases:
+        preBuild:
+          commands:
+            - npm ci
+        build:
+          commands:
+            - npx ng build --configuration=${BUILD_CONFIG:-production}
+      artifacts:
+        baseDirectory: dist/browser
+        files:
+          - '**/*'
+      cache:
+        paths:
+          - node_modules/**/*
