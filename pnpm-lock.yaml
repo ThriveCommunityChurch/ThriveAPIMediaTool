@@ -73,7 +73,7 @@ importers:
         version: 0.15.1
     devDependencies:
       '@angular-eslint/builder':
-        specifier: 22.1.0
+        specifier: ^22.1.0
         version: 22.1.0(@angular/cli@20.3.32(@types/node@12.20.55))(eslint@10.8.0)(typescript@5.8.3)
       '@angular-eslint/eslint-plugin':
         specifier: ^22.1.0

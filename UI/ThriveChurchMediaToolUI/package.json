@@ -12,7 +12,7 @@
     "test:coverage": "pnpm run test:jest --coverage",
     "test:jest": "jest --config=jest.config.simple.js",
     "test:karma": "ng test",
-    "lint": "eslint src/**/*.ts src/**/*.html"
+    "lint": "eslint \"src/**/*.ts\" \"src/**/*.html\""
   },
   "private": true,
   "dependencies": {
@@ -39,7 +39,7 @@
     "zone.js": "^0.15.1"
   },
   "devDependencies": {
-    "@angular-eslint/builder": "22.1.0",
+    "@angular-eslint/builder": "^22.1.0",
     "@angular-eslint/eslint-plugin": "^22.1.0",
     "@angular-eslint/eslint-plugin-template": "^22.1.0",
     "@angular-eslint/template-parser": "^22.1.0",

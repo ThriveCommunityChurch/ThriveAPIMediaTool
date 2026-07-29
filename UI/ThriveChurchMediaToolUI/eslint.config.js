@@ -76,7 +76,6 @@ export default [
       },
       globals: {
         ...browserGlobals,
-        ...testGlobals,
       },
     },
     plugins: {
@@ -101,7 +100,7 @@ export default [
     },
   },
   {
-    files: ['**/*.spec.ts'],
+    files: ['**/*.spec.ts', '**/test-helpers/**/*.ts'],
     languageOptions: {
       globals: testGlobals,
     },

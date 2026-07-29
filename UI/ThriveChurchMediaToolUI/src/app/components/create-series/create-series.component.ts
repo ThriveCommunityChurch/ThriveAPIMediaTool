@@ -73,7 +73,7 @@ export class CreateSeriesComponent {
           this.toastService.showStandardToast(`Created series with ID: ${resp.body.Id}.`, 200);
         }
       },
-      error: (error) => {
+      error: (_error) => {
         this.toastService.showStandardToast("An error occurred creating this series. Try again.", 400);
       }
     });

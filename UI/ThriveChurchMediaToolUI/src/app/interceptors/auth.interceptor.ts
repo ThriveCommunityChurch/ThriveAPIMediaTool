@@ -100,8 +100,12 @@ export class AuthInterceptor implements HttpInterceptor {
 
   private isExactSermonsEndpoint(url: string): boolean {
     // Match /api/sermons or /api/sermons?... but NOT /api/sermons/feed/...
-    const sermonsPattern = /api\/sermons(\?|$)/;
-    return sermonsPattern.test(url);
+    try {
+      const parsedUrl = new URL(url, 'http://localhost');
+      return parsedUrl.pathname === '/api/sermons';
+    } catch {
+      return false;
+    }
   }
 
   private isPublicConfigEndpoint(url: string): boolean {
@@ -109,14 +113,25 @@ export class AuthInterceptor implements HttpInterceptor {
     // - /api/config?setting={key} - Get single config
     // - /api/config/list?Keys={keys} - Get multiple configs
     // All others (like /api/config/all) require authentication
-    return /api\/config\?setting=/.test(url) ||
-           url.includes('/api/config/list');
+    try {
+      const parsedUrl = new URL(url, 'http://localhost');
+      if (parsedUrl.pathname !== '/api/config') {
+        return false;
+      }
+      return parsedUrl.searchParams.has('setting') || parsedUrl.searchParams.has('Keys');
+    } catch {
+      return false;
+    }
   }
 
   private isGetSeriesRequest(url: string): boolean {
     // Check if this is a GET request for a specific series (e.g., /api/sermons/series/{id})
-    const seriesPattern = new RegExp('/api/sermons/series/[^/]+$');
-    return seriesPattern.test(url);
+    try {
+      const parsedUrl = new URL(url, 'http://localhost');
+      return /^\/api\/sermons\/series\/[^/]+$/.test(parsedUrl.pathname);
+    } catch {
+      return false;
+    }
   }
 
   private handle401Error(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
