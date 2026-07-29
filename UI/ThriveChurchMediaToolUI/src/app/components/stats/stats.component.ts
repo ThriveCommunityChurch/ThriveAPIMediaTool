@@ -197,7 +197,7 @@ export class StatsComponent implements OnInit {
     return null;
   }
 
-  tooltipCallback(): (item: TooltipItem<any>) => String {
+  tooltipCallback(): (item: TooltipItem<any>) => string {
     
     switch(this.chartID) {
       case 1: 
@@ -273,7 +273,7 @@ export class StatsComponent implements OnInit {
           if (resp.body.Data) {
             resp.body.Data.forEach(data => {
 
-              var dateString: string = "";
+              let dateString: string;
 
               switch (this.chartAggregateType) {
 

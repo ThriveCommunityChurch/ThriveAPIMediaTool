@@ -100,7 +100,7 @@ export class AuthInterceptor implements HttpInterceptor {
 
   private isExactSermonsEndpoint(url: string): boolean {
     // Match /api/sermons or /api/sermons?... but NOT /api/sermons/feed/...
-    const sermonsPattern = /\/api\/sermons(\?|$)/;
+    const sermonsPattern = /api\/sermons(\?|$)/;
     return sermonsPattern.test(url);
   }
 
@@ -109,13 +109,13 @@ export class AuthInterceptor implements HttpInterceptor {
     // - /api/config?setting={key} - Get single config
     // - /api/config/list?Keys={keys} - Get multiple configs
     // All others (like /api/config/all) require authentication
-    return url.match(/\/api\/config\?setting=/) !== null ||
+    return /api\/config\?setting=/.test(url) ||
            url.includes('/api/config/list');
   }
 
   private isGetSeriesRequest(url: string): boolean {
     // Check if this is a GET request for a specific series (e.g., /api/sermons/series/{id})
-    const seriesPattern = /\/api\/sermons\/series\/[^\/]+$/;
+    const seriesPattern = new RegExp('/api/sermons/series/[^/]+$');
     return seriesPattern.test(url);
   }
 

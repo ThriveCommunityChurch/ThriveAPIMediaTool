@@ -26,8 +26,8 @@ export class ViewSeriesComponent implements OnInit, OnDestroy {
   totalDuration: number = 0;
   totalFileSize: number = 0;
   messageCount: number = 5;
-  errorsOccurred: Boolean = false;
-  isContentLoaded: Boolean = false;
+  errorsOccurred = false;
+  isContentLoaded = false;
 
   // Tag truncation
   maxVisibleTags: number = 6;
