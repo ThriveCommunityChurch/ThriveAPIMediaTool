@@ -1,4 +1,4 @@
-import { Component, OnInit } from "@angular/core";
+import { Component } from "@angular/core";
 import { CreateSermonSeriesRequest } from 'src/app/DTO/CreateSermonSeriesRequest';
 import { SermonMessageRequest } from 'src/app/DTO/SermonMessageRequest';
 import { ApiService } from 'src/app/services/api-service.service';
@@ -10,7 +10,7 @@ import { ToastService } from "src/app/services/toast-service.service";
     styleUrls: ['./create-series.component.scss'],
     standalone: false
 })
-export class CreateSeriesComponent implements OnInit {
+export class CreateSeriesComponent {
 
   // Element display booleans
   showAddItem: boolean = false;
@@ -39,10 +39,6 @@ export class CreateSeriesComponent implements OnInit {
     toastService: ToastService) {
     this.apiService = apiService;         
     this.toastService = toastService;         
-  }
-
-  ngOnInit(): void {
-    // Component initialization
   }
 
   submitSeries(): void {

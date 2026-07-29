@@ -173,7 +173,8 @@ export class AuthenticationService {
         Email: payload.email,
         Roles: payload.roles || []
       };
-    } catch (error) {
+    } catch {
+      // eslint-disable-next-line @typescript-eslint/only-throw-error
       throw new Error('Invalid username or password. Please try again.');
     }
   }
