@@ -1,14 +1,16 @@
 {
   "name": "thrive-church-media-tool-ui",
   "version": "0.0.0",
+  "packageManager": "pnpm@9.15.0",
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
     "build": "ng build",
     "watch": "ng build --watch --configuration development",
-    "test": "jest --config=jest.config.simple.js",
-    "test:watch": "jest --config=jest.config.simple.js --watch",
-    "test:coverage": "jest --config=jest.config.simple.js --coverage",
+    "test": "pnpm run test:jest",
+    "test:watch": "pnpm run test:jest --watch",
+    "test:coverage": "pnpm run test:jest --coverage",
+    "test:jest": "jest --config=jest.config.simple.js",
     "test:karma": "ng test"
   },
   "private": true,
