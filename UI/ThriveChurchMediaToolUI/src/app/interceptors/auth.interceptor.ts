@@ -112,13 +112,18 @@ export class AuthInterceptor implements HttpInterceptor {
     // Only these config endpoints are public for GET requests:
     // - /api/config?setting={key} - Get single config
     // - /api/config/list?Keys={keys} - Get multiple configs
-    // All others (like /api/config/all) require authentication
+    // All others (like /api/config/all, /api/config with Keys but no /list) require authentication
     try {
       const parsedUrl = new URL(url, 'http://localhost');
-      if (parsedUrl.pathname !== '/api/config') {
-        return false;
+      if (parsedUrl.pathname === '/api/config') {
+        // Only allow ?setting=... (no Keys allowed on base /api/config)
+        return parsedUrl.searchParams.has('setting') && !parsedUrl.searchParams.has('Keys');
       }
-      return parsedUrl.searchParams.has('setting') || parsedUrl.searchParams.has('Keys');
+      if (parsedUrl.pathname === '/api/config/list') {
+        // Only allow ?Keys=... on /api/config/list
+        return parsedUrl.searchParams.has('Keys');
+      }
+      return false;
     } catch {
       return false;
     }
