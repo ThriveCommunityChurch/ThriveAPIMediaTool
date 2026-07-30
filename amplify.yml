@@ -5,8 +5,8 @@ applications:
       phases:
         preBuild:
           commands:
-            - nvm install 26
-            - nvm use 26
+            - nvm install 24
+            - nvm use 24
             - npm install --global corepack@latest
             - corepack enable
             - corepack prepare pnpm@10.34.0 --activate
