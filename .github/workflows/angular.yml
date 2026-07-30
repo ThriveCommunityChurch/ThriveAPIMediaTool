@@ -5,28 +5,35 @@ on:
     branches:
     - dev
     - master
-    
+     
 jobs:
   ci:
     runs-on: ubuntu-latest
 
     strategy:
       matrix:
-        node-version: ['22.x']
+        node-version: ['26.x']
 
     steps:
       - uses: actions/checkout@v6
 
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 10.34.0
+          run_install: false
+
       - name: Use Node.js ${{ matrix.node-version }}
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v5
         with:
           node-version: ${{ matrix.node-version }}
-          cache: 'npm'
-          cache-dependency-path: 'UI/ThriveChurchMediaToolUI/package-lock.json'
+          cache: 'pnpm'
+          cache-dependency-path: 'pnpm-lock.yaml'
 
       - name: Install Dependencies
         run: |
-          npm --prefix 'UI/ThriveChurchMediaToolUI' ci --legacy-peer-deps
+          cd UI/ThriveChurchMediaToolUI
+          pnpm install --frozen-lockfile
         env:
           NODE_OPTIONS: "--max-old-space-size=4096"
 
@@ -37,16 +44,16 @@ jobs:
           npx ng version
           echo ""
           echo "=== Package versions ==="
-          npm list @angular/core @angular/build @angular/cli --depth=0
+          pnpm list @angular/core @angular/build @angular/cli --depth=0
           echo ""
           echo "=== Expected vs Actual ==="
-          echo "Expected @angular/core: ^20.3.4"
-          echo "Expected @angular/build: ^20.3.5"
-          echo "Expected @angular/cli: ^20.3.5"
+          echo "Expected @angular/core: ^20.3.18"
+          echo "Expected @angular/build: ^20.3.18"
+          echo "Expected @angular/cli: ^20.3.18"
 
 #      - name: Lint
 #        run: |
-#          npm --prefix 'UI/ThriveChurchMediaToolUI' run lint
+#          cd UI/ThriveChurchMediaToolUI && pnpm run lint
 
       - name: Build
         run: |

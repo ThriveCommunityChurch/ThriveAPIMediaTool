@@ -33,3 +33,7 @@ UI/ThriveChurchMediaToolUI/.vscode/
 *.code-workspace
 
 *.http
+
+UI/thrive-media-tool/.next/
+
+.next/
