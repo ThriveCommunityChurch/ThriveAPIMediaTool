@@ -1,4 +1,4 @@
-import { Component, ElementRef, QueryList, ViewChildren } from '@angular/core';
+import { Component, ElementRef, QueryList, ViewChildren, OnInit, AfterViewInit, OnDestroy } from '@angular/core';
 import { ToastMessage } from 'src/app/Domain/ToastMessage';
 import { ToastService } from 'src/app/services/toast-service.service';
 import * as bootstrap from 'bootstrap';
@@ -10,7 +10,7 @@ import { Subscription } from 'rxjs';
     styleUrls: ['./toast-message.component.scss'],
     standalone: false
 })
-export class ToastMessageComponent {
+export class ToastMessageComponent implements OnInit, AfterViewInit, OnDestroy {
 
   @ViewChildren('toastElement') toastElements: QueryList<ElementRef>;
   private toastsSubscription: Subscription;

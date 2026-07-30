@@ -173,7 +173,7 @@ export class AuthenticationService {
         Email: payload.email,
         Roles: payload.roles || []
       };
-    } catch (error) {
+    } catch {
       throw new Error('Invalid username or password. Please try again.');
     }
   }

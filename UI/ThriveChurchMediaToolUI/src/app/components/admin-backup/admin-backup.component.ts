@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { Observable } from 'rxjs';
 
@@ -12,7 +12,7 @@ import { ThemeService } from '../../services/theme.service';
   styleUrls: ['./admin-backup.component.scss'],
   standalone: false
 })
-export class AdminBackupComponent implements OnInit {
+export class AdminBackupComponent {
   // Export state
   isExporting = false;
   exportData: any = null;
@@ -37,10 +37,6 @@ export class AdminBackupComponent implements OnInit {
     private router: Router
   ) {
     this.resolvedTheme$ = this.themeService.resolvedTheme$;
-  }
-
-  ngOnInit(): void {
-    // Component initialization
   }
 
   /**

@@ -1,6 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { SermonSeries } from 'src/app/DTO/SermonSeries';
 import { SermonSeriesSummary } from 'src/app/DTO/SermonSeriesSummary';
 import { ApiService } from 'src/app/services/api-service.service';
 
@@ -15,7 +14,7 @@ export class SeriesListComponent implements OnInit {
 
   apiService: ApiService;
   summaries: SermonSeriesSummary[] = [];
-  isContentLoaded: Boolean = false;
+  isContentLoaded = false;
 
   constructor(
     apiService: ApiService,
