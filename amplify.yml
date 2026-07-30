@@ -5,14 +5,20 @@ applications:
       phases:
         preBuild:
           commands:
-            - npm ci
+            - nvm install 26
+            - nvm use 26
+            - npm install --global corepack@latest
+            - corepack enable
+            - corepack prepare pnpm@10.34.0 --activate
+            - pnpm config set store-dir .pnpm-store
+            - pnpm install --frozen-lockfile
         build:
           commands:
-            - npx ng build --configuration=${BUILD_CONFIG:-production}
+            - pnpm run build -- --configuration=${BUILD_CONFIG:-production}
       artifacts:
         baseDirectory: dist/browser
         files:
           - '**/*'
       cache:
         paths:
-          - node_modules/**/*
+          - .pnpm-store/**/*
