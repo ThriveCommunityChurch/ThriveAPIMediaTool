@@ -14,7 +14,7 @@ applications:
             - pnpm install --frozen-lockfile
         build:
           commands:
-            - pnpm run build -- --configuration=${BUILD_CONFIG:-production}
+            - pnpm run build --configuration=${BUILD_CONFIG:-production}
       artifacts:
         baseDirectory: dist/browser
         files:
